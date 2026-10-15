@@ -1,111 +1,36 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { ArrowLeft, Eye, EyeOff, Check, Sparkles, GraduationCap } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react';
 import { useAuthStore } from '../../stores/authStore';
 import { clsx } from 'clsx';
 import { formatAuthError } from '../../utils/authErrors';
 import { GoogleSignIn } from '../../components/auth/GoogleSignIn';
 import { BrandLogo } from '../../components/common/BrandLogo';
 
-// ── Left Hero Panel (PTE Magic Style) ──────────────────────────────────────────
+// ── Left Hero Panel (Minimalist PTE Study Style) ──────────────────────────────
 function HeroLeftPanel() {
   return (
     <div
-      className="hidden lg:flex w-1/2 flex-col justify-between p-12 relative overflow-hidden select-none"
+      className="hidden lg:flex w-1/2 flex-col justify-between p-12 xl:p-16 relative overflow-hidden select-none"
       style={{
         background: 'linear-gradient(145deg, #FEE03F 0%, #FDC71A 60%, #F59E0B 100%)',
       }}
     >
-      {/* Background Subtle Grid Texture */}
-      <div
-        className="absolute inset-0 opacity-15 pointer-events-none"
-        style={{
-          backgroundImage: 'radial-gradient(circle, #374151 1px, transparent 1px)',
-          backgroundSize: '24px 24px',
-        }}
-      />
-
-      {/* Floating Decorative Shapes */}
-      <div className="absolute top-12 right-20 text-indigo-700/60 text-2xl font-black rotate-12">★</div>
-      <div className="absolute bottom-24 left-10 text-rose-500/50 text-xl font-black -rotate-12">✦</div>
-      <div className="absolute top-1/2 right-12 text-amber-800/40 text-lg font-black rotate-45">■</div>
-
-      {/* Top Brand Pill */}
+      {/* Brand Emblem */}
       <div className="relative z-10">
-        <div className="inline-flex items-center gap-2.5 bg-black/90 text-white px-4 py-2 rounded-2xl shadow-lg border border-white/10">
-          <div className="w-6 h-6 rounded-lg bg-amber-400 flex items-center justify-center font-black text-black text-xs">
-            PTE
-          </div>
-          <div className="leading-tight">
-            <span className="font-display font-black text-xs tracking-wider uppercase">PTE Study</span>
-            <span className="text-[10px] text-amber-300 block font-medium">AI Practice Platform</span>
-          </div>
-        </div>
+        <BrandLogo theme="yellow" size="md" showSubtitle />
       </div>
 
-      {/* Center Copy */}
-      <div className="relative z-10 max-w-md my-auto pt-6">
-        <h1 className="font-display font-black text-3xl xl:text-4xl text-gray-950 leading-[1.2] mb-3 tracking-tight">
-          Better Practice. Better Results.
+      {/* Center Minimal Typography */}
+      <div className="relative z-10 max-w-lg my-auto py-12">
+        <h1 className="font-display font-black text-4xl xl:text-5xl text-gray-950 leading-[1.18] mb-5 tracking-tight">
+          Luyện thi PTE
           <br />
-          <span className="text-gray-900">With PTE Study Platform.</span>
+          <span className="text-gray-900/90">Chấm điểm chuẩn AI.</span>
         </h1>
-        <p className="text-gray-800/90 text-sm leading-relaxed mb-8 font-medium">
-          Join 100,000+ students who trust PTE Study to achieve their dream Pearson Test of English scores for migration, study, or work abroad.
+        <p className="text-gray-900/80 text-base leading-relaxed max-w-md font-medium">
+          Hệ thống luyện thi thông minh, phản hồi phát âm theo thời gian thực và đề thi bám sát cấu trúc Pearson.
         </p>
-
-        {/* Floating Cards (Student Result + Skills Breakdown) */}
-        <div className="space-y-4">
-          {/* Curved banner ribbon */}
-          <div className="bg-black/90 text-amber-300 font-mono text-[11px] font-bold py-1.5 px-4 rounded-full w-fit shadow-md flex items-center gap-2 border border-amber-400/20">
-            <span>★</span>
-            <span className="tracking-wide">Achieve PTE 79+, the Smart Way · AI Scoring</span>
-          </div>
-
-          {/* Student Profile Card */}
-          <div className="bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-xl border border-white/60 flex items-center justify-between max-w-sm hover:scale-[1.02] transition-transform">
-            <div className="flex items-center gap-3">
-              <div className="w-11 h-11 rounded-full bg-gradient-to-tr from-amber-200 to-amber-100 border-2 border-amber-300 flex items-center justify-center text-amber-800 font-bold shadow-inner">
-                <GraduationCap size={20} className="text-amber-800" />
-              </div>
-              <div>
-                <p className="font-bold text-gray-900 text-sm">Alice Pham</p>
-                <p className="text-[11px] text-gray-500 font-medium">Test Taker ID: PTE9582739</p>
-                <p className="text-[10px] text-emerald-600 font-semibold mt-0.5">MOCK TEST 14 · 3 HOURS</p>
-              </div>
-            </div>
-            <div className="text-center bg-amber-400/25 px-3 py-1.5 rounded-xl border border-amber-400/40">
-              <span className="text-[9px] font-bold text-amber-900 uppercase block tracking-wider">Overall</span>
-              <span className="font-display font-black text-2xl text-gray-950 leading-none">79+</span>
-            </div>
-          </div>
-
-          {/* Skills Breakdown Widget */}
-          <div className="bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-xl border border-white/60 max-w-sm space-y-2.5 hover:scale-[1.02] transition-transform">
-            <div className="flex items-center justify-between pb-1 border-b border-gray-100">
-              <span className="text-xs font-black text-gray-800 uppercase tracking-wider">Skills Breakdown</span>
-              <span className="text-[10px] font-bold text-gray-400">PTE Target 79</span>
-            </div>
-
-            {[
-              { skill: 'Speaking',  score: 82, color: 'bg-amber-500' },
-              { skill: 'Writing',   score: 79, color: 'bg-cyan-500' },
-              { skill: 'Reading',   score: 78, color: 'bg-emerald-500' },
-              { skill: 'Listening', score: 80, color: 'bg-blue-600' },
-            ].map((s) => (
-              <div key={s.skill} className="flex items-center text-xs gap-3">
-                <span className="w-16 font-semibold text-gray-600 text-[11px]">{s.skill}</span>
-                <span className="w-6 font-bold text-gray-900 text-[11px] tabular-nums">{s.score}</span>
-                <div className="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
-                  <div
-                    className={clsx('h-full rounded-full transition-all duration-700', s.color)}
-                    style={{ width: `${(s.score / 90) * 100}%` }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
 
       {/* Bottom Footer info */}
@@ -165,17 +90,9 @@ export function LoginPage() {
       {/* Right Form */}
       <div className="w-full lg:w-1/2 flex flex-col justify-between p-6 sm:p-12 lg:p-16 overflow-y-auto">
         <div className="max-w-md w-full mx-auto my-auto py-8">
-          {/* Top Logo & Back Button */}
-          <div className="flex items-center justify-between mb-8">
-            <Link
-              to="/dashboard"
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-gray-500 hover:text-gray-900 transition-colors"
-            >
-              <ArrowLeft size={14} />
-              Back to homepage
-            </Link>
-
-            <BrandLogo theme="light" size="sm" />
+          {/* Mobile brand header (desktop hidden) */}
+          <div className="lg:hidden mb-6 flex justify-center">
+            <BrandLogo theme="light" size="md" />
           </div>
 
           {/* Heading */}
@@ -282,13 +199,16 @@ export function LoginPage() {
               <div className="w-full border-t border-gray-200" />
             </div>
             <div className="relative flex justify-center text-xs">
-              <span className="bg-white px-3 text-gray-400 font-medium">or continue with</span>
+              <span className="bg-white px-3 text-gray-400 font-medium">hoặc tiếp tục với</span>
             </div>
           </div>
 
           {/* Google Sign-in */}
           <div>
             <GoogleSignIn variant="login" onError={setError} />
+            <p className="text-[11px] text-gray-400 text-center mt-2.5">
+              Chưa có tài khoản? Hệ thống sẽ tự động tạo tài khoản mới khi bạn đăng nhập bằng Google.
+            </p>
           </div>
 
           {/* Footer Terms */}
@@ -354,16 +274,9 @@ export function RegisterPage() {
 
       <div className="w-full lg:w-1/2 flex flex-col justify-between p-6 sm:p-12 lg:p-16 overflow-y-auto">
         <div className="max-w-md w-full mx-auto my-auto py-8">
-          <div className="flex items-center justify-between mb-8">
-            <Link
-              to="/dashboard"
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-gray-500 hover:text-gray-900 transition-colors"
-            >
-              <ArrowLeft size={14} />
-              Back to homepage
-            </Link>
-
-            <BrandLogo theme="light" size="sm" />
+          {/* Mobile brand header (desktop hidden) */}
+          <div className="lg:hidden mb-6 flex justify-center">
+            <BrandLogo theme="light" size="md" />
           </div>
 
           <div className="mb-6">
