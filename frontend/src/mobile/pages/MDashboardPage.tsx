@@ -9,18 +9,20 @@ import { MobileHeader } from "../layout/MobileShell";
 import { MBadge, MSkeleton, MSkeletonCard, MErrorState } from "../ui";
 import { useUserGoals } from "./MOnboardingGate";
 import { clsx } from "clsx";
+import { Mic, PenTool, BookOpen, Headphones, Clock, BarChart2, Bookmark, Play, ChevronRight } from "lucide-react";
 
 const SKILLS: {
   key: QuestionSkill;
   label: string;
-  icon: string;
+  icon: React.ElementType;
   accent: string;
   bg: string;
+  iconColor: string;
 }[] = [
-  { key: "SPEAKING", label: "Speaking", icon: "🎙️", accent: "#f59e0b", bg: "bg-amber-50" },
-  { key: "WRITING",  label: "Writing",  icon: "✍️",  accent: "#3b82f6", bg: "bg-blue-50"  },
-  { key: "READING",  label: "Reading",  icon: "📖",  accent: "#22c55e", bg: "bg-green-50" },
-  { key: "LISTENING",label: "Listening",icon: "🎧",  accent: "#a855f7", bg: "bg-purple-50"},
+  { key: "SPEAKING", label: "Speaking", icon: Mic, accent: "#f59e0b", bg: "bg-amber-50", iconColor: "text-amber-600" },
+  { key: "WRITING",  label: "Writing",  icon: PenTool, accent: "#3b82f6", bg: "bg-blue-50", iconColor: "text-blue-600" },
+  { key: "READING",  label: "Reading",  icon: BookOpen, accent: "#10b981", bg: "bg-emerald-50", iconColor: "text-emerald-600" },
+  { key: "LISTENING",label: "Listening",icon: Headphones, accent: "#8b5cf6", bg: "bg-purple-50", iconColor: "text-purple-600" },
 ];
 
 function greet() {
@@ -177,7 +179,7 @@ export default function MDashboardPage() {
             className="w-full border-t border-white/10 px-5 py-3 flex items-center gap-3 active:bg-white/5 transition-colors"
           >
             <div className="w-9 h-9 rounded-xl bg-brand-gold/20 flex items-center justify-center flex-shrink-0">
-              <span className="text-base">▶️</span>
+              <Play size={15} className="text-brand-gold fill-brand-gold" />
             </div>
             <div className="flex-1 text-left">
               <p className="text-[11px] text-white/40 font-medium uppercase tracking-wider">Tiếp tục học</p>
@@ -192,9 +194,9 @@ export default function MDashboardPage() {
         {/* ── Quick Actions ── */}
         <div className="grid grid-cols-3 gap-2.5">
           {[
-            { icon: "⏱️", label: "Thi thử", sub: `${completedMockCount} xong`, path: "/mock-test", bg: "bg-amber-50" },
-            { icon: "📊", label: "Phân tích", sub: "Điểm yếu", path: "/analytics", bg: "bg-blue-50" },
-            { icon: "🔖", label: "Đã lưu", sub: "Câu khó", path: "/bookmarks", bg: "bg-green-50" },
+            { icon: Clock, label: "Thi thử", sub: `${completedMockCount} xong`, path: "/mock-test", bg: "bg-amber-50", color: "text-amber-600" },
+            { icon: BarChart2, label: "Phân tích", sub: "Điểm yếu", path: "/analytics", bg: "bg-blue-50", color: "text-blue-600" },
+            { icon: Bookmark, label: "Đã lưu", sub: "Câu khó", path: "/bookmarks", bg: "bg-emerald-50", color: "text-emerald-600" },
           ].map((a) => (
             <button
               key={a.path}
@@ -202,7 +204,7 @@ export default function MDashboardPage() {
               className="bg-white rounded-2xl p-3 text-center shadow-sm border border-gray-100 active:scale-[0.97] transition-transform"
             >
               <div className={clsx("w-10 h-10 rounded-xl flex items-center justify-center mx-auto mb-1.5", a.bg)}>
-                <span className="text-xl">{a.icon}</span>
+                <a.icon size={18} className={a.color} />
               </div>
               <p className="font-bold text-[11px] text-gray-900">{a.label}</p>
               <p className="text-[9px] text-gray-400 mt-0.5">{a.sub}</p>
@@ -227,8 +229,8 @@ export default function MDashboardPage() {
                   onClick={() => navigate(`/practice/${skill.key.toLowerCase()}`)}
                   className="w-full bg-white rounded-2xl px-4 py-3.5 flex items-center gap-3 active:scale-[0.98] transition-transform text-left shadow-sm border border-gray-100"
                 >
-                  <div className={clsx("w-11 h-11 rounded-xl flex items-center justify-center text-xl flex-shrink-0", skill.bg)}>
-                    {skill.icon}
+                  <div className={clsx("w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0", skill.bg)}>
+                    <skill.icon size={20} className={skill.iconColor} />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-1.5">

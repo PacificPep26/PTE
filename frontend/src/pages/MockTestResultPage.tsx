@@ -1,14 +1,15 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { clsx } from 'clsx';
+import { Mic, PenTool, BookOpen, Headphones, RotateCcw, List, Home, AlertCircle, Clock } from 'lucide-react';
 import { mockTestApi } from '../api';
 import { Button } from '../components/ui';
 
 const SECTION_CONFIG = [
-  { key: 'speaking', label: 'Speaking', icon: '🎙️', color: 'yellow' },
-  { key: 'writing',  label: 'Writing',  icon: '✍️',  color: 'orange' },
-  { key: 'reading',  label: 'Reading',  icon: '📖',  color: 'black' },
-  { key: 'listening',label: 'Listening',icon: '🎧',  color: 'gradient' },
+  { key: 'speaking', label: 'Speaking', icon: Mic, iconColor: 'text-amber-600', bg: 'bg-amber-50', color: 'yellow' },
+  { key: 'writing',  label: 'Writing',  icon: PenTool, iconColor: 'text-blue-600', bg: 'bg-blue-50', color: 'orange' },
+  { key: 'reading',  label: 'Reading',  icon: BookOpen, iconColor: 'text-emerald-600', bg: 'bg-emerald-50', color: 'black' },
+  { key: 'listening',label: 'Listening',icon: Headphones, iconColor: 'text-purple-600', bg: 'bg-purple-50', color: 'gradient' },
 ];
 
 // PTE pass mark by component
@@ -60,7 +61,7 @@ export default function MockTestResultPage() {
     return (
       <div className="min-h-screen bg-brand-cream flex items-center justify-center">
         <div className="text-center">
-          <p className="text-4xl mb-3">😕</p>
+          <AlertCircle size={40} className="text-gray-400 mx-auto mb-3" />
           <p className="font-bold text-gray-700">Không tìm thấy kết quả</p>
           <Button variant="yellow" className="mt-4" onClick={() => navigate('/mock-test')}>← Về Mock Test</Button>
         </div>
@@ -88,8 +89,10 @@ export default function MockTestResultPage() {
       {/* Header */}
       <header className="bg-white border-b border-gray-100 px-8 h-14 flex items-center justify-between sticky top-0 z-30">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-brand-yellow rounded-lg flex items-center justify-center">✈️</div>
-          <span className="font-display font-black">FlyEdu</span>
+          <div className="w-8 h-8 bg-brand-gold rounded-lg flex items-center justify-center font-black text-black text-xs">
+            FLY
+          </div>
+          <span className="font-display font-black">FLY PTE</span>
         </div>
         <h1 className="font-display font-black text-base">Kết quả thi</h1>
         <Button variant="ghost" size="sm" onClick={() => navigate('/mock-test')}>← Về danh sách</Button>
@@ -106,7 +109,7 @@ export default function MockTestResultPage() {
               'inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-black mb-3',
               isPassing ? 'bg-green-400 text-green-900' : 'bg-red-400 text-red-900'
             )}>
-              {isPassing ? '✓ ĐẠT YÊU CẦU' : '✗ CHƯA ĐẠT'}
+              {isPassing ? 'ĐẠT YÊU CẦU' : 'CHƯA ĐẠT'}
             </div>
             <h2 className="font-display font-black text-2xl text-white mb-1">{mockTestTitle}</h2>
             <p className="text-sm text-gray-400">
@@ -115,7 +118,9 @@ export default function MockTestResultPage() {
                 : `Cần ${PASS_MARK} điểm để đạt. Hãy luyện thêm và thử lại!`}
             </p>
             {timeTaken && (
-              <p className="text-xs text-gray-500 mt-2">⏱ Thời gian làm bài: {timeTaken}</p>
+              <p className="text-xs text-gray-400 mt-2 flex items-center gap-1.5">
+                <Clock size={12} className="text-brand-gold" /> Thời gian làm bài: {timeTaken}
+              </p>
             )}
           </div>
           <ScoreGauge score={total} />
@@ -125,7 +130,7 @@ export default function MockTestResultPage() {
         <div className="card p-6">
           <h3 className="font-display font-black text-base mb-5">Điểm theo kỹ năng</h3>
           <div className="space-y-5">
-            {SECTION_CONFIG.map(({ key, label, icon, color }) => {
+            {SECTION_CONFIG.map(({ key, label, icon: Icon, iconColor, bg, color }) => {
               const score = Math.round(sections[key as keyof typeof sections] || 0);
               const pct = Math.round((score / 90) * 100);
               const pass = score >= PASS_MARK;
@@ -133,7 +138,9 @@ export default function MockTestResultPage() {
                 <div key={key}>
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
-                      <span className="text-base">{icon}</span>
+                      <div className={clsx("w-7 h-7 rounded-lg flex items-center justify-center", bg)}>
+                        <Icon size={14} className={iconColor} />
+                      </div>
                       <span className="text-sm font-bold text-gray-800">{label}</span>
                     </div>
                     <div className="flex items-center gap-2">
@@ -141,7 +148,7 @@ export default function MockTestResultPage() {
                         'text-[10px] font-black px-2 py-0.5 rounded',
                         pass ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'
                       )}>
-                        {pass ? '✓ Đạt' : '✗ Chưa đạt'}
+                        {pass ? 'Đạt' : 'Chưa đạt'}
                       </span>
                       <span className="font-display font-black text-lg text-gray-900">{score}<span className="text-xs text-gray-400 font-normal">/90</span></span>
                     </div>
@@ -150,10 +157,10 @@ export default function MockTestResultPage() {
                     <div
                       className={clsx(
                         'h-full rounded-full transition-all duration-700',
-                        color === 'yellow' ? 'bg-brand-yellow' :
-                        color === 'orange' ? 'bg-brand-orange' :
-                        color === 'black' ? 'bg-brand-black' :
-                        'bg-gradient-to-r from-brand-yellow to-brand-orange'
+                        color === 'yellow' ? 'bg-brand-gold' :
+                        color === 'orange' ? 'bg-amber-600' :
+                        color === 'black' ? 'bg-brand-charcoal' :
+                        'bg-gradient-to-r from-brand-gold to-brand-gold-bright'
                       )}
                       style={{ width: `${pct}%` }}
                     />
@@ -170,11 +177,13 @@ export default function MockTestResultPage() {
 
         {/* Score breakdown summary */}
         <div className="grid grid-cols-2 gap-4">
-          {SECTION_CONFIG.map(({ key, label, icon }) => {
+          {SECTION_CONFIG.map(({ key, label, icon: Icon, iconColor, bg }) => {
             const score = Math.round(sections[key as keyof typeof sections] || 0);
             return (
               <div key={key} className="card p-4 flex items-center gap-3">
-                <div className="w-10 h-10 bg-brand-yellow-light rounded-xl flex items-center justify-center text-xl">{icon}</div>
+                <div className={clsx("w-10 h-10 rounded-xl flex items-center justify-center", bg)}>
+                  <Icon size={18} className={iconColor} />
+                </div>
                 <div>
                   <p className="text-xs text-gray-400 font-semibold">{label}</p>
                   <p className="font-display font-black text-xl text-gray-900">{score}<span className="text-xs text-gray-400 font-normal">/90</span></p>
@@ -191,21 +200,21 @@ export default function MockTestResultPage() {
             className="flex-1 py-3"
             onClick={() => navigate(`/mock-test/${attempt.mockTestId}`)}
           >
-            🔄 Thi lại
+            <RotateCcw size={15} className="mr-1.5 inline" /> Thi lại
           </Button>
           <Button
             variant="dark"
             className="flex-1 py-3"
             onClick={() => navigate('/mock-test')}
           >
-            📋 Xem danh sách đề thi
+            <List size={15} className="mr-1.5 inline" /> Danh sách đề
           </Button>
           <Button
             variant="ghost"
             className="flex-1 py-3"
             onClick={() => navigate('/dashboard')}
           >
-            🏠 Dashboard
+            <Home size={15} className="mr-1.5 inline" /> Dashboard
           </Button>
         </div>
       </div>

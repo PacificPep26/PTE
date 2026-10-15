@@ -36,6 +36,7 @@ import ProfilePage from "./pages/ProfilePage";
 import BookmarksPage from "./pages/BookmarksPage";
 import MockTestResultPage from "./pages/MockTestResultPage";
 import AdminPage from "./pages/AdminPage";
+import { LoginPage, RegisterPage } from "./pages/auth/AuthPages";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -198,8 +199,8 @@ function AppContent() {
   return (
     <Routes>
           {/* ── Public ── */}
-          <Route path="/login" element={<PublicRoute><MLoginPage /></PublicRoute>} />
-          <Route path="/register" element={<PublicRoute><MRegisterPage /></PublicRoute>} />
+          <Route path="/login" element={<PublicRoute><ResponsiveRoute mobile={MLoginPage} desktop={LoginPage} /></PublicRoute>} />
+          <Route path="/register" element={<PublicRoute><ResponsiveRoute mobile={MRegisterPage} desktop={RegisterPage} /></PublicRoute>} />
           <Route path="/privacy" element={<MPrivacyPolicyPage />} />
           <Route path="/terms" element={<MTermsPage />} />
 

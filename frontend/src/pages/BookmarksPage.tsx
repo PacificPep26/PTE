@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { clsx } from 'clsx';
+import { Mic, PenTool, BookOpen, Headphones, Bookmark } from 'lucide-react';
 import { questionsApi } from '../api';
 import { MainLayout } from '../components/layout/Sidebar';
 import { Button, Badge } from '../components/ui';
@@ -19,8 +20,8 @@ const SKILL_COLOR: Record<string, string> = {
   SPEAKING: 'yellow', WRITING: 'orange', READING: 'black', LISTENING: 'gradient',
 };
 
-const SKILL_ICON: Record<string, string> = {
-  SPEAKING: '🎙️', WRITING: '✍️', READING: '📖', LISTENING: '🎧',
+const SKILL_ICON: Record<string, React.ElementType> = {
+  SPEAKING: Mic, WRITING: PenTool, READING: BookOpen, LISTENING: Headphones,
 };
 
 export default function BookmarksPage() {
@@ -70,16 +71,18 @@ export default function BookmarksPage() {
             <div className="space-y-3">
               {(questions as any[]).map((q) => {
                 const color = SKILL_COLOR[q.skill] || 'yellow';
+                const SkillIcon = SKILL_ICON[q.skill] || Bookmark;
                 return (
                   <div key={q.id} className="card overflow-hidden hover:shadow-md transition-shadow">
                     <div className="flex items-center gap-4 px-5 py-4">
                       {/* Skill icon */}
                       <div className={clsx(
-                        'w-12 h-12 rounded-xl flex items-center justify-center text-xl flex-shrink-0',
-                        color === 'yellow' ? 'bg-brand-yellow-light' :
-                        color === 'orange' ? 'bg-brand-orange-light' : 'bg-gray-100'
+                        'w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0',
+                        color === 'yellow' ? 'bg-amber-50 text-amber-600' :
+                        color === 'orange' ? 'bg-blue-50 text-blue-600' :
+                        color === 'black' ? 'bg-emerald-50 text-emerald-600' : 'bg-purple-50 text-purple-600'
                       )}>
-                        {SKILL_ICON[q.skill] || '📌'}
+                        <SkillIcon size={20} />
                       </div>
 
                       {/* Info */}

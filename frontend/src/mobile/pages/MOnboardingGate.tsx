@@ -1,4 +1,5 @@
 import React from "react";
+import { Capacitor } from "@capacitor/core";
 import { logoUrl } from "../../assets";
 
 const KEY_ONBOARDING = "fly_onboarding_v2";
@@ -47,6 +48,12 @@ const TARGET_SCORES = [
 ];
 
 export function MOnboardingGate({ children }: { children: React.ReactNode }) {
+  // Chỉ kích hoạt màn onboarding/điều khoản cho ứng dụng di động Capacitor Native (iOS / Android)
+  // Trên trình duyệt Web, người dùng đi thẳng vào ứng dụng / màn hình đăng nhập
+  if (!Capacitor.isNativePlatform()) {
+    return <>{children}</>;
+  }
+
   const done = localStorage.getItem(KEY_ONBOARDING) === "1";
   const [phase, setPhase] = React.useState<Phase>(done ? "done" : "splash");
 

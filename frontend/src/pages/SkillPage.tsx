@@ -1,41 +1,46 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { clsx } from 'clsx';
+import {
+  Mic, PenTool, BookOpen, Headphones, Volume2, Repeat, Image as ImageIcon,
+  GraduationCap, HelpCircle, Users, MessageSquare, FileText, Edit3, CheckSquare,
+  Shuffle, Square, CheckCircle, Search, Sparkles, AlertCircle
+} from 'lucide-react';
 import { questionsApi } from '../api';
 import { QuestionSkill, QuestionType, QUESTION_TYPE_LABELS, SKILL_TYPES } from '../types';
 import { MainLayout } from '../components/layout/Sidebar';
 import { Button, Badge, ProgressBar } from '../components/ui';
 
-const SKILL_META: Record<QuestionSkill, { label: string; icon: string; color: string }> = {
-  SPEAKING: { label: 'Speaking', icon: '🎙️', color: 'yellow' },
-  WRITING: { label: 'Writing', icon: '✍️', color: 'orange' },
-  READING: { label: 'Reading', icon: '📖', color: 'black' },
-  LISTENING: { label: 'Listening', icon: '🎧', color: 'gradient' },
+const SKILL_META: Record<QuestionSkill, { label: string; icon: React.ElementType; color: string; iconColor: string; bg: string }> = {
+  SPEAKING: { label: 'Speaking', icon: Mic, color: 'yellow', iconColor: 'text-amber-600', bg: 'bg-amber-50' },
+  WRITING: { label: 'Writing', icon: PenTool, color: 'orange', iconColor: 'text-blue-600', bg: 'bg-blue-50' },
+  READING: { label: 'Reading', icon: BookOpen, color: 'black', iconColor: 'text-emerald-600', bg: 'bg-emerald-50' },
+  LISTENING: { label: 'Listening', icon: Headphones, color: 'gradient', iconColor: 'text-purple-600', bg: 'bg-purple-50' },
 };
 
-const TYPE_ICONS: Partial<Record<QuestionType, string>> = {
-  SPEAKING_READ_ALOUD: '🔊',
-  SPEAKING_REPEAT_SENTENCE: '🔁',
-  SPEAKING_DESCRIBE_IMAGE: '🖼️',
-  SPEAKING_RETELL_LECTURE: '🎓',
-  SPEAKING_ANSWER_SHORT_QUESTION: '❓',
-  SPEAKING_SUMMARISE_GROUP_DISCUSSION: '👥',
-  SPEAKING_RESPOND_TO_SITUATION: '💬',
-  WRITING_SUMMARIZE_WRITTEN_TEXT: '📄',
-  WRITING_ESSAY: '✏️',
-  READING_FIB_R_W: '📝',
-  READING_MCQ_MULTIPLE_ANSWER: '☑️',
-  READING_RE_ORDER_PARAGRAPH: '🔀',
-  READING_FIB_R: '🔲',
-  READING_MCQ_SINGLE_ANSWER: '🔘',
-  LISTENING_SUMMARIZE_SPOKEN_TEXT: '📋',
-  LISTENING_MCQ_MULTIPLE_ANSWER: '☑️',
-  LISTENING_FIB_L: '⬜',
-  LISTENING_HIGHLIGHT_CORRECT_SUMMARY: '✅',
-  LISTENING_MCQ_SINGLE_ANSWER: '🔘',
-  LISTENING_SELECT_MISSING_WORD: '🔍',
-  LISTENING_HIGHLIGHT_INCORRECT_WORD: '🔆',
-  LISTENING_DICTATION: '✍️',
+const TYPE_ICONS: Partial<Record<QuestionType, React.ElementType>> = {
+  SPEAKING_READ_ALOUD: Volume2,
+  SPEAKING_REPEAT_SENTENCE: Repeat,
+  SPEAKING_DESCRIBE_IMAGE: ImageIcon,
+  SPEAKING_RETELL_LECTURE: GraduationCap,
+  SPEAKING_ANSWER_SHORT_QUESTION: HelpCircle,
+  SPEAKING_SUMMARISE_GROUP_DISCUSSION: Users,
+  SPEAKING_RESPOND_TO_SITUATION: MessageSquare,
+  WRITING_SUMMARIZE_WRITTEN_TEXT: FileText,
+  WRITING_ESSAY: Edit3,
+  READING_FIB_R_W: Edit3,
+  READING_MCQ_MULTIPLE_ANSWER: CheckSquare,
+  READING_RE_ORDER_PARAGRAPH: Shuffle,
+  READING_FIB_R: Square,
+  READING_MCQ_SINGLE_ANSWER: CheckCircle,
+  LISTENING_SUMMARIZE_SPOKEN_TEXT: FileText,
+  LISTENING_MCQ_MULTIPLE_ANSWER: CheckSquare,
+  LISTENING_FIB_L: Square,
+  LISTENING_HIGHLIGHT_CORRECT_SUMMARY: CheckCircle,
+  LISTENING_MCQ_SINGLE_ANSWER: CheckCircle,
+  LISTENING_SELECT_MISSING_WORD: Search,
+  LISTENING_HIGHLIGHT_INCORRECT_WORD: AlertCircle,
+  LISTENING_DICTATION: PenTool,
 };
 
 const HAS_AI: QuestionType[] = [
@@ -96,13 +101,15 @@ export default function SkillPage() {
         {/* Header */}
         <div className="bg-white border-b border-gray-100 px-4 sm:px-8 h-14 flex items-center justify-between sticky top-14 z-20 motion-safe:animate-fade-in-down">
           <div className="flex items-center gap-2 sm:gap-3">
-            <span className="text-xl">{meta.icon}</span>
+            <div className={clsx("w-8 h-8 rounded-lg flex items-center justify-center shrink-0", meta.bg)}>
+              <meta.icon size={18} className={meta.iconColor} />
+            </div>
             <h1 className="font-display font-black text-base sm:text-lg text-gray-900">{meta.label}</h1>
             <span className="text-xs font-bold text-gray-400 bg-gray-100 px-2 py-1 rounded-lg hidden sm:inline">{types.length} dạng bài</span>
           </div>
           <div className="flex items-center gap-1.5 sm:gap-2">
             <Button variant="yellow" size="sm" onClick={() => navigate('/mock-test')}>
-              ✈️<span className="hidden sm:inline ml-1">Thi thử ngay</span>
+              Thi thử ngay
             </Button>
           </div>
         </div>
@@ -131,6 +138,7 @@ export default function SkillPage() {
               const pct = prog.total > 0 ? Math.round((prog.done / prog.total) * 100) : 0;
               const firstQ = firstQuestions?.[type];
               const hasAI = HAS_AI.includes(type);
+              const IconComp = TYPE_ICONS[type] || FileText;
 
               return (
                 <div
@@ -146,8 +154,8 @@ export default function SkillPage() {
                   <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-brand-gold via-brand-gold-bright to-amber-200" />
 
                   <div className="flex items-start justify-between mb-3 mt-1">
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl bg-brand-gold-light">
-                      {TYPE_ICONS[type] || '📌'}
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-brand-gold-light text-brand-gold">
+                      <IconComp size={18} />
                     </div>
                     <div className="flex flex-col items-end gap-1">
                       {hasAI && <span className="tag-ai">AI CHẤM</span>}

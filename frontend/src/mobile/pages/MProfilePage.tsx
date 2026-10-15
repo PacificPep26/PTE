@@ -10,6 +10,7 @@ import { setupSmartNotifications, cancelAllNotifications, isNotifSetup, getNotif
 import { useUserGoals, KEY_TARGET_SCORE, KEY_EXAM_DATE } from "./MOnboardingGate";
 import { clsx } from "clsx";
 import { Capacitor } from "@capacitor/core";
+import { Mic, PenTool, BookOpen, Headphones, Bookmark, Settings, AlertTriangle } from "lucide-react";
 
 export default function MProfilePage() {
   const navigate = useNavigate();
@@ -61,11 +62,11 @@ export default function MProfilePage() {
     navigate("/login", { replace: true });
   };
 
-  const SKILL_ICONS: Record<string, string> = {
-    SPEAKING: "🎙️",
-    WRITING: "✍️",
-    READING: "📖",
-    LISTENING: "🎧",
+  const SKILL_ICONS: Record<string, React.ElementType> = {
+    SPEAKING: Mic,
+    WRITING: PenTool,
+    READING: BookOpen,
+    LISTENING: Headphones,
   };
 
   const myRank = (leaderboard || []).findIndex((u: any) => u.id === user?.id) + 1;
@@ -199,23 +200,25 @@ export default function MProfilePage() {
         {stats?.skillStats && (
           <div className="m-card-elevated rounded-2xl p-4 space-y-3">
             <p className="m-section-label mb-0">Tiến độ kỹ năng</p>
-            {Object.entries(stats.skillStats).map(([skill, data]: [string, any]) => (
-              <div key={skill}>
-                <div className="flex justify-between mb-1">
-                  <span className="text-sm font-semibold text-gray-700">
-                    {SKILL_ICONS[skill]} {skill.charAt(0) + skill.slice(1).toLowerCase()}
-                  </span>
-                  <span className="text-sm font-bold text-brand-gold">
-                    {Math.round(data.avgScore || 0)}/90
-                  </span>
+            {Object.entries(stats.skillStats).map(([skill, data]: [string, any]) => {
+              const SkillIcon = SKILL_ICONS[skill] || BookOpen;
+              return (
+                <div key={skill}>
+                  <div className="flex justify-between mb-1 items-center">
+                    <span className="text-sm font-semibold text-gray-700 flex items-center gap-1.5">
+                      <SkillIcon size={14} className="text-brand-gold" />
+                      {skill.charAt(0) + skill.slice(1).toLowerCase()}
+                    </span>
+                    <span className="text-sm font-bold text-brand-gold">
+                      {Math.round(data.avgScore || 0)}/90
+                    </span>
+                  </div>
+                  <MProgressBar value={data.avgScore || 0} max={90} color="gold" height="h-1.5" animated />
                 </div>
-                <MProgressBar value={data.avgScore || 0} max={90} color="gold" height="h-1.5" animated />
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
-
-
 
         {/* Menu items */}
         <div className="m-card-elevated rounded-2xl overflow-hidden divide-y divide-gray-50">
@@ -223,7 +226,7 @@ export default function MProfilePage() {
             onClick={() => navigate("/bookmarks")}
             className="w-full flex items-center gap-3 px-4 py-3.5 active:bg-gray-50 transition-colors text-left"
           >
-            <span className="text-lg">🔖</span>
+            <Bookmark size={18} className="text-brand-gold" />
             <span className="font-semibold text-sm text-gray-800 flex-1">Câu đã đánh dấu</span>
             <svg className="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
               <path d="M9 18l6-6-6-6" strokeLinecap="round" />
@@ -234,7 +237,7 @@ export default function MProfilePage() {
               onClick={() => navigate("/admin")}
               className="w-full flex items-center gap-3 px-4 py-3.5 active:bg-gray-50 transition-colors text-left"
             >
-              <span className="text-lg">⚙️</span>
+              <Settings size={18} className="text-gray-500" />
               <span className="font-semibold text-sm text-gray-800 flex-1">Quản trị</span>
               <svg className="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                 <path d="M9 18l6-6-6-6" strokeLinecap="round" />
@@ -378,8 +381,8 @@ export default function MProfilePage() {
             
             {deleteModalStep === 'confirm' && (
               <>
-                <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto text-red-500 text-xl font-bold">
-                  ⚠️
+                <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto text-red-500">
+                  <AlertTriangle size={24} />
                 </div>
                 <h3 className="font-display font-black text-lg text-gray-900">Xóa tài khoản?</h3>
                 <p className="text-xs text-gray-500 leading-relaxed max-w-xs mx-auto">

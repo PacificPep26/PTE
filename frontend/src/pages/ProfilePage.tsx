@@ -1,6 +1,7 @@
 import React from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { clsx } from 'clsx';
+import { Mic, PenTool, BookOpen, Headphones, Edit3, FileText, Flame, Trophy } from 'lucide-react';
 import { usersApi } from '../api';
 import { useAuthStore } from '../stores/authStore';
 import { MainLayout } from '../components/layout/Sidebar';
@@ -44,10 +45,10 @@ export default function ProfilePage() {
     .toUpperCase();
 
   const skillLabels: Record<string, string> = {
-    SPEAKING: '🎙️ Speaking',
-    WRITING: '✍️ Writing',
-    READING: '📖 Reading',
-    LISTENING: '🎧 Listening',
+    SPEAKING: 'Speaking',
+    WRITING: 'Writing',
+    READING: 'Reading',
+    LISTENING: 'Listening',
   };
 
   const myRank = leaderboard?.findIndex((u: any) => u.id === (profile?.id || user?.id));
@@ -59,7 +60,9 @@ export default function ProfilePage() {
         {/* Header */}
         <div className="bg-white border-b border-gray-100 px-8 h-14 flex items-center justify-between sticky top-0 z-30">
           <h1 className="font-display font-black text-lg">Hồ sơ cá nhân</h1>
-          <Button variant="yellow" size="sm" onClick={() => setEditing(true)}>✏️ Chỉnh sửa</Button>
+          <Button variant="yellow" size="sm" onClick={() => setEditing(true)}>
+            <Edit3 size={14} className="mr-1 inline" /> Chỉnh sửa
+          </Button>
         </div>
 
         <div className="px-8 py-6 max-w-5xl mx-auto space-y-6">
@@ -159,12 +162,12 @@ export default function ProfilePage() {
             <>
               <div className="grid grid-cols-2 gap-4">
                 {[
-                  { label: 'Tổng câu đã làm', value: stats?.totalAttempts || 0, icon: '📝' },
-                  { label: 'Streak hiện tại', value: `${profile?.streakDays || 0} ngày`, icon: '🔥' },
+                  { label: 'Tổng câu đã làm', value: stats?.totalAttempts || 0, icon: FileText, color: 'text-purple-600', bg: 'bg-purple-50' },
+                  { label: 'Streak hiện tại', value: `${profile?.streakDays || 0} ngày`, icon: Flame, color: 'text-amber-500', bg: 'bg-amber-50' },
                 ].map((s) => (
                   <div key={s.label} className="card p-5 flex items-center gap-4">
-                    <div className="w-12 h-12 bg-brand-yellow-light rounded-xl flex items-center justify-center text-2xl">
-                      {s.icon}
+                    <div className={clsx("w-12 h-12 rounded-xl flex items-center justify-center text-2xl", s.bg)}>
+                      <s.icon size={22} className={s.color} />
                     </div>
                     <div>
                       <p className="text-xs text-gray-400 font-semibold">{s.label}</p>
@@ -210,21 +213,24 @@ export default function ProfilePage() {
                   <div className="px-5 py-3.5 border-b border-gray-100">
                     <h3 className="font-display font-black text-sm">Lịch sử gần đây</h3>
                   </div>
-                  {stats.recentAttempts.map((a: any) => (
-                    <div key={a.id} className="flex items-center gap-3 px-5 py-3 border-b border-gray-50 hover:bg-gray-50">
-                      <div className="w-8 h-8 bg-brand-yellow-light rounded-lg flex items-center justify-center text-sm flex-shrink-0">
-                        {a.skill === 'SPEAKING' ? '🎙️' : a.skill === 'WRITING' ? '✍️' : a.skill === 'READING' ? '📖' : '🎧'}
+                  {stats.recentAttempts.map((a: any) => {
+                    const SkillIcon = a.skill === 'SPEAKING' ? Mic : a.skill === 'WRITING' ? PenTool : a.skill === 'READING' ? BookOpen : Headphones;
+                    return (
+                      <div key={a.id} className="flex items-center gap-3 px-5 py-3 border-b border-gray-50 hover:bg-gray-50">
+                        <div className="w-8 h-8 bg-brand-gold-soft rounded-lg flex items-center justify-center text-brand-gold flex-shrink-0">
+                          <SkillIcon size={16} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs font-bold text-gray-800 truncate">{a.questionCode}</p>
+                          <p className="text-[10px] text-gray-400">{a.questionType?.replace(/_/g, ' ')}</p>
+                        </div>
+                        <div className="text-right flex-shrink-0">
+                          <p className="text-sm font-black text-brand-orange">{a.score || '-'}</p>
+                          <p className="text-[10px] text-gray-400">{new Date(a.createdAt).toLocaleDateString('vi-VN')}</p>
+                        </div>
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs font-bold text-gray-800 truncate">{a.questionCode}</p>
-                        <p className="text-[10px] text-gray-400">{a.questionType?.replace(/_/g, ' ')}</p>
-                      </div>
-                      <div className="text-right flex-shrink-0">
-                        <p className="text-sm font-black text-brand-orange">{a.score || '-'}</p>
-                        <p className="text-[10px] text-gray-400">{new Date(a.createdAt).toLocaleDateString('vi-VN')}</p>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
 
@@ -232,7 +238,9 @@ export default function ProfilePage() {
               {leaderboard && leaderboard.length > 0 && (
                 <div className="card overflow-hidden">
                   <div className="px-5 py-3.5 border-b border-gray-100 flex items-center justify-between">
-                    <h3 className="font-display font-black text-sm">🏆 Bảng xếp hạng</h3>
+                    <h3 className="font-display font-black text-sm flex items-center gap-1.5">
+                      <Trophy size={16} className="text-brand-gold" /> Bảng xếp hạng
+                    </h3>
                     <span className="text-[10px] text-gray-400">Top {leaderboard.length} người dùng</span>
                   </div>
                   {leaderboard.slice(0, 10).map((u: any, idx: number) => {
@@ -244,11 +252,11 @@ export default function ProfilePage() {
                       )}>
                         <span className={clsx(
                           'w-7 h-7 rounded-lg flex items-center justify-center text-xs font-black flex-shrink-0',
-                          idx === 0 ? 'bg-yellow-400 text-white' :
-                          idx === 1 ? 'bg-gray-300 text-gray-700' :
-                          idx === 2 ? 'bg-amber-600 text-white' : 'bg-gray-100 text-gray-500'
+                          idx === 0 ? 'bg-amber-400 text-gray-950 font-extrabold shadow-sm' :
+                          idx === 1 ? 'bg-slate-300 text-slate-800 font-bold' :
+                          idx === 2 ? 'bg-amber-700 text-white font-bold' : 'bg-gray-100 text-gray-500'
                         )}>
-                          {idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : `#${idx + 1}`}
+                          #{idx + 1}
                         </span>
                         <div className="w-8 h-8 bg-brand-black rounded-lg flex items-center justify-center text-brand-yellow text-xs font-black flex-shrink-0">
                           {u.fullName?.charAt(0)?.toUpperCase() || 'U'}
@@ -257,7 +265,7 @@ export default function ProfilePage() {
                           <p className={clsx('text-sm font-bold truncate', isMe ? 'text-brand-orange' : 'text-gray-800')}>
                             {u.fullName} {isMe && '(bạn)'}
                           </p>
-                          <p className="text-[10px] text-gray-400">{u.totalAttempts} câu · 🔥 {u.streakDays} ngày</p>
+                          <p className="text-[10px] text-gray-400">{u.totalAttempts} câu · {u.streakDays} ngày streak</p>
                         </div>
                         <span className="font-display font-black text-brand-orange">{Math.round(u.averageScore || 0)}/90</span>
                       </div>

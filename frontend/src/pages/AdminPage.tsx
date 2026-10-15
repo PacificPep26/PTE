@@ -255,10 +255,10 @@ function DashboardTab() {
       {/* Top statistics cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { title: "Tổng học viên", val: stats?.totalUsers ?? 0, change: "Tài khoản đăng ký", icon: "👥", bg: "bg-blue-50 text-blue-700" },
-          { title: "Gói Premium", val: stats?.premiumUsers ?? 0, change: "Đang hoạt động", icon: "👑", bg: "bg-amber-50 text-amber-700" },
-          { title: "Lượt luyện tập", val: stats?.totalAttempts ?? 0, change: "Tổng câu đã làm (mọi kỹ năng)", icon: "🎯", bg: "bg-green-50 text-green-700" },
-          { title: "Lượt làm Mock Test", val: stats?.completedTests ?? 0, change: "Bài thi đã hoàn thành", icon: "📝", bg: "bg-purple-50 text-purple-700" },
+          { title: "Tổng học viên", val: stats?.totalUsers ?? 0, change: "Tài khoản đăng ký", icon: Users, iconColor: "text-blue-600", bg: "bg-blue-50" },
+          { title: "Gói Premium", val: stats?.premiumUsers ?? 0, change: "Đang hoạt động", icon: Crown, iconColor: "text-amber-600", bg: "bg-amber-50" },
+          { title: "Lượt luyện tập", val: stats?.totalAttempts ?? 0, change: "Tổng câu đã làm (mọi kỹ năng)", icon: Activity, iconColor: "text-emerald-600", bg: "bg-emerald-50" },
+          { title: "Lượt làm Mock Test", val: stats?.completedTests ?? 0, change: "Bài thi đã hoàn thành", icon: FileText, iconColor: "text-purple-600", bg: "bg-purple-50" },
         ].map((c) => (
           <div key={c.title} className="card p-5 flex items-center justify-between border border-gray-100 hover:shadow-md transition-all duration-300">
             <div>
@@ -266,8 +266,8 @@ function DashboardTab() {
               <h3 className="font-display font-black text-2xl mt-1 text-gray-900">{c.val}</h3>
               <p className="text-[11px] text-gray-400 mt-0.5">{c.change}</p>
             </div>
-            <div className={clsx("w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bold", c.bg)}>
-              {c.icon}
+            <div className={clsx("w-12 h-12 rounded-xl flex items-center justify-center font-bold", c.bg)}>
+              <c.icon size={22} className={c.iconColor} />
             </div>
           </div>
         ))}

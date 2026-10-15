@@ -123,7 +123,7 @@ export default function DashboardPage() {
 
               <div className="relative z-10 max-w-xl">
                 <p className="text-sm text-stone-200/95 mb-2 flex items-center gap-1.5">
-                  <Sparkles size={13} className="text-brand-gold-bright motion-safe:animate-float" />
+                  <Sparkles size={14} className="text-brand-gold-bright shrink-0" />
                   {greet()}, {firstName}
                 </p>
                 <h2 className="font-display font-black text-2xl sm:text-3xl text-white mb-4 leading-tight tracking-tight">

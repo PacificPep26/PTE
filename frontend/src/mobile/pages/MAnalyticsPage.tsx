@@ -1,16 +1,17 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { Mic, PenTool, BookOpen, Headphones, Target, Flame } from "lucide-react";
 import { usersApi } from "../../api";
 import { MobileHeader } from "../layout/MobileShell";
 import { MSkeleton } from "../ui";
 import { QuestionSkill, SKILL_TYPES } from "../../types";
 
-const SKILL_META: { key: QuestionSkill; label: string; short: string; color: string; bg: string; icon: string }[] = [
-  { key: "SPEAKING",  label: "Speaking",  short: "Nói",  color: "#f59e0b", bg: "bg-amber-50",  icon: "🎙️" },
-  { key: "WRITING",   label: "Writing",   short: "Viết", color: "#3b82f6", bg: "bg-blue-50",   icon: "✍️" },
-  { key: "READING",   label: "Reading",   short: "Đọc",  color: "#22c55e", bg: "bg-green-50",  icon: "📖" },
-  { key: "LISTENING", label: "Listening", short: "Nghe", color: "#a855f7", bg: "bg-purple-50", icon: "🎧" },
+const SKILL_META: { key: QuestionSkill; label: string; short: string; color: string; bg: string; icon: React.ElementType; iconColor: string }[] = [
+  { key: "SPEAKING",  label: "Speaking",  short: "Nói",  color: "#f59e0b", bg: "bg-amber-50",  icon: Mic, iconColor: "text-amber-600" },
+  { key: "WRITING",   label: "Writing",   short: "Viết", color: "#3b82f6", bg: "bg-blue-50",   icon: PenTool, iconColor: "text-blue-600" },
+  { key: "READING",   label: "Reading",   short: "Đọc",  color: "#22c55e", bg: "bg-green-50",  icon: BookOpen, iconColor: "text-emerald-600" },
+  { key: "LISTENING", label: "Listening", short: "Nghe", color: "#a855f7", bg: "bg-purple-50", icon: Headphones, iconColor: "text-purple-600" },
 ];
 
 // ── Radar Chart (SVG) ─────────────────────────────────────────────────────────
@@ -126,8 +127,8 @@ function SkillRow({
       onClick={onPress}
       className="w-full bg-white rounded-2xl px-4 py-3.5 flex items-center gap-3 active:scale-[0.98] transition-transform shadow-sm border border-gray-100 text-left"
     >
-      <div className={`w-11 h-11 rounded-xl flex items-center justify-center text-xl flex-shrink-0 ${meta.bg}`}>
-        {meta.icon}
+      <div className={`w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 ${meta.bg}`}>
+        <meta.icon size={20} className={meta.iconColor} />
       </div>
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between mb-1.5">
@@ -237,7 +238,7 @@ export default function MAnalyticsPage() {
               {[
                 { label: "Điểm TB", value: avgOverall, unit: "/90" },
                 { label: "Đã làm", value: totalAttempts, unit: " câu" },
-                { label: "Streak", value: stats?.streakDays || 0, unit: " ngày 🔥" },
+                { label: "Streak", value: stats?.streakDays || 0, unit: " ngày" },
               ].map((s, i) => (
                 <React.Fragment key={i}>
                   {i > 0 && <div className="w-px h-8 bg-white/10" />}
@@ -272,8 +273,8 @@ export default function MAnalyticsPage() {
             {/* ── Weak areas ── */}
             {weakSkills.length > 0 && (
               <div>
-                <p className="text-[11px] font-black text-gray-400 uppercase tracking-widest mb-3">
-                  🎯 Cần cải thiện ngay
+                <p className="text-[11px] font-black text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-1.5">
+                  <Target size={13} className="text-amber-500" /> Cần cải thiện ngay
                 </p>
                 <div className="space-y-2.5">
                   {weakSkills.slice(0, 3).map((s) => (
@@ -282,8 +283,8 @@ export default function MAnalyticsPage() {
                       onClick={() => navigate(`/practice/${s.meta.key.toLowerCase()}`)}
                       className="w-full bg-red-50 border border-red-100 rounded-2xl px-4 py-3 flex items-center gap-3 active:scale-[0.98] transition-transform text-left"
                     >
-                      <div className="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center text-xl flex-shrink-0">
-                        {s.meta.icon}
+                      <div className="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center flex-shrink-0">
+                        <s.meta.icon size={20} className={s.meta.iconColor} />
                       </div>
                       <div className="flex-1">
                         <p className="font-bold text-sm text-gray-900">{s.meta.label}</p>

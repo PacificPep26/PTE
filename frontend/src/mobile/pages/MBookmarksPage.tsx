@@ -1,6 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import { clsx } from "clsx";
+import { Mic, PenTool, BookOpen, Headphones, Bookmark } from "lucide-react";
 import { questionsApi } from "../../api";
 import { QUESTION_TYPE_LABELS, QuestionType } from "../../types";
 import { MobileBackHeader } from "../layout/MobileShell";
@@ -19,18 +21,18 @@ function removeBookmark(id: string) {
   localStorage.setItem("fly_edu_bookmarks", JSON.stringify(all));
 }
 
-const SKILL_ICON: Record<string, string> = {
-  SPEAKING: "🎙️",
-  WRITING: "✍️",
-  READING: "📖",
-  LISTENING: "🎧",
+const SKILL_ICON: Record<string, React.ElementType> = {
+  SPEAKING: Mic,
+  WRITING: PenTool,
+  READING: BookOpen,
+  LISTENING: Headphones,
 };
 
-const SKILL_COLOR: Record<string, "gold" | "blue" | "green" | "purple"> = {
-  SPEAKING: "gold",
-  WRITING: "blue",
-  READING: "green",
-  LISTENING: "purple",
+const SKILL_COLOR_CLASSES: Record<string, string> = {
+  SPEAKING: "bg-amber-50 text-amber-600",
+  WRITING: "bg-blue-50 text-blue-600",
+  READING: "bg-emerald-50 text-emerald-600",
+  LISTENING: "bg-purple-50 text-purple-600",
 };
 
 export default function MBookmarksPage() {
@@ -68,9 +70,9 @@ export default function MBookmarksPage() {
 
         {!isLoading && !isError && (ids.length === 0 || questions.length === 0) && (
           <MEmptyState
-            icon="🔖"
+            icon={<Bookmark size={36} className="text-gray-300 mx-auto" />}
             title="Chưa đánh dấu câu nào"
-            description="Trong khi luyện tập, nhấn ☆ để lưu câu cần ôn lại sau."
+            description="Trong khi luyện tập, nhấn bookmark để lưu câu cần ôn lại sau."
             action={
               <button
                 onClick={() => navigate("/dashboard")}
@@ -82,18 +84,20 @@ export default function MBookmarksPage() {
           />
         )}
 
-        {!isLoading && !isError && (questions as any[]).map((q: any) => (
-          <div key={q.id} className="m-card-elevated rounded-2xl p-4 motion-safe:animate-fade-in">
-            <div className="flex items-start gap-3">
-              <div className="w-9 h-9 rounded-xl bg-brand-gold-soft flex items-center justify-center text-base flex-shrink-0">
-                {SKILL_ICON[q.skill] || "📌"}
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-1.5 mb-1">
-                  <MBadge color={SKILL_COLOR[q.skill] || "gray"}>
-                    {SKILL_ICON[q.skill]} {q.skill?.toLowerCase()}
-                  </MBadge>
+        {!isLoading && !isError && (questions as any[]).map((q: any) => {
+          const IconComp = SKILL_ICON[q.skill] || Bookmark;
+          return (
+            <div key={q.id} className="m-card-elevated rounded-2xl p-4 motion-safe:animate-fade-in">
+              <div className="flex items-start gap-3">
+                <div className={clsx("w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0", SKILL_COLOR_CLASSES[q.skill] || "bg-brand-gold-soft text-brand-gold")}>
+                  <IconComp size={18} />
                 </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-1.5 mb-1">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500 bg-gray-100 px-2 py-0.5 rounded-md">
+                      {q.skill?.toLowerCase()}
+                    </span>
+                  </div>
                 <p className="font-bold text-sm text-gray-900 leading-snug line-clamp-2">
                   {q.title || QUESTION_TYPE_LABELS[q.type as QuestionType]}
                 </p>
@@ -118,7 +122,8 @@ export default function MBookmarksPage() {
               </button>
             </div>
           </div>
-        ))}
+        );
+      })}
         <div className="h-4" />
       </div>
     </div>

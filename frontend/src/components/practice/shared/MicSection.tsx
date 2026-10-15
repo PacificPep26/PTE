@@ -1,6 +1,7 @@
 import React from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { clsx } from "clsx";
+import { Mic, Square, RotateCcw, AlertCircle, FileText } from "lucide-react";
 import { Waveform } from "../../ui";
 import { AITutorPanel } from "./AITutorPanel";
 import { RecordingWaveform } from "./RecordingWaveform";
@@ -26,7 +27,7 @@ function TranscriptPreview({
   return (
     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
       <div className="px-4 py-3 border-b border-gray-50 flex items-center gap-2">
-        <span className="text-base">📝</span>
+        <FileText size={16} className="text-brand-gold" />
         <p className="font-bold text-sm text-gray-900">Bản ghi âm</p>
         {stems.size > 0 && (
           <span className="text-[10px] text-red-500 font-medium">
@@ -184,7 +185,7 @@ export function MicSection({
         {(state === "idle" || state === "stopped") && (
           <p className="text-[11px] sm:text-xs text-gray-500 mt-1 text-center px-2 leading-snug max-sm:line-clamp-2">
             {state === "stopped"
-              ? "Bấm 🎙️ để ghi lại từ đầu"
+              ? "Bấm nút mic để ghi lại từ đầu"
               : (label || "Chạm nút mic bên dưới để ghi âm")}
           </p>
         )}
@@ -196,13 +197,13 @@ export function MicSection({
             <button
               onClick={startRecording}
               className={clsx(
-                "w-14 h-14 rounded-full flex items-center justify-center text-2xl text-white shadow-lg transition-all motion-safe:active:scale-95",
+                "w-14 h-14 rounded-full flex items-center justify-center text-white shadow-lg transition-all motion-safe:active:scale-95",
                 state === "countdown"
                   ? "bg-brand-gold animate-pulse hover:bg-brand-gold-bright shadow-[0_4px_16px_rgba(228,168,8,0.5)]"
                   : "bg-brand-gold hover:bg-brand-gold-bright hover:scale-105 shadow-[0_4px_16px_rgba(228,168,8,0.35)]",
               )}
             >
-              🎙️
+              <Mic size={24} className="text-white" />
             </button>
             <span className="text-[10px] font-bold text-amber-900">
               {state === "countdown" ? `Bấm ghi ngay (${countdown}s)` : "Bấm để ghi âm"}
@@ -212,9 +213,9 @@ export function MicSection({
           <div className="flex flex-col items-center gap-1.5">
             <button
               onClick={stopRecording}
-              className="w-14 h-14 rounded-full bg-white border-2 border-red-500 flex items-center justify-center text-2xl hover:bg-red-50 transition-colors"
+              className="w-14 h-14 rounded-full bg-white border-2 border-red-500 flex items-center justify-center hover:bg-red-50 transition-colors"
             >
-              ⏹️
+              <Square size={20} className="fill-red-500 text-red-500" />
             </button>
             <span className="text-[10px] font-bold text-red-500">Stop</span>
           </div>
@@ -222,9 +223,9 @@ export function MicSection({
           <div className="flex flex-col items-center gap-1.5">
             <button
               onClick={handleReRecord}
-              className="w-14 h-14 rounded-full bg-brand-gold hover:bg-brand-gold-bright flex items-center justify-center text-2xl text-white shadow-lg transition-all motion-safe:active:scale-95 hover:scale-105 shadow-[0_4px_16px_rgba(228,168,8,0.35)]"
+              className="w-14 h-14 rounded-full bg-brand-gold hover:bg-brand-gold-bright flex items-center justify-center text-white shadow-lg transition-all motion-safe:active:scale-95 hover:scale-105 shadow-[0_4px_16px_rgba(228,168,8,0.35)]"
             >
-              🎙️
+              <RotateCcw size={22} className="text-white" />
             </button>
             <span className="text-[10px] font-bold text-amber-900">Ghi lại</span>
           </div>
@@ -233,7 +234,7 @@ export function MicSection({
 
       {micError && (
         <div className="mt-3 bg-red-50 border border-red-200 rounded-xl px-4 py-3 flex items-start gap-2">
-          <span className="text-red-500 text-base flex-shrink-0">🎙️❌</span>
+          <AlertCircle size={18} className="text-red-500 flex-shrink-0 mt-0.5" />
           <p className="text-sm text-red-700 leading-snug">{micError}</p>
         </div>
       )}
