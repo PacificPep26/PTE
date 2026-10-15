@@ -108,15 +108,20 @@ export function MLoginPage() {
         </div>
       )}
 
+      {/* Language Switcher top bar */}
+      <div className="flex justify-end px-6 pt-4">
+        <LanguageSwitcher variant="pill" />
+      </div>
+
       {/* Logo area */}
-      <div className="flex-1 flex flex-col items-center justify-center px-6 pt-16 pb-6">
+      <div className="flex-1 flex flex-col items-center justify-center px-6 pt-10 pb-6">
         <BrandLogo theme="light" size="lg" showSubtitle />
       </div>
 
       {/* Form */}
       <div className="px-6 pb-8">
         <div className="m-card-elevated rounded-3xl p-6 space-y-4">
-          <h2 className="font-display font-bold text-lg text-gray-900">Đăng nhập</h2>
+          <h2 className="font-display font-bold text-lg text-gray-900">{t('auth.login')}</h2>
 
           {error && (
             <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3">
@@ -126,7 +131,7 @@ export function MLoginPage() {
 
           <form onSubmit={handleSubmit} className="space-y-3">
             <MInput
-              label="Email"
+              label={t('auth.email')}
               type="email"
               placeholder="email@example.com"
               value={email}
@@ -135,7 +140,7 @@ export function MLoginPage() {
               required
             />
             <MInput
-              label="Mật khẩu"
+              label={t('auth.password')}
               type={showPwd ? "text" : "password"}
               placeholder="••••••••"
               value={password}
@@ -148,7 +153,7 @@ export function MLoginPage() {
                   onClick={() => setShowPwd((v) => !v)}
                   className="text-xs text-gray-500"
                 >
-                  {showPwd ? "Ẩn" : "Hiện"}
+                  {showPwd ? (language === 'vi' ? "Ẩn" : "Hide") : (language === 'vi' ? "Hiện" : "Show")}
                 </button>
               }
             />
@@ -162,7 +167,7 @@ export function MLoginPage() {
                   className="w-4 h-4 rounded border-gray-300 text-brand-gold focus:ring-brand-gold"
                   style={{ accentColor: '#eab308' }}
                 />
-                Nhớ tài khoản
+                {t('auth.rememberMe')}
               </label>
             </div>
 
@@ -173,7 +178,7 @@ export function MLoginPage() {
                 loading={isLoading}
                 className="flex-1"
               >
-                Đăng nhập
+                {t('auth.login')}
               </MButton>
               
               {hasBiometrics && (
@@ -190,32 +195,29 @@ export function MLoginPage() {
           </form>
 
           <p className="text-center text-sm text-gray-500">
-            Chưa có tài khoản?{" "}
+            {t('auth.dontHaveAccount')}{" "}
             <Link to="/register" className="text-brand-gold font-bold">
-              Đăng ký
+              {t('auth.register')}
             </Link>
           </p>
 
           <div className="rounded-2xl bg-gray-50/80 px-4 py-3 text-center text-[11px] leading-relaxed text-gray-500">
             <p>
-              Đọc{" "}
+              {language === 'vi' ? 'Đọc ' : 'Read our '}
               <Link to="/privacy" className="font-semibold text-brand-gold">
-                Chính sách quyền riêng tư
+                {language === 'vi' ? 'Chính sách quyền riêng tư' : 'Privacy Policy'}
               </Link>{" "}
-              và{" "}
+              {language === 'vi' ? 'và ' : 'and '}
               <Link to="/terms" className="font-semibold text-brand-gold">
-                Điều khoản sử dụng
+                {language === 'vi' ? 'Điều khoản sử dụng' : 'Terms of Service'}
               </Link>
               .
-            </p>
-            <p>
-              Khi đăng nhập, bạn xác nhận đã đọc và đồng ý với các nội dung trên.
             </p>
           </div>
         </div>
 
         <p className="text-center text-xs text-gray-400 mt-4">
-          PTE Study • Đồng hành cùng bạn đến 79+
+          PTE Study • {language === 'vi' ? 'Đồng hành cùng bạn đến 79+' : 'Your path to 79+'}
         </p>
       </div>
     </div>
@@ -225,6 +227,7 @@ export function MLoginPage() {
 export function MRegisterPage() {
   const navigate = useNavigate();
   const { register, isLoading } = useAuthStore();
+  const { t, language } = useTranslation();
   const [fullName, setFullName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -235,7 +238,7 @@ export function MRegisterPage() {
     e.preventDefault();
     setError("");
     if (!agree) {
-      setError("Bạn phải đồng ý với Điều khoản sử dụng và Chính sách bảo mật để tiếp tục.");
+      setError(language === 'vi' ? "Bạn phải đồng ý với Điều khoản sử dụng và Chính sách bảo mật để tiếp tục." : "Please agree to Terms of Service and Privacy Policy.");
       return;
     }
     try {
@@ -251,10 +254,15 @@ export function MRegisterPage() {
       className="mobile-page-full flex flex-col"
       style={{ background: "linear-gradient(175deg, #fffdf8 0%, #fef9e7 60%, #fdf6d9 100%)" }}
     >
-      <div className="flex flex-col items-center px-6 pt-16 pb-6">
+      {/* Language Switcher top bar */}
+      <div className="flex justify-end px-6 pt-4">
+        <LanguageSwitcher variant="pill" />
+      </div>
+
+      <div className="flex flex-col items-center px-6 pt-10 pb-6">
         <BrandLogo theme="light" size="lg" showSubtitle className="mb-3" />
-        <h1 className="font-display font-black text-2xl text-gray-900 mb-1">Tạo tài khoản</h1>
-        <p className="text-sm text-gray-500">Bắt đầu hành trình PTE của bạn</p>
+        <h1 className="font-display font-black text-2xl text-gray-900 mb-1">{t('auth.register')}</h1>
+        <p className="text-sm text-gray-500">{t('auth.registerSubtitle')}</p>
       </div>
 
       <div className="px-6 pb-8">
@@ -267,7 +275,7 @@ export function MRegisterPage() {
 
           <form onSubmit={handleSubmit} className="space-y-3">
             <MInput
-              label="Họ và tên"
+              label={t('auth.fullName')}
               type="text"
               placeholder="Nguyễn Văn A"
               value={fullName}
@@ -275,7 +283,7 @@ export function MRegisterPage() {
               required
             />
             <MInput
-              label="Email"
+              label={t('auth.email')}
               type="email"
               placeholder="email@example.com"
               value={email}
@@ -284,9 +292,9 @@ export function MRegisterPage() {
               required
             />
             <MInput
-              label="Mật khẩu"
+              label={t('auth.password')}
               type="password"
-              placeholder="Tối thiểu 6 ký tự"
+              placeholder={language === 'vi' ? "Tối thiểu 6 ký tự" : "At least 6 characters"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               minLength={6}
@@ -304,27 +312,27 @@ export function MRegisterPage() {
                 required
               />
               <label htmlFor="agree-checkbox" className="text-xs text-gray-500 leading-normal select-none">
-                Tôi đồng ý với{" "}
+                {language === 'vi' ? 'Tôi đồng ý với ' : 'I agree to '}
                 <Link to="/terms" className="font-semibold text-brand-gold underline">
-                  Điều khoản sử dụng
+                  {language === 'vi' ? 'Điều khoản sử dụng' : 'Terms of Service'}
                 </Link>{" "}
-                và{" "}
+                {language === 'vi' ? 'và ' : 'and '}
                 <Link to="/privacy" className="font-semibold text-brand-gold underline">
-                  Chính sách bảo mật
-                </Link>{" "}
-                của PTE Study.
+                  {language === 'vi' ? 'Chính sách bảo mật' : 'Privacy Policy'}
+                </Link>
+                .
               </label>
             </div>
 
             <MButton type="submit" variant="primary" fullWidth loading={isLoading} className="mt-2">
-              Đăng ký miễn phí
+              {t('auth.register')}
             </MButton>
           </form>
 
           <p className="text-center text-sm text-gray-500">
-            Đã có tài khoản?{" "}
+            {t('auth.alreadyHaveAccount')}{" "}
             <Link to="/login" className="text-brand-gold font-bold">
-              Đăng nhập
+              {t('auth.login')}
             </Link>
           </p>
         </div>

@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { usersApi, mockTestApi } from '../api';
 import { useAuthStore } from '../stores/authStore';
+import { useTranslation } from '../stores/languageStore';
 import { MainLayout } from '../components/layout/Sidebar';
 import { Button, ProgressBar } from '../components/ui';
 import { QuestionSkill, SKILL_TYPES, QUESTION_TYPE_LABELS, QuestionType } from '../types';
@@ -21,35 +22,35 @@ const SKILL_CONFIG = [
   { key: 'LISTENING' as QuestionSkill, icon: Headphones, label: 'Listening', path: '/practice/listening', color: 'gradient' },
 ];
 
-const STAT_CARDS = (stats: any, mockTests: any[], mockHistory: any[]) => [
+const STAT_CARDS = (stats: any, mockTests: any[], mockHistory: any[], t: (k: string) => string, language: string) => [
   {
-    label:  'Câu đã làm',
+    label:  t('dashboard.questionsPracticed'),
     value:  stats?.totalAttempts || 0,
-    sub:    '+48 tuần này',
+    sub:    language === 'vi' ? '+48 tuần này' : '+48 this week',
     icon:   Zap,
     iconBg: 'bg-brand-gold-light',
     iconColor: 'text-brand-gold',
   },
   {
-    label:  'Điểm TB AI',
+    label:  t('dashboard.avgScore'),
     value:  `${Math.round(stats?.avgScore || 0)}/90`,
-    sub:    '+4pt so tháng trước',
+    sub:    language === 'vi' ? '+4pt so tháng trước' : '+4pt vs last month',
     icon:   TrendingUp,
     iconBg: 'bg-orange-50',
     iconColor: 'text-brand-orange',
   },
   {
-    label:  'Streak',
-    value:  `${stats?.streakDays || 0} ngày`,
-    sub:    'Kỷ lục: 18 ngày',
+    label:  t('dashboard.streak'),
+    value:  `${stats?.streakDays || 0} ${language === 'vi' ? 'ngày' : 'days'}`,
+    sub:    language === 'vi' ? 'Kỷ lục: 18 ngày' : 'Record: 18 days',
     icon:   Flame,
     iconBg: 'bg-red-50',
     iconColor: 'text-red-500',
   },
   {
-    label:  'Mock Test',
+    label:  t('mockTest.title'),
     value:  `${mockHistory?.filter((h: any) => h.status === 'COMPLETED').length || 0}/${mockTests?.length || 0}`,
-    sub:    'Đã hoàn thành',
+    sub:    language === 'vi' ? 'Đã hoàn thành' : 'Completed',
     icon:   Trophy,
     iconBg: 'bg-amber-50',
     iconColor: 'text-amber-800',
@@ -59,6 +60,7 @@ const STAT_CARDS = (stats: any, mockTests: any[], mockHistory: any[]) => [
 export default function DashboardPage() {
   const navigate  = useNavigate();
   const { user }  = useAuthStore();
+  const { t, language } = useTranslation();
 
   const { data: stats }       = useQuery({ queryKey: ['stats'],       queryFn: usersApi.getStats });
   const { data: mockTests }   = useQuery({ queryKey: ['mockTests'],   queryFn: mockTestApi.list });
@@ -73,12 +75,17 @@ export default function DashboardPage() {
 
   const greet = () => {
     const h = new Date().getHours();
+    if (language === 'en') {
+      if (h < 12) return 'Good morning';
+      if (h < 18) return 'Good afternoon';
+      return 'Good evening';
+    }
     if (h < 12) return 'Chào buổi sáng';
     if (h < 18) return 'Chào buổi chiều';
     return 'Chào buổi tối';
   };
 
-  const firstName = user?.fullName?.split(' ').pop() || 'bạn';
+  const firstName = user?.fullName?.split(' ').pop() || (language === 'vi' ? 'bạn' : 'there');
 
   return (
     <MainLayout>
@@ -95,7 +102,7 @@ export default function DashboardPage() {
           </div>
           <div className="flex items-center gap-1.5 sm:gap-2">
             <Button variant="yellow" size="sm" onClick={() => navigate('/mock-test')}>
-              <Plane size={13} /><span className="hidden sm:inline">Thi thử ngay</span>
+              <Plane size={13} /><span className="hidden sm:inline">{t('mockTest.startExam')}</span>
             </Button>
           </div>
         </div>
@@ -127,19 +134,30 @@ export default function DashboardPage() {
                   {greet()}, {firstName}
                 </p>
                 <h2 className="font-display font-black text-2xl sm:text-3xl text-white mb-4 leading-tight tracking-tight">
-                  Hôm nay ôn luyện{' '}
-                  <span className="text-gold-gradient-animate">PTE Academic</span>
-                  <br className="hidden sm:block" />
-                  <span className="text-stone-100/90 text-xl sm:text-2xl font-extrabold"> — sẵn sàng chưa?</span>
+                  {language === 'vi' ? (
+                    <>
+                      Hôm nay ôn luyện{' '}
+                      <span className="text-gold-gradient-animate">PTE Academic</span>
+                      <br className="hidden sm:block" />
+                      <span className="text-stone-100/90 text-xl sm:text-2xl font-extrabold"> — sẵn sàng chưa?</span>
+                    </>
+                  ) : (
+                    <>
+                      Ready to practice{' '}
+                      <span className="text-gold-gradient-animate">PTE Academic</span>
+                      <br className="hidden sm:block" />
+                      <span className="text-stone-100/90 text-xl sm:text-2xl font-extrabold"> — let's aim for 79+!</span>
+                    </>
+                  )}
                 </h2>
                 <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
                   <span className="flex items-center gap-1.5 text-stone-200/90">
                     <Target size={13} className="text-brand-gold-bright shrink-0" />
-                    Mục tiêu <span className="text-white font-bold">79+</span>
+                    {t('common.target')} <span className="text-white font-bold">79+</span>
                   </span>
                   <span className="flex items-center gap-1.5 text-stone-200/90">
                     <BookOpen size={13} className="text-brand-gold-bright shrink-0" />
-                    Hôm nay <span className="text-white font-bold">0/20 câu</span>
+                    {language === 'vi' ? 'Hôm nay' : 'Today'} <span className="text-white font-bold">0/20 {language === 'vi' ? 'câu' : 'questions'}</span>
                   </span>
                 </div>
               </div>
@@ -169,18 +187,18 @@ export default function DashboardPage() {
                 <Flame size={24} className="text-white" />
               </div>
               <div className="text-left min-w-0">
-                <p className="text-[10px] font-black uppercase tracking-widest text-white/80">Streak</p>
+                <p className="text-[10px] font-black uppercase tracking-widest text-white/80">{t('dashboard.streak')}</p>
                 <p className="font-display font-black text-3xl leading-none tabular-nums">
                   {stats?.streakDays || 0}
                 </p>
-                <p className="text-xs font-bold text-white/90 mt-0.5">ngày liên tiếp</p>
+                <p className="text-xs font-bold text-white/90 mt-0.5">{language === 'vi' ? 'ngày liên tiếp' : 'days streak'}</p>
               </div>
             </div>
           </div>
 
           {/* ── Stats: bento nhỏ (2×2 mobile, 4 cột desktop) ─ */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-            {STAT_CARDS(stats, mockTests || [], mockHistory || []).map((s, i) => (
+            {STAT_CARDS(stats, mockTests || [], mockHistory || [], t, language).map((s, i) => (
               <div
                 key={s.label}
                 className={clsx(
@@ -236,17 +254,17 @@ export default function DashboardPage() {
                     <skill.icon size={16} className="text-brand-gold" strokeWidth={2.5} />
                     {skill.label}
                     <span className="text-xs font-bold text-gray-400 bg-gray-100 px-2 py-0.5 rounded-lg">
-                      {types.length} dạng
+                      {types.length} {language === 'vi' ? 'dạng' : 'types'}
                     </span>
                     {attempted > 0 && (
                       <span className="text-xs font-bold text-amber-900 bg-amber-50 px-2 py-0.5 rounded-lg">
-                        TB: {avgScore}/90
+                        {language === 'vi' ? 'TB:' : 'Avg:'} {avgScore}/90
                       </span>
                     )}
                   </h2>
                   <button onClick={() => navigate(skill.path)}
                           className="text-sm font-bold text-brand-gold hover:underline flex items-center gap-1">
-                    Xem tất cả <ChevronRight size={14} />
+                    {t('common.viewAll')} <ChevronRight size={14} />
                   </button>
                 </div>
 
