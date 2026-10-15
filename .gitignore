@@ -83,6 +83,8 @@ chrome-cdp-profile/
 *-service-account.json
 *credentials*.json
 *key*.json
+client_secret*.json
+*.apps.googleusercontent.com.json
 frontend/*.jks
 frontend/android/*.jks
 frontend/android/key.properties
