@@ -20,6 +20,10 @@ import { Attempt } from './attempts/attempt.entity';
 import { MockTest } from './mock-test/mock-test.entity';
 import { MockTestAttempt } from './mock-test/mock-test-attempt.entity';
 
+import { APP_GUARD } from '@nestjs/core';
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import { AntiScrapingGuard } from './common/guards/anti-scraping.guard';
+
 const databaseUrl = process.env.DATABASE_URL?.trim();
 const isLocalPostgres = (): boolean => {
   if (databaseUrl) {
@@ -36,6 +40,12 @@ const isLocalPostgres = (): boolean => {
 
 @Module({
   imports: [
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60000, // 1 minute window
+        limit: 80,  // max 80 requests per minute per IP
+      },
+    ]),
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: databaseUrl || undefined,
@@ -68,6 +78,16 @@ const isLocalPostgres = (): boolean => {
     DictionaryModule,
   ],
   controllers: [AppController],
-  providers: [AutoSeedService],
+  providers: [
+    AutoSeedService,
+    {
+      provide: APP_GUARD,
+      useClass: AntiScrapingGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ],
 })
 export class AppModule {}

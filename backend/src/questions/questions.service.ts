@@ -46,7 +46,8 @@ export class QuestionsService {
   }
 
   async findAll(query: QuestionListQuery, userId?: string) {
-    const { page = 1, limit = 50 } = query;
+    const page = Math.max(1, Number(query.page) || 1);
+    const limit = Math.min(Math.max(1, Number(query.limit) || 50), 100); // Cap at 100 max
 
     const qb = this.questionRepo.createQueryBuilder('q');
     this.applyListFilters(qb, query);

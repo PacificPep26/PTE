@@ -49,6 +49,7 @@ backend/uploads/
 *.sql
 *.dump
 *.bak
+media_backup/
 backend/fly_local_to_railway.tmp.dump
 
 # Python scorer temp files
