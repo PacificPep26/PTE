@@ -5,6 +5,7 @@ import { Question } from "../../../types";
 import { AITutorPanel } from "../shared/AITutorPanel";
 import { PracticeContentFrame } from "../shared/PracticeContentFrame";
 import { attemptsApi } from "../../../api";
+import { AlertTriangle, Lightbulb, AlertCircle } from "lucide-react";
 
 const MAX_WORDS = 75;
 const TIME_LIMIT = 600;
@@ -92,7 +93,10 @@ export function SummarizeWrittenText({ question }: { question: Question }) {
               <p className="text-[9px] text-gray-400 mt-0.5">/ {MAX_WORDS} từ</p>
             </div>
             {wordWarn && (
-              <span className="text-[10px] text-red-500 font-bold animate-pulse">⚠️ Quá dài!</span>
+              <span className="text-[10px] text-red-500 font-bold animate-pulse flex items-center gap-1">
+                <AlertTriangle className="w-3 h-3" />
+                <span>Quá dài!</span>
+              </span>
             )}
           </div>
 
@@ -126,14 +130,20 @@ export function SummarizeWrittenText({ question }: { question: Question }) {
 
       {submitted && question.suggestedAnswer && (
         <div className="bg-green-50 border border-green-100 rounded-xl px-4 py-3">
-          <p className="text-[10px] font-black uppercase tracking-widest text-green-600 mb-1.5">💡 Sample Answer</p>
+          <p className="text-[10px] font-black uppercase tracking-widest text-green-600 mb-1.5 flex items-center gap-1">
+            <Lightbulb className="w-3 h-3" />
+            <span>Sample Answer</span>
+          </p>
           <div className="text-sm text-green-900 leading-relaxed whitespace-pre-wrap">{question.suggestedAnswer}</div>
         </div>
       )}
 
       {result?.status === "ERROR" && (
         <div className="p-4 rounded-xl bg-red-50 border border-red-100 text-center">
-          <p className="text-red-600 font-bold mb-1">❌ Chấm điểm thất bại</p>
+          <div className="flex items-center justify-center gap-1.5 text-red-600 font-bold mb-1">
+            <AlertCircle className="w-4 h-4" />
+            <span>Chấm điểm thất bại</span>
+          </div>
           <p className="text-sm text-red-500">Vui lòng thử lại.</p>
         </div>
       )}

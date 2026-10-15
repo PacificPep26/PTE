@@ -5,6 +5,7 @@ import { questionsApi, attemptsApi } from '../../api';
 import { Question, QUESTION_TYPE_LABELS } from '../../types';
 import { Button, QuestionListDrawer, AnalysisTable } from '../ui';
 import { clsx } from 'clsx';
+import { Bookmark, List, GraduationCap } from 'lucide-react';
 import { DETERMINISTIC_TYPES, getPracticeDisplayMax, normalizeHistoryScore } from '../../constants/scoring';
 import { getExamInstruction } from '../../constants/examInstructions';
 
@@ -162,11 +163,12 @@ export function PracticeLayout({ questionId, children }: PracticeLayoutProps) {
               )}
               title={bookmarked ? 'Bỏ bookmark' : 'Bookmark câu này'}
             >
-              🔖
+              <Bookmark className={clsx("w-4 h-4", bookmarked ? "fill-white" : "")} />
             </button>
             {/* Desktop-only actions */}
-            <Button variant="ghost" size="sm" className="hidden md:flex" onClick={() => setDrawerOpen(true)}>
-              ☰ Question list
+            <Button variant="ghost" size="sm" className="hidden md:flex items-center gap-1.5" onClick={() => setDrawerOpen(true)}>
+              <List className="w-4 h-4" />
+              <span>Question list</span>
             </Button>
             <Button
               variant="ghost" size="sm"
@@ -196,7 +198,9 @@ export function PracticeLayout({ questionId, children }: PracticeLayoutProps) {
           {/* Question Header — stacked on mobile, side-by-side on sm+ */}
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between px-3.5 sm:px-5 py-3 sm:py-4 border-b border-gray-100 gap-2.5 sm:gap-3">
             <div className="flex items-start gap-2.5 sm:gap-3 min-w-0">
-              <div className="w-8 h-8 sm:w-9 sm:h-9 bg-brand-gold-light rounded-xl flex items-center justify-center text-base sm:text-lg ring-1 ring-amber-100 shrink-0">🎓</div>
+              <div className="w-8 h-8 sm:w-9 sm:h-9 bg-brand-gold-light rounded-xl flex items-center justify-center ring-1 ring-amber-100 shrink-0">
+                <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5 text-amber-700" />
+              </div>
               <div className="min-w-0">
                 <p className="font-display font-bold text-sm sm:text-lg text-gray-900">{question.code}</p>
                 <p className="text-[13px] sm:text-sm text-gray-600 mt-0.5 leading-snug sm:leading-relaxed">
@@ -235,10 +239,11 @@ export function PracticeLayout({ questionId, children }: PracticeLayoutProps) {
         </Button>
         <Button
           variant="ghost" size="sm"
-          className="flex-1 justify-center"
+          className="flex-1 justify-center items-center gap-1"
           onClick={() => setDrawerOpen(true)}
         >
-          ☰ List
+          <List className="w-4 h-4" />
+          <span>List</span>
         </Button>
         <Button
           variant="yellow" size="sm"

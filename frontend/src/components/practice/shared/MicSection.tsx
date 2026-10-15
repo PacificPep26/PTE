@@ -1,7 +1,7 @@
 import React from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { clsx } from "clsx";
-import { Mic, Square, RotateCcw, AlertCircle, FileText } from "lucide-react";
+import { Mic, Square, RotateCcw, AlertCircle, FileText, Lightbulb } from "lucide-react";
 import { Waveform } from "../../ui";
 import { AITutorPanel } from "./AITutorPanel";
 import { RecordingWaveform } from "./RecordingWaveform";
@@ -300,8 +300,9 @@ export function MicSection({
           )}
           {scoreResult.status === "SCORED" && showSuggestedAfterScore && suggestedAnswer && (
             <div className="bg-blue-50 border border-blue-100 rounded-xl px-4 py-4">
-              <h4 className="text-xs font-black uppercase tracking-widest text-blue-500 mb-2">
-                💡 Gợi ý câu trả lời
+              <h4 className="text-xs font-black uppercase tracking-widest text-blue-500 mb-2 flex items-center gap-1.5">
+                <Lightbulb className="w-3.5 h-3.5" />
+                <span>Gợi ý câu trả lời</span>
               </h4>
               <p className="text-sm text-blue-900 leading-relaxed">
                 {suggestedAnswer}
@@ -317,7 +318,10 @@ export function MicSection({
 
       {scoreResult?.status === "ERROR" && (
         <div className="mt-4 p-4 rounded-xl bg-red-50 border border-red-100 text-center">
-          <p className="text-red-600 font-bold mb-1">❌ Chấm điểm thất bại</p>
+          <div className="flex items-center justify-center gap-1.5 text-red-600 font-bold mb-1">
+            <AlertCircle className="w-4 h-4" />
+            <span>Chấm điểm thất bại</span>
+          </div>
           <p className="text-sm text-red-500">
             Hệ thống AI không thể chấm điểm bài thu âm này. Có thể do quá thời gian hoặc lỗi kết nối. Vui lòng thử lại.
           </p>

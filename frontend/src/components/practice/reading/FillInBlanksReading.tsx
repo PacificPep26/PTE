@@ -5,6 +5,7 @@ import { Question } from "../../../types";
 import { attemptsApi } from "../../../api";
 import { parseReadingFibDrag } from "../../../utils/readingFibDrag";
 import { PracticeContentFrame } from "../shared/PracticeContentFrame";
+import { X, Trash2, Check, CheckCircle2 } from "lucide-react";
 
 type Seg = { text: string; isBlank: false } | { blankId: string; isBlank: true };
 
@@ -40,7 +41,9 @@ function WordPickerSheet({
 
         <div className="px-5 pb-3 flex items-center justify-between">
           <p className="font-bold text-sm text-gray-900">Chọn từ điền vào ô trống</p>
-          <button onClick={onClose} className="text-gray-400 text-xl active:opacity-70">✕</button>
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 p-1">
+            <X className="w-5 h-5" />
+          </button>
         </div>
 
         {/* Words */}
@@ -62,9 +65,10 @@ function WordPickerSheet({
           {hasCurrent && (
             <button
               onClick={() => { onClear(); onClose(); }}
-              className="w-full py-3 mb-4 rounded-2xl border border-red-200 bg-red-50 text-sm font-bold text-red-600 active:scale-[0.97] transition-all"
+              className="w-full py-3 mb-4 rounded-2xl border border-red-200 bg-red-50 text-sm font-bold text-red-600 active:scale-[0.97] transition-all flex items-center justify-center gap-1.5"
             >
-              🗑️ Xóa từ hiện tại
+              <Trash2 className="w-4 h-4" />
+              <span>Xóa từ hiện tại</span>
             </button>
           )}
         </div>
@@ -161,7 +165,13 @@ export function FillInBlanksReading({ question }: { question: Question }) {
               {val || <span className="text-gray-300">___</span>}
               {val && !submitted && <span className="text-gray-300 text-xs">▼</span>}
               {submitted && showResult && (
-                <span className="text-xs">{correct ? "✓" : "✗"}</span>
+                <span className="inline-flex items-center ml-1">
+                  {correct ? (
+                    <Check className="w-3.5 h-3.5 text-green-700 stroke-[3]" />
+                  ) : (
+                    <X className="w-3.5 h-3.5 text-red-600 stroke-[3]" />
+                  )}
+                </span>
               )}
             </button>
           );
@@ -184,7 +194,7 @@ export function FillInBlanksReading({ question }: { question: Question }) {
       {/* Instruction hint */}
       {!submitted && filledBlanks < totalBlanks && (
         <p className="text-xs text-gray-400 text-center">
-          👆 Bấm vào ô trống để chọn từ
+          Bấm vào ô trống để chọn từ
         </p>
       )}
 
@@ -212,7 +222,10 @@ export function FillInBlanksReading({ question }: { question: Question }) {
       {/* Correct answers after submit */}
       {submitted && question.correctAnswer && (
         <div className="bg-green-50 border border-green-100 rounded-xl px-4 py-3">
-          <p className="text-[10px] font-black uppercase tracking-widest text-green-600 mb-2">✅ Đáp án đúng</p>
+          <p className="text-[10px] font-black uppercase tracking-widest text-green-600 mb-2 flex items-center gap-1.5">
+            <CheckCircle2 className="w-3.5 h-3.5" />
+            <span>Đáp án đúng</span>
+          </p>
           <div className="flex flex-wrap gap-x-4 gap-y-2">
             {Object.entries(question.correctAnswer as Record<string, string>).map(([k, v]) => (
               <div key={k} className="text-sm">

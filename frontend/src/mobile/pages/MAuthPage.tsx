@@ -1,13 +1,17 @@
 import React from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuthStore } from "../../stores/authStore";
+import { useTranslation } from "../../stores/languageStore";
+import { LanguageSwitcher } from "../../components/common/LanguageSwitcher";
 import { MButton, MInput } from "../ui";
 import { BrandLogo } from "../../components/common/BrandLogo";
 import { formatAuthError } from "../../utils/authErrors";
+import { CheckCircle2, Fingerprint } from "lucide-react";
 
 export function MLoginPage() {
   const navigate = useNavigate();
   const { login, isLoading } = useAuthStore();
+  const { t, language } = useTranslation();
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState("");
@@ -76,8 +80,12 @@ export function MLoginPage() {
       {isScanning && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9999] flex items-center justify-center p-6">
           <div className="bg-white rounded-3xl p-6 w-full max-w-xs text-center space-y-4 shadow-2xl motion-safe:animate-fade-in-up">
-            <div className="text-4xl animate-pulse">
-              {scanSuccess ? "✅" : "👤"}
+            <div className="flex justify-center py-1">
+              {scanSuccess ? (
+                <CheckCircle2 className="w-12 h-12 text-emerald-500 animate-bounce" />
+              ) : (
+                <Fingerprint className="w-12 h-12 text-amber-500 animate-pulse" />
+              )}
             </div>
             <h3 className="font-display font-bold text-lg text-gray-900">
               {scanSuccess ? "Xác thực thành công" : "Xác thực Face ID / Touch ID"}
@@ -172,10 +180,10 @@ export function MLoginPage() {
                 <button
                   type="button"
                   onClick={handleBiometricLogin}
-                  className="w-12 h-12 rounded-2xl border border-brand-gold/20 flex items-center justify-center bg-amber-50 hover:bg-amber-100 active:scale-95 transition-all text-xl shadow-sm"
+                  className="w-12 h-12 rounded-2xl border border-brand-gold/20 flex items-center justify-center bg-amber-50 hover:bg-amber-100 active:scale-95 transition-all shadow-sm"
                   title="Đăng nhập sinh trắc học"
                 >
-                  🆔
+                  <Fingerprint className="w-6 h-6 text-amber-700" />
                 </button>
               )}
             </div>

@@ -4,11 +4,14 @@ import { clsx } from 'clsx';
 import { Mic, PenTool, BookOpen, Headphones, Edit3, FileText, Flame, Trophy } from 'lucide-react';
 import { usersApi } from '../api';
 import { useAuthStore } from '../stores/authStore';
+import { useTranslation } from '../stores/languageStore';
+import { LanguageSwitcher } from '../components/common/LanguageSwitcher';
 import { MainLayout } from '../components/layout/Sidebar';
 import { Button } from '../components/ui';
 
 export default function ProfilePage() {
   const { user, setUser } = useAuthStore();
+  const { t, language } = useTranslation();
   const qc = useQueryClient();
   const [editing, setEditing] = React.useState(false);
   const [fullName, setFullName] = React.useState(user?.fullName || '');
@@ -59,9 +62,9 @@ export default function ProfilePage() {
       <div className="min-h-screen bg-brand-cream">
         {/* Header */}
         <div className="bg-white border-b border-gray-100 px-8 h-14 flex items-center justify-between sticky top-0 z-30">
-          <h1 className="font-display font-black text-lg">Hồ sơ cá nhân</h1>
+          <h1 className="font-display font-black text-lg">{t('profile.myProfile')}</h1>
           <Button variant="yellow" size="sm" onClick={() => setEditing(true)}>
-            <Edit3 size={14} className="mr-1 inline" /> Chỉnh sửa
+            <Edit3 size={14} className="mr-1 inline" /> {t('common.edit')}
           </Button>
         </div>
 
@@ -90,7 +93,7 @@ export default function ProfilePage() {
                 {editing ? (
                   <div className="space-y-3">
                     <div>
-                      <label className="text-xs font-bold text-gray-500 mb-1 block">Họ tên</label>
+                      <label className="text-xs font-bold text-gray-500 mb-1 block">{t('auth.fullName')}</label>
                       <input
                         value={fullName}
                         onChange={(e) => setFullName(e.target.value)}
@@ -101,10 +104,10 @@ export default function ProfilePage() {
                       <Button variant="yellow" size="sm"
                         onClick={() => updateMutation.mutate({ fullName })}
                         loading={updateMutation.isPending}>
-                        Lưu
+                        {t('common.save')}
                       </Button>
                       <Button variant="ghost" size="sm" onClick={() => { setEditing(false); setFullName(profile?.fullName || ''); }}>
-                        Hủy
+                        {t('common.cancel')}
                       </Button>
                     </div>
                   </div>
@@ -113,12 +116,12 @@ export default function ProfilePage() {
                     <h2 className="font-display font-black text-xl text-gray-900">{profile?.fullName || user?.fullName}</h2>
                     <p className="text-sm text-gray-400 mt-0.5">{profile?.email || user?.email}</p>
                     <div className="flex items-center gap-3 mt-3">
-                      <span className="text-[10px] font-bold text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                        🔥 {profile?.streakDays || 0} ngày streak
+                      <span className="inline-flex items-center gap-1.5 text-[10px] font-bold text-amber-800 bg-amber-50 border border-amber-200/80 px-2.5 py-1 rounded-md">
+                        <Flame size={13} className="text-amber-500" /> {profile?.streakDays || 0} {language === 'vi' ? 'ngày streak' : 'days streak'}
                       </span>
                       {myRank !== undefined && myRank >= 0 && (
-                        <span className="text-[10px] font-bold text-brand-orange bg-brand-orange-light px-2 py-1 rounded">
-                          🏆 Top #{myRank + 1} leaderboard
+                        <span className="inline-flex items-center gap-1.5 text-[10px] font-bold text-brand-orange-deep bg-orange-50 border border-orange-200/80 px-2.5 py-1 rounded-md">
+                          <Trophy size={13} className="text-brand-orange" /> {language === 'vi' ? `Top #${myRank + 1} bảng xếp hạng` : `Top #${myRank + 1} leaderboard`}
                         </span>
                       )}
                     </div>
@@ -130,15 +133,22 @@ export default function ProfilePage() {
               {!isAdminOrTeacher && (
                 <div className="text-center flex-shrink-0">
                   <div className="bg-brand-black rounded-2xl px-6 py-4">
-                    <p className="text-[9px] font-black uppercase tracking-widest text-gray-500 mb-1">Điểm TB</p>
+                    <p className="text-[9px] font-black uppercase tracking-widest text-gray-500 mb-1">{t('dashboard.avgScore')}</p>
                     <p className="font-display font-black text-4xl text-brand-yellow leading-none">
                       {Math.round(stats?.avgScore || 0)}
                     </p>
-                    <p className="text-[10px] text-gray-500 mt-1">/ 90 điểm</p>
+                    <p className="text-[10px] text-gray-500 mt-1">/ 90 {language === 'vi' ? 'điểm' : 'pts'}</p>
                   </div>
                 </div>
               )}
             </div>
+          </div>
+
+          {/* Language Selection Card */}
+          <div className="card p-6">
+            <h3 className="font-display font-black text-base mb-1">{t('profile.language')}</h3>
+            <p className="text-xs text-gray-500 mb-4">{t('profile.selectLanguage')}</p>
+            <LanguageSwitcher variant="settings" />
           </div>
 
           {/* Admin Info Section */}

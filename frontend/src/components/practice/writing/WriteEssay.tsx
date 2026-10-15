@@ -6,6 +6,7 @@ import { Button } from "../../ui";
 import { AITutorPanel } from "../shared/AITutorPanel";
 import { PracticeContentFrame } from "../shared/PracticeContentFrame";
 import { attemptsApi } from "../../../api";
+import { Lightbulb, AlertCircle } from "lucide-react";
 
 const MIN_WORDS = 200;
 const MAX_WORDS = 300;
@@ -143,24 +144,28 @@ export function WriteEssay({ question }: { question: Question }) {
 
       {/* Word count guidance */}
       {!submitted && (
-        <div className="flex gap-2 text-[11px] text-gray-400">
-          <span className={wordCount >= MIN_WORDS ? "text-green-600 font-bold" : ""}>✓ Tối thiểu {MIN_WORDS} từ</span>
+        <div className="flex gap-2 text-[11px] text-gray-500">
+          <span className={wordCount >= MIN_WORDS ? "text-emerald-600 font-bold" : ""}>Tối thiểu {MIN_WORDS} từ</span>
           <span>·</span>
-          <span className={wordWarn ? "text-red-500 font-bold" : ""}>✗ Tối đa {MAX_WORDS} từ</span>
+          <span className={wordWarn ? "text-red-500 font-bold" : ""}>Tối đa {MAX_WORDS} từ</span>
         </div>
       )}
 
       {/* Sample answer */}
       {submitted && question.suggestedAnswer && (
         <div className="bg-green-50 border border-green-100 rounded-xl px-4 py-3">
-          <p className="text-[10px] font-black uppercase tracking-widest text-green-600 mb-1.5">💡 Sample Answer</p>
+          <p className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-green-700 mb-1.5">
+            <Lightbulb size={12} className="text-green-600" /> Sample Answer
+          </p>
           <div className="text-sm text-green-900 leading-relaxed whitespace-pre-wrap">{question.suggestedAnswer}</div>
         </div>
       )}
 
       {result?.status === "ERROR" && (
         <div className="p-4 rounded-xl bg-red-50 border border-red-100 text-center">
-          <p className="text-red-600 font-bold mb-1">❌ Chấm điểm thất bại</p>
+          <p className="inline-flex items-center gap-1.5 text-red-600 font-bold mb-1">
+            <AlertCircle size={16} /> Chấm điểm thất bại
+          </p>
           <p className="text-sm text-red-500">Vui lòng thử lại.</p>
         </div>
       )}

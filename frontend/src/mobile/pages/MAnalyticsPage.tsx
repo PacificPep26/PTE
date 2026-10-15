@@ -1,7 +1,7 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { Mic, PenTool, BookOpen, Headphones, Target, Flame } from "lucide-react";
+import { Mic, PenTool, BookOpen, Headphones, Target, Flame, BarChart3 } from "lucide-react";
 import { usersApi } from "../../api";
 import { MobileHeader } from "../layout/MobileShell";
 import { MSkeleton } from "../ui";
@@ -301,7 +301,9 @@ export default function MAnalyticsPage() {
 
             {totalAttempts === 0 && (
               <div className="bg-amber-50 border border-amber-100 rounded-2xl px-5 py-6 text-center">
-                <p className="text-3xl mb-3">📊</p>
+                <div className="w-12 h-12 rounded-2xl bg-white text-amber-700 border border-amber-200 flex items-center justify-center mx-auto mb-3">
+                  <BarChart3 size={24} />
+                </div>
                 <p className="font-bold text-gray-900 mb-1">Chưa có dữ liệu phân tích</p>
                 <p className="text-sm text-gray-500 mb-4">Hãy luyện tập để xem biểu đồ tiến độ của bạn</p>
                 <button

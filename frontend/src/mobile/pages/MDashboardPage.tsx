@@ -9,7 +9,7 @@ import { MobileHeader } from "../layout/MobileShell";
 import { MBadge, MSkeleton, MSkeletonCard, MErrorState } from "../ui";
 import { useUserGoals } from "./MOnboardingGate";
 import { clsx } from "clsx";
-import { Mic, PenTool, BookOpen, Headphones, Clock, BarChart2, Bookmark, Play, ChevronRight } from "lucide-react";
+import { Mic, PenTool, BookOpen, Headphones, Clock, BarChart2, Bookmark, Play, ChevronRight, Flame, Calendar } from "lucide-react";
 
 const SKILLS: {
   key: QuestionSkill;
@@ -75,7 +75,7 @@ function CircularProgress({
 function StreakBadge({ days }: { days: number }) {
   return (
     <div className="flex items-center gap-1.5 bg-orange-500/20 border border-orange-400/30 rounded-2xl px-3 py-1.5">
-      <span className="text-base">🔥</span>
+      <Flame size={16} className="text-orange-400 shrink-0" />
       <div>
         <p className="font-display font-black text-sm text-orange-300 leading-none">{days}</p>
         <p className="text-[8px] text-orange-400/70 leading-none">ngày</p>
@@ -128,7 +128,7 @@ export default function MDashboardPage() {
           <div className="px-5 pt-5 pb-3 flex items-center justify-between">
             <div>
               <p className="text-xs text-white/50 font-medium">{greet()}</p>
-              <p className="font-display font-black text-base text-white">{firstName} 👋</p>
+              <p className="font-display font-black text-base text-white">{firstName}</p>
             </div>
             {streak > 0 && <StreakBadge days={streak} />}
           </div>
@@ -151,7 +151,9 @@ export default function MDashboardPage() {
               {daysLeft !== null && (
                 <div className="bg-white/5 rounded-2xl px-3 py-2.5">
                   <p className="font-display font-black text-2xl text-white leading-none">{daysLeft}</p>
-                  <p className="text-[10px] text-white/50 font-medium mt-0.5">ngày đến kỳ thi 📅</p>
+                  <p className="inline-flex items-center gap-1 text-[10px] text-white/50 font-medium mt-0.5">
+                    <Calendar size={10} /> ngày đến kỳ thi
+                  </p>
                   <div className="mt-1.5 w-full h-1 bg-white/10 rounded-full overflow-hidden">
                     <div
                       className="h-full bg-brand-gold rounded-full"
@@ -304,7 +306,7 @@ export default function MDashboardPage() {
                       <p className="text-xs text-gray-400 mt-0.5">{mt.durationMinutes} phút</p>
                     </div>
                     <MBadge color={done ? "green" : inProg ? "gold" : "gray"}>
-                      {done ? "✓ Xong" : inProg ? "Tiếp tục" : "Chưa làm"}
+                      {done ? "Đã xong" : inProg ? "Tiếp tục" : "Chưa làm"}
                     </MBadge>
                   </button>
                 );

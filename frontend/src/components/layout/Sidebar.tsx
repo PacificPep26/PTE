@@ -7,6 +7,8 @@ import {
   LogOut, Globe, UserCircle2, Menu,
 } from "lucide-react";
 import { useAuthStore } from "../../stores/authStore";
+import { useTranslation } from "../../stores/languageStore";
+import { LanguageSwitcher } from "../common/LanguageSwitcher";
 import { LUX } from "../../theme/luxuryPalette";
 import { clsx } from "clsx";
 import { BrandLogo } from "../common/BrandLogo";
@@ -17,21 +19,6 @@ const GOLD   = LUX.gold;
 const GOLD_B = LUX.goldBright;
 const NAV_ON = LUX.goldPale;
 const NAV_OFF = "rgba(212,212,212,0.85)";
-
-const NAV = [
-  { label: "Tổng quan", icon: LayoutDashboard, to: "/dashboard" },
-];
-const SKILL_NAV = [
-  { label: "Speaking",  icon: Mic2,       to: "/practice/speaking"  },
-  { label: "Writing",   icon: PenLine,    to: "/practice/writing"   },
-  { label: "Reading",   icon: BookOpen,   to: "/practice/reading"   },
-  { label: "Listening", icon: Headphones, to: "/practice/listening" },
-];
-const SAVED_NAV = [{ label: "Đã lưu", icon: Bookmark, to: "/bookmarks" }];
-const BOTTOM_NAV = [
-  { label: "Thi thử",  icon: ClipboardList, to: "/mock-test" },
-  { label: "Quản trị", icon: Settings2,     to: "/admin"     },
-];
 
 // ── Nav item ──────────────────────────────────────────────────────────────────
 function NavItem({
@@ -113,8 +100,24 @@ export function Sidebar({
   onClose: () => void;
 }) {
   const { user, logout } = useAuthStore();
+  const { t, language } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
+
+  const nav = [
+    { label: t("nav.dashboard"), icon: LayoutDashboard, to: "/dashboard" },
+  ];
+  const skillNav = [
+    { label: t("nav.speaking"),  icon: Mic2,       to: "/practice/speaking"  },
+    { label: t("nav.writing"),   icon: PenLine,    to: "/practice/writing"   },
+    { label: t("nav.reading"),   icon: BookOpen,   to: "/practice/reading"   },
+    { label: t("nav.listening"), icon: Headphones, to: "/practice/listening" },
+  ];
+  const savedNav = [{ label: t("nav.bookmarks"), icon: Bookmark, to: "/bookmarks" }];
+  const bottomNav = [
+    { label: t("nav.mockTest"),  icon: ClipboardList, to: "/mock-test" },
+    { label: t("nav.admin"),     icon: Settings2,     to: "/admin"     },
+  ];
 
   // Close drawer whenever the route changes (on mobile)
   useEffect(() => {
@@ -128,8 +131,6 @@ export function Sidebar({
       .slice(0, 2)
       .join("")
       .toUpperCase() || "FA";
-
-
 
   return (
     <>
@@ -168,39 +169,44 @@ export function Sidebar({
 
         {/* ── Navigation ───────────────────────────────────────────── */}
         <div className="flex-1 overflow-y-auto px-2.5 py-4 space-y-0.5">
-          <SectionLabel>Trang chính</SectionLabel>
-          {NAV.map((n) => (
+          <SectionLabel>{language === 'vi' ? "Trang chính" : "Main"}</SectionLabel>
+          {nav.map((n) => (
             <NavItem key={n.to} {...n} onNavClick={onClose} />
           ))}
 
           <div className="my-3" />
 
-          <SectionLabel>Ngân hàng câu hỏi</SectionLabel>
-          {SKILL_NAV.map((n) => (
+          <SectionLabel>{language === 'vi' ? "Ngân hàng câu hỏi" : "Question Bank"}</SectionLabel>
+          {skillNav.map((n) => (
             <NavItem key={n.to} {...n} onNavClick={onClose} />
           ))}
 
           <div className="my-3" />
 
-          <SectionLabel>Đã lưu</SectionLabel>
-          {SAVED_NAV.map((n) => (
+          <SectionLabel>{language === 'vi' ? "Đã lưu" : "Saved"}</SectionLabel>
+          {savedNav.map((n) => (
             <NavItem key={n.to} {...n} onNavClick={onClose} />
           ))}
 
           <div className="my-3" />
 
-          <SectionLabel>Thi và nâng cao</SectionLabel>
-          {BOTTOM_NAV.map((n) => {
+          <SectionLabel>{language === 'vi' ? "Thi & Nâng cao" : "Tests & Admin"}</SectionLabel>
+          {bottomNav.map((n) => {
             if (n.to === "/admin" && user?.role !== "admin" && user?.role !== "teacher") return null;
             return <NavItem key={n.to} {...n} onNavClick={onClose} />;
           })}
         </div>
 
-        {/* ── User card ────────────────────────────────────────────── */}
+        {/* ── Language Switcher & User card ────────────────────────── */}
         <div
-          className="p-2.5"
+          className="p-2.5 space-y-2"
           style={{ borderTop: "1px solid rgba(253,213,47,0.15)" }}
         >
+          <div className="px-2 flex items-center justify-between">
+            <span className="text-[11px] font-bold text-gray-400">{t("common.language")}</span>
+            <LanguageSwitcher variant="pill" />
+          </div>
+
           <div
             className="flex items-center gap-2.5 px-2.5 py-2.5 rounded-xl cursor-pointer
                        transition-all duration-150 group"
@@ -228,7 +234,7 @@ export function Sidebar({
 
             <div className="flex-1 min-w-0">
               <p className="text-[13px] font-bold text-white truncate">
-                {user?.fullName || "Học viên"}
+                {user?.fullName || (language === 'vi' ? "Học viên" : "Student")}
               </p>
               <p className="text-[10px] text-gray-400 truncate mt-0.5">
                 {user?.email}
@@ -251,7 +257,7 @@ export function Sidebar({
                 (e.currentTarget as HTMLButtonElement).style.color = "#6B7280";
                 (e.currentTarget as HTMLButtonElement).style.background = "transparent";
               }}
-              title="Đăng xuất"
+              title={t("nav.logout")}
             >
               <LogOut size={13} />
             </button>
@@ -265,6 +271,7 @@ export function Sidebar({
 // ── Top Header ────────────────────────────────────────────────────────────────
 function TopHeader({ onMenuOpen }: { onMenuOpen: () => void }) {
   const { user, logout } = useAuthStore();
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const initials =
@@ -296,13 +303,14 @@ function TopHeader({ onMenuOpen }: { onMenuOpen: () => void }) {
           <Menu size={20} className="text-gray-600" />
         </button>
 
-        <Globe size={14} color={LUX.gold} strokeWidth={2} className="hidden lg:block" />
-        <span className="text-sm font-semibold text-gray-600 hidden sm:block">
-          {user?.fullName || "Học viên"}
+        <span className="text-xs font-medium text-gray-400 hidden lg:inline-flex items-center gap-1.5 tracking-wide">
+          PTE Academic Practice
         </span>
       </div>
 
       <div className="flex items-center gap-1 sm:gap-2">
+        <LanguageSwitcher variant="pill" className="mr-1 hidden sm:inline-flex" />
+
         <button
           onClick={() => navigate("/profile")}
           className="flex items-center gap-2 px-2 sm:px-3 py-1.5 rounded-xl
@@ -332,7 +340,7 @@ function TopHeader({ onMenuOpen }: { onMenuOpen: () => void }) {
                      text-red-500 hover:bg-red-50 rounded-xl transition-colors"
         >
           <LogOut size={13} />
-          <span className="hidden sm:inline">Đăng xuất</span>
+          <span className="hidden sm:inline">{t("nav.logout")}</span>
         </button>
       </div>
     </header>

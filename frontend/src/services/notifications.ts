@@ -7,23 +7,23 @@ const KEY_NOTIF_TIME  = "fly_notif_hour"; // default 20 (8pm)
 const SCHEDULE_DAYS   = 30;               // schedule 30 days ahead
 
 const STUDY_MESSAGES = [
-  { title: "📚 Giờ học PTE rồi!", body: "Chỉ 10 phút thôi – làm 3 câu Read Aloud để giữ streak nhé!" },
-  { title: "🎙️ Luyện Speaking hôm nay chưa?", body: "Đang nghỉ trưa hả? Làm nhanh 3 câu Read Aloud chỉ tốn 2 phút thôi!" },
-  { title: "✍️ Writing chờ bạn kìa!", body: "Một câu Summarize Written Text mỗi ngày sẽ cải thiện điểm nhanh lắm đó." },
-  { title: "🎧 Nghe thử 5 phút?", body: "Một bài Listening ngắn trước khi đi ngủ giúp não xử lý ngôn ngữ tốt hơn." },
-  { title: "🔥 Đừng để streak bị gãy!", body: "Hôm nay bạn chưa luyện. Làm nhanh 1 câu để giữ chuỗi ngày học liên tục." },
-  { title: "📖 Reading hôm nay chưa?", body: "Đọc một đoạn văn ngắn giúp tăng tốc độ đọc hiểu cho kỳ thi PTE." },
-  { title: "💪 Ngày mới, bài mới!", body: "Hệ thống AI đã chuẩn bị bài tập phù hợp với trình độ của bạn hôm nay." },
-  { title: "🎯 Kiên trì là chìa khóa!", body: "Người đạt 79+ thường luyện đều đặn mỗi ngày – hôm nay bạn đã sẵn sàng chưa?" },
-  { title: "⚡ 10 phút đổi thành tích", body: "Nghiên cứu cho thấy học ngắn và đều đặn hiệu quả hơn học dồn. Bắt đầu ngay!" },
-  { title: "🏆 Mục tiêu đang chờ!", body: "Hãy làm ít nhất 1 câu Speaking hôm nay để tiến gần hơn đến điểm mục tiêu." },
+  { title: "Giờ học PTE rồi!", body: "Chỉ 10 phút thôi – làm 3 câu Read Aloud để giữ streak nhé!" },
+  { title: "Luyện Speaking hôm nay chưa?", body: "Đang nghỉ trưa hả? Làm nhanh 3 câu Read Aloud chỉ tốn 2 phút thôi!" },
+  { title: "Writing chờ bạn kìa!", body: "Một câu Summarize Written Text mỗi ngày sẽ cải thiện điểm nhanh lắm đó." },
+  { title: "Nghe thử 5 phút?", body: "Một bài Listening ngắn trước khi đi ngủ giúp não xử lý ngôn ngữ tốt hơn." },
+  { title: "Đừng để streak bị gián đoạn!", body: "Hôm nay bạn chưa luyện. Làm nhanh 1 câu để giữ chuỗi ngày học liên tục." },
+  { title: "Reading hôm nay chưa?", body: "Đọc một đoạn văn ngắn giúp tăng tốc độ đọc hiểu cho kỳ thi PTE." },
+  { title: "Ngày mới, bài mới!", body: "Hệ thống AI đã chuẩn bị bài tập phù hợp với trình độ của bạn hôm nay." },
+  { title: "Kiên trì là chìa khóa!", body: "Người đạt 79+ thường luyện đều đặn mỗi ngày – hôm nay bạn đã sẵn sàng chưa?" },
+  { title: "10 phút đổi thành tích", body: "Nghiên cứu cho thấy học ngắn và đều đặn hiệu quả hơn học dồn. Bắt đầu ngay!" },
+  { title: "Mục tiêu đang chờ!", body: "Hãy làm ít nhất 1 câu Speaking hôm nay để tiến gần hơn đến điểm mục tiêu." },
 ];
 
 const COUNTDOWN_MESSAGES = [
-  (d: number) => ({ title: `⏳ Còn ${d} ngày nữa thi!`, body: "Hãy tập trung vào Speaking – kỹ năng quyết định điểm số nhất." }),
-  (d: number) => ({ title: `🎯 ${d} ngày còn lại`, body: "Luyện ít nhất 2 tiếng mỗi ngày để đạt mục tiêu điểm số." }),
-  (d: number) => ({ title: `📅 Còn ${d} ngày!`, body: "Đừng bỏ qua Mock Test – thi thử để quen áp lực phòng thi thật." }),
-  (d: number) => ({ title: `🔥 ${d} ngày – nước rút rồi!`, body: "Ôn lại những dạng bài hay gặp nhất: Read Aloud, Repeat Sentence, Listening FIB." }),
+  (d: number) => ({ title: `Còn ${d} ngày nữa thi!`, body: "Hãy tập trung vào Speaking – kỹ năng quyết định điểm số nhất." }),
+  (d: number) => ({ title: `${d} ngày còn lại`, body: "Luyện ít nhất 2 tiếng mỗi ngày để đạt mục tiêu điểm số." }),
+  (d: number) => ({ title: `Còn ${d} ngày!`, body: "Đừng bỏ qua Mock Test – thi thử để quen áp lực phòng thi thật." }),
+  (d: number) => ({ title: `${d} ngày – giai đoạn nước rút!`, body: "Ôn lại những dạng bài hay gặp nhất: Read Aloud, Repeat Sentence, Listening FIB." }),
 ];
 
 export async function setupSmartNotifications(hourOfDay: number = 20): Promise<boolean> {

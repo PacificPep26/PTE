@@ -97,7 +97,7 @@ export function WordComparison({
       aria-label="So sánh từng từ bạn nói với bài gốc"
     >
       <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3">
-        ✓✗ So sánh với bài gốc
+        So sánh với bài gốc
       </p>
 
       <p className="text-sm leading-loose">
@@ -111,8 +111,8 @@ export function WordComparison({
             }`}
             title={
               r.correct
-                ? "✓ Khớp thứ tự trong bản ghi"
-                : "✗ Chưa nghe thấy đúng từ này (theo thứ tự)"
+                ? "Khớp thứ tự trong bản ghi"
+                : "Chưa nhận diện được từ này"
             }
           >
             {r.word}

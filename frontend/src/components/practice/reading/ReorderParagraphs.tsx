@@ -4,6 +4,7 @@ import { Question } from "../../../types";
 import { Button } from "../../ui";
 import { attemptsApi } from "../../../api";
 import { PracticeContentFrame } from "../shared/PracticeContentFrame";
+import { CheckCircle2 } from "lucide-react";
 
 export function ReorderParagraphs({ question }: { question: Question }) {
   const options: { label: string; text: string }[] = question.options || [];
@@ -104,8 +105,9 @@ export function ReorderParagraphs({ question }: { question: Question }) {
 
       {submitted && question.correctAnswer && (
         <div className="mt-3 bg-green-50 rounded-xl p-4 border border-green-100">
-          <p className="text-xs font-black uppercase tracking-widest text-green-500 mb-2">
-            ✅ Thứ tự đúng (Correct Order)
+          <p className="text-xs font-black uppercase tracking-widest text-green-600 mb-2 flex items-center gap-1.5">
+            <CheckCircle2 className="w-3.5 h-3.5" />
+            <span>Thứ tự đúng (Correct Order)</span>
           </p>
           <div className="flex flex-wrap gap-2">
             {(Array.isArray(question.correctAnswer)

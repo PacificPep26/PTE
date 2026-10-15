@@ -5,6 +5,7 @@ import { MicSection } from "../shared/MicSection";
 import { PracticeContentFrame } from "../shared/PracticeContentFrame";
 import { SpeakingPromptAudio } from "../shared/SpeakingPromptAudio";
 import { SpeakableText } from "../shared/SpeakableText";
+import { MessageSquare, Users } from "lucide-react";
 
 export function AudioWithMic({
   question,
@@ -38,8 +39,9 @@ export function AudioWithMic({
       {/* Prompt text for RTS */}
       {isRTS && question.content && (
         <div className="bg-blue-50 border border-blue-200 rounded-xl px-3 py-3 sm:px-4 sm:py-4">
-          <p className="text-[10px] font-black uppercase tracking-widest text-blue-700 mb-2 sm:mb-3">
-            💬 Tình huống
+          <p className="text-[10px] font-black uppercase tracking-widest text-blue-700 mb-2 sm:mb-3 flex items-center gap-1.5">
+            <MessageSquare className="w-3.5 h-3.5" />
+            <span>Tình huống</span>
           </p>
           <div className="space-y-2">
             {question.content.split("\n").map((line, i) =>
@@ -59,8 +61,9 @@ export function AudioWithMic({
       {/* Transcript SGD */}
       {isSGD && !question.audioUrl && question.content && (
         <div className="bg-purple-50 border border-purple-200 rounded-xl px-3 py-3 sm:px-4 sm:py-4 max-h-[42vh] sm:max-h-none overflow-y-auto">
-          <p className="text-[10px] font-black uppercase tracking-widest text-purple-600 mb-2 sm:mb-3">
-            🗣️ Băng thoại thảo luận
+          <p className="text-[10px] font-black uppercase tracking-widest text-purple-600 mb-2 sm:mb-3 flex items-center gap-1.5">
+            <Users className="w-3.5 h-3.5" />
+            <span>Băng thoại thảo luận</span>
           </p>
           <div className="space-y-1.5">
             {question.content.split("\n").map((line, i) => {
@@ -104,7 +107,7 @@ export function AudioWithMic({
         label={
           audioEnded
             ? "Hệ thống tự đếm ngược rồi ghi âm · bấm mic để ghi ngay"
-            : "Bấm 🎙️ để ghi ngay · hoặc chờ audio kết thúc sẽ tự động bắt đầu"
+            : "Bấm mic để ghi ngay · hoặc chờ audio kết thúc sẽ tự động bắt đầu"
         }
         maxScore={maxScore}
         wordComparisonStatus="disabled"

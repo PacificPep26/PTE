@@ -3,18 +3,21 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { usersApi } from "../../api";
 import { BrandLogo } from "../../components/common/BrandLogo";
+import { LanguageSwitcher } from "../../components/common/LanguageSwitcher";
 import { useAuthStore } from "../../stores/authStore";
+import { useTranslation } from "../../stores/languageStore";
 import { MobileHeader } from "../layout/MobileShell";
 import { MButton, MInput, MBadge, MProgressBar } from "../ui";
 import { setupSmartNotifications, cancelAllNotifications, isNotifSetup, getNotifHour, isNotifSupported } from "../../services/notifications";
 import { useUserGoals, KEY_TARGET_SCORE, KEY_EXAM_DATE } from "./MOnboardingGate";
 import { clsx } from "clsx";
 import { Capacitor } from "@capacitor/core";
-import { Mic, PenTool, BookOpen, Headphones, Bookmark, Settings, AlertTriangle } from "lucide-react";
+import { Mic, PenTool, BookOpen, Headphones, Bookmark, Settings, AlertTriangle, Pencil, Flame, Target, Bell, Fingerprint, CheckCircle2, AlertCircle } from "lucide-react";
 
 export default function MProfilePage() {
   const navigate = useNavigate();
   const { user, setUser, logout } = useAuthStore();
+  const { t } = useTranslation();
   const qc = useQueryClient();
   const [editing, setEditing] = React.useState(false);
 
@@ -126,7 +129,7 @@ export default function MProfilePage() {
 
   return (
     <>
-      <MobileHeader title="Hồ sơ cá nhân" />
+      <MobileHeader title={t('profile.myProfile')} />
 
       <div className="px-4 space-y-4">
         {/* Avatar + name */}
@@ -141,7 +144,7 @@ export default function MProfilePage() {
                   <MInput
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    placeholder="Họ và tên"
+                    placeholder={t('auth.fullName')}
                   />
                   <div className="flex gap-2">
                     <MButton
@@ -150,10 +153,10 @@ export default function MProfilePage() {
                       loading={updateMutation.isPending}
                       onClick={() => updateMutation.mutate({ fullName })}
                     >
-                      Lưu
+                      {t('common.save')}
                     </MButton>
                     <MButton size="sm" variant="secondary" onClick={() => setEditing(false)}>
-                      Huỷ
+                      {t('common.cancel')}
                     </MButton>
                   </div>
                 </div>
@@ -174,9 +177,10 @@ export default function MProfilePage() {
             {!editing && (
               <button
                 onClick={() => { setFullName(user?.fullName || ""); setEditing(true); }}
-                className="w-9 h-9 rounded-xl bg-gray-100 flex items-center justify-center text-gray-500 flex-shrink-0"
+                className="w-9 h-9 rounded-xl bg-gray-100 flex items-center justify-center text-gray-500 flex-shrink-0 hover:bg-gray-200 transition-colors"
+                title="Chỉnh sửa tên"
               >
-                ✏️
+                <Pencil size={15} />
               </button>
             )}
           </div>
@@ -187,11 +191,18 @@ export default function MProfilePage() {
           {[
             { label: "Đã làm", value: stats?.totalAttempts || 0 },
             { label: "Điểm TB", value: `${Math.round(stats?.avgScore || 0)}/90` },
-            { label: "Streak 🔥", value: `${stats?.streakDays || 0} ngày` },
-          ].map((s) => (
-            <div key={s.label} className="m-card rounded-2xl p-3 text-center">
+            { 
+              label: (
+                <span className="inline-flex items-center gap-0.5">
+                  Streak <Flame size={10} className="text-orange-500" />
+                </span>
+              ), 
+              value: `${stats?.streakDays || 0} ngày` 
+            },
+          ].map((s, idx) => (
+            <div key={idx} className="m-card rounded-2xl p-3 text-center">
               <p className="font-display font-black text-lg text-gray-900">{s.value}</p>
-              <p className="text-[10px] text-gray-400 font-bold mt-0.5">{s.label}</p>
+              <div className="text-[10px] text-gray-400 font-bold mt-0.5">{s.label}</div>
             </div>
           ))}
         </div>
@@ -249,7 +260,9 @@ export default function MProfilePage() {
         {/* Goals settings */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="px-4 py-3 border-b border-gray-50">
-            <p className="font-bold text-sm text-gray-900">🎯 Mục tiêu luyện tập</p>
+            <p className="inline-flex items-center gap-1.5 font-bold text-sm text-gray-900">
+              <Target size={15} className="text-brand-gold" /> Mục tiêu luyện tập
+            </p>
           </div>
           <div className="px-4 py-4 space-y-3">
             <div>
@@ -292,7 +305,9 @@ export default function MProfilePage() {
         {notifSupported && (
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
             <div className="px-4 py-3 border-b border-gray-50 flex items-center justify-between">
-              <p className="font-bold text-sm text-gray-900">🔔 Thông báo nhắc học</p>
+              <p className="inline-flex items-center gap-1.5 font-bold text-sm text-gray-900">
+                <Bell size={15} className="text-brand-gold" /> Thông báo nhắc học
+              </p>
               <button
                 onClick={handleNotifToggle}
                 className={clsx(
@@ -332,12 +347,20 @@ export default function MProfilePage() {
           </div>
         )}
 
+        {/* Language Selection */}
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 space-y-2.5">
+          <p className="font-bold text-sm text-gray-900">{t('profile.language')}</p>
+          <LanguageSwitcher variant="settings" />
+        </div>
+
         {/* Biometrics FaceID / TouchID settings */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="px-4 py-3 flex items-center justify-between">
             <div>
-              <p className="font-bold text-sm text-gray-900">🔐 Đăng nhập bằng sinh trắc học</p>
-              <p className="text-[10px] text-gray-400 mt-0.5">Sử dụng Face ID hoặc Touch ID trên iPhone</p>
+              <p className="inline-flex items-center gap-1.5 font-bold text-sm text-gray-900">
+                <Fingerprint size={15} className="text-brand-gold" /> Đăng nhập bằng sinh trắc học
+              </p>
+              <p className="text-[10px] text-gray-400 mt-0.5">Sử dụng Face ID hoặc Touch ID trên thiết bị</p>
             </div>
             <button
               onClick={handleBiometricsToggle}
@@ -357,7 +380,7 @@ export default function MProfilePage() {
         {/* Logout */}
         <div className="space-y-2.5">
           <MButton variant="danger" fullWidth onClick={handleLogout}>
-            Đăng xuất
+            {t('profile.logout')}
           </MButton>
           <button
             onClick={handleDeleteAccount}
@@ -417,12 +440,12 @@ export default function MProfilePage() {
 
             {deleteModalStep === 'success' && (
               <>
-                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto text-green-500 text-xl">
-                  ✅
+                <div className="w-12 h-12 bg-green-50 border border-green-200 rounded-full flex items-center justify-center mx-auto text-green-600">
+                  <CheckCircle2 size={24} />
                 </div>
                 <h3 className="font-display font-black text-lg text-gray-900">Đã xóa tài khoản</h3>
                 <p className="text-xs text-gray-500 leading-relaxed max-w-xs mx-auto">
-                  Tài khoản và dữ liệu học tập của bạn đã được xóa hoàn toàn khỏi hệ thống FLY Academy.
+                  Tài khoản và dữ liệu học tập của bạn đã được xóa hoàn toàn khỏi hệ thống PTE Study.
                 </p>
                 <button
                   onClick={() => {
@@ -439,8 +462,8 @@ export default function MProfilePage() {
 
             {deleteModalStep === 'error' && (
               <>
-                <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto text-red-500 text-xl">
-                  ❌
+                <div className="w-12 h-12 bg-red-50 border border-red-200 rounded-full flex items-center justify-center mx-auto text-red-500">
+                  <AlertCircle size={24} />
                 </div>
                 <h3 className="font-display font-black text-lg text-gray-900">Lỗi hệ thống</h3>
                 <p className="text-xs text-gray-500 leading-relaxed max-w-xs mx-auto">

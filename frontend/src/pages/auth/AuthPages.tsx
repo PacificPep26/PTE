@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Eye, EyeOff } from 'lucide-react';
 import { useAuthStore } from '../../stores/authStore';
+import { useTranslation } from '../../stores/languageStore';
+import { LanguageSwitcher } from '../../components/common/LanguageSwitcher';
 import { clsx } from 'clsx';
 import { formatAuthError } from '../../utils/authErrors';
 import { GoogleSignIn } from '../../components/auth/GoogleSignIn';
@@ -9,6 +11,8 @@ import { BrandLogo } from '../../components/common/BrandLogo';
 
 // ── Left Hero Panel (Minimalist PTE Study Style) ──────────────────────────────
 function HeroLeftPanel() {
+  const { language } = useTranslation();
+
   return (
     <div
       className="hidden lg:flex w-1/2 flex-col justify-between p-12 xl:p-16 relative overflow-hidden select-none"
@@ -24,12 +28,24 @@ function HeroLeftPanel() {
       {/* Center Minimal Typography */}
       <div className="relative z-10 max-w-lg my-auto py-12">
         <h1 className="font-display font-black text-4xl xl:text-5xl text-gray-950 leading-[1.18] mb-5 tracking-tight">
-          Luyện thi PTE
-          <br />
-          <span className="text-gray-900/90">Chấm điểm chuẩn AI.</span>
+          {language === 'vi' ? (
+            <>
+              Luyện thi PTE
+              <br />
+              <span className="text-gray-900/90">Chấm điểm chuẩn AI.</span>
+            </>
+          ) : (
+            <>
+              PTE Academic
+              <br />
+              <span className="text-gray-900/90">AI-Powered Practice.</span>
+            </>
+          )}
         </h1>
         <p className="text-gray-900/80 text-base leading-relaxed max-w-md font-medium">
-          Hệ thống luyện thi thông minh, phản hồi phát âm theo thời gian thực và đề thi bám sát cấu trúc Pearson.
+          {language === 'vi'
+            ? 'Hệ thống luyện thi thông minh, phản hồi phát âm theo thời gian thực và đề thi bám sát cấu trúc Pearson.'
+            : 'Intelligent exam prep system, real-time speech feedback, and authentic Pearson-standard question bank.'}
         </p>
       </div>
 
@@ -46,6 +62,7 @@ function HeroLeftPanel() {
 export function LoginPage() {
   const navigate = useNavigate();
   const { login, isLoading } = useAuthStore();
+  const { t, language } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPwd, setShowPwd] = useState(false);
@@ -62,11 +79,11 @@ export function LoginPage() {
     setError('');
     const em = email.trim();
     if (!em) {
-      setError('Vui lòng nhập Email hoặc Username.');
+      setError(language === 'vi' ? 'Vui lòng nhập Email hoặc Username.' : 'Please enter Email or Username.');
       return;
     }
     if (!password) {
-      setError('Vui lòng nhập mật khẩu.');
+      setError(language === 'vi' ? 'Vui lòng nhập mật khẩu.' : 'Please enter your password.');
       return;
     }
     try {
@@ -90,6 +107,11 @@ export function LoginPage() {
       {/* Right Form */}
       <div className="w-full lg:w-1/2 flex flex-col justify-between p-6 sm:p-12 lg:p-16 overflow-y-auto">
         <div className="max-w-md w-full mx-auto my-auto py-8">
+          {/* Language Switcher on top */}
+          <div className="flex justify-end mb-4">
+            <LanguageSwitcher variant="pill" />
+          </div>
+
           {/* Mobile brand header (desktop hidden) */}
           <div className="lg:hidden mb-6 flex justify-center">
             <BrandLogo theme="light" size="md" />
@@ -98,12 +120,12 @@ export function LoginPage() {
           {/* Heading */}
           <div className="mb-6">
             <h2 className="font-display font-black text-2xl sm:text-3xl text-gray-900 tracking-tight">
-              Log in
+              {t('auth.login')}
             </h2>
             <p className="text-sm text-gray-500 mt-1">
-              Don't have an account?{' '}
+              {t('auth.dontHaveAccount')}{' '}
               <Link to="/register" className="font-bold text-blue-600 hover:underline">
-                Sign up
+                {t('auth.register')}
               </Link>
             </p>
           </div>
@@ -112,7 +134,7 @@ export function LoginPage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
-                Username or Email
+                {t('auth.email')}
               </label>
               <input
                 type="text"
@@ -127,7 +149,7 @@ export function LoginPage() {
             <div>
               <div className="flex items-center justify-between mb-1.5">
                 <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider">
-                  Password
+                  {t('auth.password')}
                 </label>
               </div>
               <div className="relative">
@@ -164,15 +186,15 @@ export function LoginPage() {
                   onChange={(e) => setRememberMe(e.target.checked)}
                   className="w-4 h-4 rounded text-amber-500 accent-amber-400 focus:ring-amber-400"
                 />
-                Remember me
+                {t('auth.rememberMe')}
               </label>
 
               <button
                 type="button"
-                onClick={() => window.alert('Vui lòng liên hệ quản trị viên qua Zalo/Email để lấy lại mật khẩu.')}
+                onClick={() => window.alert(language === 'vi' ? 'Vui lòng liên hệ quản trị viên qua Zalo/Email để lấy lại mật khẩu.' : 'Please contact the administrator to reset your password.')}
                 className="text-gray-500 hover:text-gray-800 font-semibold"
               >
-                Forgot password?
+                {language === 'vi' ? 'Quên mật khẩu?' : 'Forgot password?'}
               </button>
             </div>
 
@@ -188,7 +210,7 @@ export function LoginPage() {
               {isLoading ? (
                 <span className="w-5 h-5 border-2 border-gray-900 border-t-transparent rounded-full animate-spin" />
               ) : (
-                'Log in'
+                t('auth.login')
               )}
             </button>
           </form>
@@ -199,7 +221,7 @@ export function LoginPage() {
               <div className="w-full border-t border-gray-200" />
             </div>
             <div className="relative flex justify-center text-xs">
-              <span className="bg-white px-3 text-gray-400 font-medium">hoặc tiếp tục với</span>
+              <span className="bg-white px-3 text-gray-400 font-medium">{language === 'vi' ? 'hoặc tiếp tục với' : 'or continue with'}</span>
             </div>
           </div>
 
@@ -228,6 +250,7 @@ export function LoginPage() {
 export function RegisterPage() {
   const navigate = useNavigate();
   const { register, isLoading } = useAuthStore();
+  const { t, language } = useTranslation();
   const [form, setForm] = useState({ email: '', fullName: '', password: '', confirm: '' });
   const [showPwd, setShowPwd] = useState(false);
   const [agree, setAgree] = useState(true);
@@ -240,24 +263,24 @@ export function RegisterPage() {
     e.preventDefault();
     setError('');
     if (!agree) {
-      setError('Vui lòng đồng ý với Điều khoản và Chính sách bảo mật.');
+      setError(language === 'vi' ? 'Vui lòng đồng ý với Điều khoản và Chính sách bảo mật.' : 'Please agree to Terms of Service and Privacy Policy.');
       return;
     }
     if (form.password !== form.confirm) {
-      setError('Mật khẩu xác nhận không khớp.');
+      setError(language === 'vi' ? 'Mật khẩu xác nhận không khớp.' : 'Passwords do not match.');
       return;
     }
     if (form.password.length < 6) {
-      setError('Mật khẩu phải từ 6 ký tự trở lên.');
+      setError(language === 'vi' ? 'Mật khẩu phải từ 6 ký tự trở lên.' : 'Password must be at least 6 characters.');
       return;
     }
     const em = form.email.trim();
     if (!em || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) {
-      setError('Vui lòng nhập email hợp lệ.');
+      setError(language === 'vi' ? 'Vui lòng nhập email hợp lệ.' : 'Please enter a valid email address.');
       return;
     }
     if (!form.fullName.trim()) {
-      setError('Vui lòng nhập họ và tên của bạn.');
+      setError(language === 'vi' ? 'Vui lòng nhập họ và tên của bạn.' : 'Please enter your full name.');
       return;
     }
     try {
@@ -274,6 +297,11 @@ export function RegisterPage() {
 
       <div className="w-full lg:w-1/2 flex flex-col justify-between p-6 sm:p-12 lg:p-16 overflow-y-auto">
         <div className="max-w-md w-full mx-auto my-auto py-8">
+          {/* Language Switcher on top */}
+          <div className="flex justify-end mb-4">
+            <LanguageSwitcher variant="pill" />
+          </div>
+
           {/* Mobile brand header (desktop hidden) */}
           <div className="lg:hidden mb-6 flex justify-center">
             <BrandLogo theme="light" size="md" />
@@ -281,12 +309,12 @@ export function RegisterPage() {
 
           <div className="mb-6">
             <h2 className="font-display font-black text-2xl sm:text-3xl text-gray-900 tracking-tight">
-              Sign up
+              {t('auth.register')}
             </h2>
             <p className="text-sm text-gray-500 mt-1">
-              Already have an account?{' '}
+              {t('auth.alreadyHaveAccount')}{' '}
               <Link to="/login" className="font-bold text-blue-600 hover:underline">
-                Log in
+                {t('auth.login')}
               </Link>
             </p>
           </div>
@@ -294,7 +322,7 @@ export function RegisterPage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
-                Full Name
+                {t('auth.fullName')}
               </label>
               <input
                 type="text"
@@ -307,7 +335,7 @@ export function RegisterPage() {
 
             <div>
               <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
-                Email Address
+                {t('auth.email')}
               </label>
               <input
                 type="email"
@@ -320,14 +348,14 @@ export function RegisterPage() {
 
             <div>
               <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
-                Password
+                {t('auth.password')}
               </label>
               <div className="relative">
                 <input
                   type={showPwd ? 'text' : 'password'}
                   value={form.password}
                   onChange={set('password')}
-                  placeholder="At least 6 characters"
+                  placeholder={language === 'vi' ? 'Ít nhất 6 ký tự' : 'At least 6 characters'}
                   className="w-full border border-gray-200 rounded-xl px-4 py-3 pr-10 text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-amber-400 focus:ring-4 focus:ring-amber-400/15 transition-all bg-white"
                 />
                 <button
@@ -342,13 +370,13 @@ export function RegisterPage() {
 
             <div>
               <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
-                Confirm Password
+                {language === 'vi' ? 'Xác nhận mật khẩu' : 'Confirm Password'}
               </label>
               <input
                 type={showPwd ? 'text' : 'password'}
                 value={form.confirm}
                 onChange={set('confirm')}
-                placeholder="Re-enter password"
+                placeholder={language === 'vi' ? 'Nhập lại mật khẩu' : 'Re-enter password'}
                 className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-amber-400 focus:ring-4 focus:ring-amber-400/15 transition-all bg-white"
               />
             </div>
@@ -367,10 +395,10 @@ export function RegisterPage() {
                 className="w-4 h-4 rounded text-amber-500 accent-amber-400 mt-0.5"
               />
               <span>
-                I agree to PTE Study's{' '}
-                <Link to="/terms" className="underline font-bold text-gray-900">Terms of Service</Link>{' '}
-                and{' '}
-                <Link to="/privacy" className="underline font-bold text-gray-900">Privacy Policy</Link>.
+                {language === 'vi' ? 'Tôi đồng ý với ' : 'I agree to PTE Study\'s '}
+                <Link to="/terms" className="underline font-bold text-gray-900">{language === 'vi' ? 'Điều khoản sử dụng' : 'Terms of Service'}</Link>{' '}
+                {language === 'vi' ? 'và ' : 'and '}
+                <Link to="/privacy" className="underline font-bold text-gray-900">{language === 'vi' ? 'Chính sách bảo mật' : 'Privacy Policy'}</Link>.
               </span>
             </label>
 
@@ -385,7 +413,7 @@ export function RegisterPage() {
               {isLoading ? (
                 <span className="w-5 h-5 border-2 border-gray-900 border-t-transparent rounded-full animate-spin" />
               ) : (
-                'Create Account'
+                t('auth.register')
               )}
             </button>
           </form>
@@ -395,7 +423,7 @@ export function RegisterPage() {
               <div className="w-full border-t border-gray-200" />
             </div>
             <div className="relative flex justify-center text-xs">
-              <span className="bg-white px-3 text-gray-400 font-medium">or continue with</span>
+              <span className="bg-white px-3 text-gray-400 font-medium">{language === 'vi' ? 'hoặc tiếp tục với' : 'or continue with'}</span>
             </div>
           </div>
 

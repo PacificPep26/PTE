@@ -1,5 +1,17 @@
 import React from "react";
 import { clsx } from "clsx";
+import { 
+  BarChart3, 
+  Eye, 
+  X, 
+  Shuffle, 
+  Bookmark, 
+  AlertTriangle, 
+  HelpCircle, 
+  CheckCircle2, 
+  MessageSquare,
+  Activity
+} from "lucide-react";
 
 // ── Button ────────────────────────────────────────────────────────────────
 interface BtnProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -349,11 +361,11 @@ export function ScorePanel({
       : 0;
   const grade =
     percentage >= 79
-      ? "Xuất sắc 🏆"
+      ? "Xuất sắc"
       : percentage >= 65
-        ? "Tốt 👍"
+        ? "Tốt"
         : percentage >= 50
-          ? "Đạt ✓"
+          ? "Đạt"
           : "Cần cải thiện";
   const gradeColor =
     percentage >= 79
@@ -457,8 +469,8 @@ export function ScorePanel({
       {/* Phase 2: Acoustic Analysis */}
       {phase2 && (
         <div className="bg-blue-50 border border-blue-100 rounded-lg p-3 mb-4 space-y-2.5">
-          <p className="text-xs font-bold text-blue-700 mb-2">
-            🎵 Phân tích Âm học (Phase 2)
+          <p className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 mb-2">
+            <Activity size={13} /> Phân tích Âm học (Phase 2)
           </p>
 
           {/* Speech Rate (WPM) */}
@@ -472,10 +484,10 @@ export function ScorePanel({
               </div>
               <p className="text-[10px] text-gray-500 mt-0.5">
                 {phase2.wpm_detailed.wpm < 110
-                  ? "⚠️ Quá chậm (lý tưởng 110-130)"
+                  ? "Chậm hơn tốc độ chuẩn (110-130 WPM)"
                   : phase2.wpm_detailed.wpm > 130
-                    ? "⚠️ Quá nhanh (lý tưởng 110-130)"
-                    : "✅ Tốc độ lý tưởng (110-130)"}
+                    ? "Nhanh hơn tốc độ chuẩn (110-130 WPM)"
+                    : "Tốc độ lý tưởng (110-130 WPM)"}
               </p>
             </div>
           )}
@@ -509,10 +521,10 @@ export function ScorePanel({
               </div>
               <p className="text-[10px] text-gray-500 mt-0.5">
                 {phase2.pitch.stability_score >= 70
-                  ? "✅ Pitch rất ổn định"
+                  ? "Độ cao giọng (Pitch) rất ổn định"
                   : phase2.pitch.stability_score >= 50
-                    ? "⚠️ Pitch có dễn nhưng cần cải thiện"
-                    : "⚠️ Pitch không ổn định"}
+                    ? "Pitch tương đối ổn định, cần duy trì"
+                    : "Pitch chưa ổn định, cần luyện ngữ điệu"}
               </p>
             </div>
           )}
@@ -529,8 +541,8 @@ export function ScorePanel({
               </div>
               <p className="text-[10px] text-gray-500 mt-0.5">
                 {phase2.pauses.total_pause_time > 3
-                  ? "⚠️ Quá nhiều tạm dừng"
-                  : "✅ Số lượng tạm dừng bình thường"}
+                  ? "Thời gian ngắt nghỉ quá dài"
+                  : "Số lượng và độ dài ngắt nghỉ hợp lý"}
               </p>
             </div>
           )}
@@ -561,7 +573,9 @@ export function ScorePanel({
       {/* Feedback */}
       {feedback && (
         <div className="bg-gray-50 rounded-lg p-3">
-          <p className="text-xs font-bold text-gray-500 mb-1">💬 Nhận xét AI</p>
+          <p className="inline-flex items-center gap-1.5 text-xs font-bold text-gray-700 mb-1">
+            <MessageSquare size={13} className="text-brand-gold" /> Nhận xét AI
+          </p>
           <p className="text-xs text-gray-700 leading-relaxed">{feedback}</p>
         </div>
       )}
@@ -629,8 +643,8 @@ export function AnalysisTable({
   return (
     <div className="card overflow-hidden">
       <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-100">
-        <div className="w-7 h-7 rounded-lg bg-brand-gold-light flex items-center justify-center text-sm">
-          📊
+        <div className="w-7 h-7 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center">
+          <BarChart3 size={15} />
         </div>
         <div>
           <p className="text-sm font-bold text-gray-900">Lịch sử luyện tập</p>
@@ -685,9 +699,9 @@ export function AnalysisTable({
                   {onView && r.status === "SCORED" && (
                     <button
                       onClick={() => onView(r.id)}
-                      className="text-brand-gold text-xs font-bold hover:underline"
+                      className="inline-flex items-center gap-1 text-brand-gold text-xs font-bold hover:underline"
                     >
-                      👁 Xem
+                      <Eye size={12} /> Xem
                     </button>
                   )}
                 </td>
@@ -752,9 +766,9 @@ export function QuestionListDrawer({
           <h2 className="font-display font-bold text-lg">Danh sách câu hỏi</h2>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-gray-400"
+            className="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors"
           >
-            ✕
+            <X size={16} />
           </button>
         </div>
 
@@ -783,9 +797,9 @@ export function QuestionListDrawer({
                 type="button"
                 onClick={onRandom}
                 disabled={randomBusy || total === 0}
-                className="text-xs font-bold px-3 py-2 rounded-xl bg-amber-50 border border-amber-200 text-amber-950 hover:bg-amber-100 disabled:opacity-45 whitespace-nowrap"
+                className="text-xs font-bold px-3 py-2 rounded-xl bg-amber-50 border border-amber-200 text-amber-950 hover:bg-amber-100 disabled:opacity-45 whitespace-nowrap flex items-center gap-1.5"
               >
-                {randomBusy ? "…" : "🎲 Random"}
+                {randomBusy ? "…" : <><Shuffle size={12} /> Random</>}
               </button>
             )}
             <span className="text-xs text-gray-500">{total} câu</span>
@@ -879,7 +893,7 @@ export function QuestionListDrawer({
                     </div>
                   </td>
                   <td className="py-2.5 px-3 text-gray-300 hover:text-brand-gold">
-                    🔖
+                    <Bookmark size={14} className="inline text-gray-300 hover:text-brand-gold" />
                   </td>
                 </tr>
               ))}
@@ -950,7 +964,7 @@ export function ConfirmModal({
             danger ? "bg-red-100 text-red-500" : "bg-amber-100 text-amber-600",
           )}
         >
-          {danger ? "⚠️" : "❓"}
+          {danger ? <AlertTriangle size={22} /> : <HelpCircle size={22} />}
         </div>
         <h3 className="font-display font-black text-lg text-gray-900">{title}</h3>
         {message && (

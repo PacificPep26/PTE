@@ -30,7 +30,7 @@ export function ReadAloud({
         questionId={question.id}
         prepSeconds={question.prepTime || 40}
         maxSeconds={question.responseTime || 40}
-        label="Hệ thống tự đếm ngược rồi ghi âm · bấm 🎙️ để ghi ngay không cần chờ"
+        label="Hệ thống tự đếm ngược rồi ghi âm · bấm mic để ghi ngay không cần chờ"
         originalText={question.content}
         maxScore={getMaxScore(question.type)}
         wordComparisonStatus={

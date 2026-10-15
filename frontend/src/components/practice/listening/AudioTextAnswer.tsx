@@ -6,6 +6,7 @@ import { AudioPlayer, Button, ScorePanel } from "../../ui";
 import { attemptsApi } from "../../../api";
 import { PracticeContentFrame } from "../shared/PracticeContentFrame";
 import { getPracticeDisplayMax } from "../../../constants/scoring";
+import { FileText, Lightbulb, AlertCircle } from "lucide-react";
 
 /** Parse feedback kiểu WFD "9/10 words correct" — dùng cho bài chấm cũ (scale 0–90). */
 function parseDictationWordScore(feedback?: string): { correct?: number; totalWords?: number } {
@@ -168,7 +169,8 @@ export function AudioTextAnswer({
           {question.correctAnswer?.transcript && (
             <div className="bg-blue-50 border border-blue-100 rounded-xl px-4 py-3">
               <p className="text-[10px] font-black uppercase tracking-widest text-blue-500 mb-1.5 flex items-center gap-1.5">
-                📝 Audio Transcript
+                <FileText className="w-3.5 h-3.5" />
+                <span>Audio Transcript</span>
               </p>
               <p className="text-sm text-blue-900 italic leading-relaxed">
                 {question.correctAnswer.transcript}
@@ -178,7 +180,8 @@ export function AudioTextAnswer({
           {question.suggestedAnswer && (
             <div className="bg-green-50 border border-green-100 rounded-xl px-4 py-3">
               <p className="text-[10px] font-black uppercase tracking-widest text-green-600 mb-1.5 flex items-center gap-1.5">
-                💡 Suggested Answer
+                <Lightbulb className="w-3.5 h-3.5" />
+                <span>Suggested Answer</span>
               </p>
               <div className="text-sm text-green-900 leading-relaxed max-h-40 overflow-y-auto whitespace-pre-wrap">
                 {question.suggestedAnswer}
@@ -190,7 +193,10 @@ export function AudioTextAnswer({
 
       {result?.status === "ERROR" && (
         <div className="mt-4 p-4 rounded-xl bg-red-50 border border-red-100 text-center">
-          <p className="text-red-600 font-bold mb-1">❌ Chấm điểm thất bại</p>
+          <div className="flex items-center justify-center gap-1.5 text-red-600 font-bold mb-1">
+            <AlertCircle className="w-4 h-4" />
+            <span>Chấm điểm thất bại</span>
+          </div>
           <p className="text-sm text-red-500">
             Hệ thống AI không thể chấm điểm bài làm này. Vui lòng thử lại.
           </p>

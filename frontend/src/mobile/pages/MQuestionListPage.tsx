@@ -7,31 +7,7 @@ import { QuestionSkill, QuestionType, QUESTION_TYPE_LABELS } from "../../types";
 import { getQuestionListPreview } from "../../utils/questionListPreview";
 import { MobileBackHeader } from "../layout/MobileShell";
 import { MSkeleton } from "../ui";
-
-const TYPE_ICONS: Partial<Record<QuestionType, string>> = {
-  SPEAKING_READ_ALOUD: "🔊",
-  SPEAKING_REPEAT_SENTENCE: "🔁",
-  SPEAKING_DESCRIBE_IMAGE: "🖼️",
-  SPEAKING_RETELL_LECTURE: "🎓",
-  SPEAKING_ANSWER_SHORT_QUESTION: "❓",
-  SPEAKING_SUMMARISE_GROUP_DISCUSSION: "👥",
-  SPEAKING_RESPOND_TO_SITUATION: "💬",
-  WRITING_SUMMARIZE_WRITTEN_TEXT: "📄",
-  WRITING_ESSAY: "✏️",
-  READING_FIB_R_W: "📝",
-  READING_MCQ_MULTIPLE_ANSWER: "☑️",
-  READING_RE_ORDER_PARAGRAPH: "🔀",
-  READING_FIB_R: "🔲",
-  READING_MCQ_SINGLE_ANSWER: "🔘",
-  LISTENING_SUMMARIZE_SPOKEN_TEXT: "📋",
-  LISTENING_MCQ_MULTIPLE_ANSWER: "☑️",
-  LISTENING_FIB_L: "⬜",
-  LISTENING_HIGHLIGHT_CORRECT_SUMMARY: "✅",
-  LISTENING_MCQ_SINGLE_ANSWER: "🔘",
-  LISTENING_SELECT_MISSING_WORD: "🔍",
-  LISTENING_HIGHLIGHT_INCORRECT_WORD: "🔆",
-  LISTENING_DICTATION: "✍️",
-};
+import { Shuffle, Check, Image, Headphones } from "lucide-react";
 
 const PAGE_SIZE = 20;
 
@@ -41,7 +17,6 @@ export default function MQuestionListPage() {
   const qType = (type || "").toUpperCase() as QuestionType;
   const skillKey = (skill || "").toUpperCase() as QuestionSkill;
   const label = QUESTION_TYPE_LABELS[qType] || qType;
-  const icon = TYPE_ICONS[qType] || "📌";
   const [randomBusy, setRandomBusy] = React.useState(false);
 
   const {
@@ -81,7 +56,7 @@ export default function MQuestionListPage() {
   return (
     <div className="mobile-page-full">
       <MobileBackHeader
-        title={`${icon} ${label}`}
+        title={label}
         onBack={() => navigate(`/practice/${skill}`)}
         right={
           <span className="text-xs font-bold text-gray-400 bg-gray-100 px-2.5 py-1 rounded-xl">
@@ -103,7 +78,10 @@ export default function MQuestionListPage() {
               Đang chọn…
             </>
           ) : (
-            <>🎲 Câu ngẫu nhiên{total > 0 ? ` (trong ${total} câu)` : ""}</>
+            <>
+              <Shuffle size={16} />
+              <span>Câu ngẫu nhiên{total > 0 ? ` (trong ${total} câu)` : ""}</span>
+            </>
           )}
         </button>
 
@@ -168,7 +146,7 @@ function QuestionCard({
             : "bg-gray-100 text-gray-500"
         )}
       >
-        {hasDone ? "✓" : index}
+        {hasDone ? <Check size={14} strokeWidth={3} /> : index}
       </div>
 
       <div className="flex-1 min-w-0">
@@ -176,13 +154,13 @@ function QuestionCard({
           {preview || `Câu ${index}`}
         </p>
         {question.imageUrl && (
-          <span className="text-[10px] text-blue-500 font-medium mt-0.5 inline-block">
-            🖼️ Có hình ảnh
+          <span className="inline-flex items-center gap-1 text-[10px] text-blue-600 font-semibold mt-0.5 mr-2">
+            <Image size={11} /> Có hình ảnh
           </span>
         )}
         {question.audioUrl && (
-          <span className="text-[10px] text-purple-500 font-medium mt-0.5 inline-block">
-            🎧 Có audio
+          <span className="inline-flex items-center gap-1 text-[10px] text-purple-600 font-semibold mt-0.5">
+            <Headphones size={11} /> Có audio
           </span>
         )}
       </div>

@@ -5,6 +5,7 @@ import { Question } from "../../../types";
 import { Button } from "../../ui";
 import { attemptsApi } from "../../../api";
 import { PracticeContentFrame } from "../shared/PracticeContentFrame";
+import { Check, X } from "lucide-react";
 
 export function MCQuestion({
   question,
@@ -99,7 +100,7 @@ export function MCQuestion({
                   )}
                 >
                   {isSelected && (
-                    <span className="text-[8px] font-black">✓</span>
+                    <Check className="w-3 h-3 text-gray-900 stroke-[3]" />
                   )}
                 </div>
               ) : (
@@ -120,8 +121,8 @@ export function MCQuestion({
                 </span>
                 <span className="text-[14px] sm:text-sm text-gray-800 leading-snug">{opt.text}</span>
               </div>
-              {isCorrect && <span className="text-green-500 text-sm">✓</span>}
-              {isWrong && <span className="text-red-500 text-sm">✗</span>}
+              {isCorrect && <Check className="w-4 h-4 text-green-600 stroke-[3]" />}
+              {isWrong && <X className="w-4 h-4 text-red-500 stroke-[3]" />}
               {submitted &&
                 !isSelected &&
                 correctAnswers.includes(opt.label) && (

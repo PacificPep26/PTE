@@ -1,5 +1,6 @@
 import React from "react";
 import { dictionaryApi, type DictionaryEntry } from "../../../api/index";
+import { X } from "lucide-react";
 
 interface PopoverState {
   word: string;
@@ -95,10 +96,10 @@ export function SpeakableText({
             <button
               type="button"
               aria-label="Đóng"
-              className="text-gray-400 hover:text-gray-600 text-xs px-1"
+              className="text-gray-400 hover:text-gray-600 p-0.5 rounded transition-colors"
               onClick={() => setPopover(null)}
             >
-              ✕
+              <X className="w-3.5 h-3.5" />
             </button>
           </div>
 

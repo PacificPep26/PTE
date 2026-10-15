@@ -11,6 +11,23 @@ import { parseReadingFibDrag } from '../utils/readingFibDrag';
 import { parseListeningFibSegments } from '../utils/listeningFibSegments';
 import { AIConsentModal } from '../components/ui/AIConsentModal';
 import { BrandLogo } from '../components/common/BrandLogo';
+import { 
+  ClipboardList, 
+  BarChart3, 
+  Calendar, 
+  Clock, 
+  CheckCircle2, 
+  Check, 
+  AlertTriangle, 
+  Mic, 
+  Square, 
+  GraduationCap, 
+  Target, 
+  ArrowRight, 
+  X,
+  FileQuestion,
+  Wrench
+} from 'lucide-react';
 
 // ── Mock Test Library Page ─────────────────────────────────────────────────
 export function MockTestPage() {
@@ -73,7 +90,9 @@ export function MockTestPage() {
                       <p className="text-sm font-bold text-gray-900 mb-0.5">{mt.title}</p>
                       <p className="text-xs text-gray-400 mb-1.5">{mt.description}</p>
                       <div className="flex items-center gap-1.5">
-                        <span className="text-[10px] bg-brand-yellow-light text-brand-yellow-deep font-bold px-2 py-0.5 rounded">📅 Updated: {mt.updatedYear}</span>
+                        <span className="inline-flex items-center gap-1 text-[10px] bg-brand-yellow-light text-brand-yellow-deep font-bold px-2 py-0.5 rounded">
+                          <Calendar size={11} /> Updated: {mt.updatedYear}
+                        </span>
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
@@ -82,7 +101,7 @@ export function MockTestPage() {
                         status === 'done' ? 'bg-green-100 text-green-700' :
                         status === 'progress' ? 'bg-orange-100 text-brand-orange-deep' : 'bg-gray-100 text-gray-400'
                       )}>
-                        {status === 'done' ? '✓ Done' : status === 'progress' ? '⏳ In progress' : '○ Not yet taken'}
+                        {status === 'done' ? <><Check size={11} /> Done</> : status === 'progress' ? <><Clock size={11} /> In progress</> : 'Not yet taken'}
                       </span>
                       <button className="text-sm font-bold text-brand-orange hover:underline whitespace-nowrap">
                         {status === 'done' ? 'Xem lại →' : status === 'progress' ? 'Tiếp tục →' : 'Practice now →'}
@@ -92,7 +111,13 @@ export function MockTestPage() {
                 );
               })}
               {(!tests || tests.length === 0) && (
-                <div className="py-16 text-center text-gray-400"><p className="text-3xl mb-3">📝</p><p>Chưa có mock test nào</p></div>
+                <div className="py-16 text-center text-gray-400">
+                  <div className="w-12 h-12 mx-auto mb-3 rounded-2xl bg-gray-100 flex items-center justify-center text-gray-400">
+                    <ClipboardList size={24} />
+                  </div>
+                  <p className="font-semibold text-gray-600">Chưa có mock test nào</p>
+                  <p className="text-xs text-gray-400 mt-1">Đề thi sẽ hiển thị ở đây khi được đồng bộ</p>
+                </div>
               )}
             </div>
           )}
@@ -116,7 +141,13 @@ export function MockTestPage() {
                 </div>
               ))}
               {(!history || history.length === 0) && (
-                <div className="py-16 text-center text-gray-400"><p className="text-3xl mb-3">📊</p><p>Chưa có lịch sử thi</p></div>
+                <div className="py-16 text-center text-gray-400">
+                  <div className="w-12 h-12 mx-auto mb-3 rounded-2xl bg-gray-100 flex items-center justify-center text-gray-400">
+                    <BarChart3 size={24} />
+                  </div>
+                  <p className="font-semibold text-gray-600">Chưa có lịch sử thi</p>
+                  <p className="text-xs text-gray-400 mt-1">Lịch sử làm bài thi thử của bạn sẽ xuất hiện tại đây</p>
+                </div>
               )}
             </div>
           )}
@@ -213,11 +244,14 @@ export function MockTestExamPage() {
     return (
       <div className="min-h-screen bg-brand-cream flex items-center justify-center">
         <div className="card p-10 max-w-md w-full text-center">
-          <p className="text-4xl mb-4">🎯</p>
+          <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-amber-50 text-brand-gold-bright flex items-center justify-center">
+            <Target size={28} />
+          </div>
           <h1 className="font-display font-black text-2xl mb-2">Sẵn sàng thi thử?</h1>
           <p className="text-sm text-gray-500 mb-6">Bài thi gồm Speaking, Writing, Reading và Listening. Thời gian: 3 giờ.</p>
-          <Button variant="yellow" onClick={() => startMutation.mutate()} loading={startMutation.isPending} className="w-full py-3 text-base">
-            🚀 Bắt đầu thi
+          <Button variant="yellow" onClick={() => startMutation.mutate()} loading={startMutation.isPending} className="w-full py-3 text-base flex items-center justify-center gap-2">
+            <span>Bắt đầu thi</span>
+            <ArrowRight size={18} />
           </Button>
           <button onClick={() => navigate('/mock-test')} className="mt-3 text-sm text-gray-400 hover:text-gray-700">← Quay lại</button>
         </div>
@@ -248,7 +282,9 @@ export function MockTestExamPage() {
             {/* Question Header */}
             <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 sm:py-4 border-b border-gray-100">
               <div className="flex items-center gap-3 min-w-0">
-                <div className="w-10 h-10 sm:w-11 sm:h-11 bg-brand-yellow rounded-xl flex items-center justify-center text-lg sm:text-xl shrink-0">🎓</div>
+                <div className="w-10 h-10 sm:w-11 sm:h-11 bg-amber-50 text-amber-700 rounded-xl flex items-center justify-center shrink-0 border border-amber-200">
+                  <GraduationCap size={22} />
+                </div>
                 <div className="min-w-0">
                   <p className="font-display font-bold text-lg sm:text-xl truncate">{currentQ.code}</p>
                   <p className="text-sm text-gray-500 truncate">{QUESTION_TYPE_LABELS[currentQ.type]}</p>
@@ -259,7 +295,9 @@ export function MockTestExamPage() {
                   {currentIdx + 1}/{questions.length}
                 </span>
                 {answers[currentQ.id] !== undefined && (
-                  <span className="text-[10px] bg-green-100 text-green-700 font-bold px-2 py-1 rounded">✓ Answered</span>
+                  <span className="inline-flex items-center gap-1 text-[10px] bg-green-50 text-green-700 border border-green-200 font-bold px-2 py-1 rounded">
+                    <CheckCircle2 size={11} /> Answered
+                  </span>
                 )}
               </div>
             </div>
@@ -299,7 +337,7 @@ export function MockTestExamPage() {
             <Button variant="yellow" size="sm" onClick={goNext}>Next →</Button>
           ) : (
             <Button variant="orange" size="sm" onClick={() => setShowSubmitConfirm(true)} loading={submitMutation.isPending}>
-              Nộp bài ✓
+              Nộp bài
             </Button>
           )}
         </div>
@@ -519,8 +557,10 @@ function ExamQuestionBody({ question, currentAnswer, onChange, goNext }: {
 
   return (
     <div className="p-8 text-center text-gray-400">
-      <p className="text-3xl mb-2">🚧</p>
-      <p className="text-sm">{type} - chưa hỗ trợ</p>
+      <div className="w-12 h-12 mx-auto mb-2 rounded-xl bg-gray-100 flex items-center justify-center text-gray-400">
+        <Wrench size={22} />
+      </div>
+      <p className="text-sm font-medium text-gray-600">{type} - Đang hoàn thiện</p>
     </div>
   );
 }
@@ -634,14 +674,16 @@ function ExamSpeakingSection({ question, currentAnswer, onAnswered, goNext }: {
           <div className="flex items-center gap-5">
             {state === 'idle' && (
               <button onClick={startRecording}
-                className="w-16 h-16 sm:w-[4.5rem] sm:h-[4.5rem] rounded-full bg-brand-yellow hover:bg-brand-yellow-deep flex items-center justify-center text-3xl shadow-lg">
-                🎙️
+                className="w-16 h-16 sm:w-[4.5rem] sm:h-[4.5rem] rounded-full bg-brand-yellow hover:bg-brand-yellow-deep flex items-center justify-center shadow-lg transition-transform hover:scale-105"
+                title="Bắt đầu ghi âm">
+                <Mic size={28} className="text-brand-black" />
               </button>
             )}
             {state === 'recording' && (
               <button onClick={stopRecording}
-                className="w-16 h-16 sm:w-[4.5rem] sm:h-[4.5rem] rounded-full bg-white border-2 border-red-500 flex items-center justify-center text-3xl">
-                ⏹️
+                className="w-16 h-16 sm:w-[4.5rem] sm:h-[4.5rem] rounded-full bg-white border-2 border-red-500 flex items-center justify-center shadow-lg transition-transform hover:scale-105"
+                title="Dừng ghi âm">
+                <Square size={22} className="text-red-500 fill-red-500" />
               </button>
             )}
             {(state === 'stopped' || submitting) && (
@@ -658,7 +700,9 @@ function ExamSpeakingSection({ question, currentAnswer, onAnswered, goNext }: {
       ) : (
         <div className="flex flex-col items-center gap-3 py-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-green-100 border-2 border-green-400 flex items-center justify-center text-lg">✅</div>
+            <div className="w-10 h-10 rounded-full bg-green-50 border border-green-400 flex items-center justify-center text-green-600">
+              <CheckCircle2 size={20} />
+            </div>
             <span className="text-sm font-bold text-green-600">Đã ghi âm — đang chuyển câu tiếp theo...</span>
           </div>
         </div>
@@ -716,7 +760,7 @@ function ExamMCQ({ question, multiple, value, onChange, withAudio }: {
               )}
             >
               {multiple
-                ? <div className={clsx('w-5 h-5 rounded border-2 mt-0.5 flex-shrink-0 flex items-center justify-center', isSelected ? 'bg-brand-yellow border-brand-yellow' : 'border-gray-300')}>{isSelected && <span className="text-[9px] font-black">✓</span>}</div>
+                ? <div className={clsx('w-5 h-5 rounded border-2 mt-0.5 flex-shrink-0 flex items-center justify-center', isSelected ? 'bg-brand-yellow border-brand-yellow' : 'border-gray-300')}>{isSelected && <Check className="w-3.5 h-3.5 text-gray-950 stroke-[3]" />}</div>
                 : <div className={clsx('w-5 h-5 rounded-full border-2 mt-0.5 flex-shrink-0', isSelected ? 'border-brand-yellow' : 'border-gray-300')}>{isSelected && <div className="w-2.5 h-2.5 rounded-full bg-brand-yellow m-auto mt-0.5" />}</div>
               }
               <div className="flex gap-2 flex-1 min-w-0">
@@ -764,11 +808,14 @@ function ExamTextAnswer({ question, value, onChange, placeholder, rows = 5, minW
         placeholder={placeholder}
       />
       <div className="flex justify-between items-center">
-        <span className={clsx('text-sm font-semibold',
+        <span className={clsx('text-sm font-semibold flex items-center gap-1',
           isOver ? 'text-red-500' : isUnder ? 'text-gray-400' : 'text-green-600'
         )}>
-          {wordCount}{maxWords ? `/${maxWords}` : ''} words
-          {isOver ? ' ⚠️ Too long' : isUnder ? ` (min ${minWords})` : ''}
+          {isOver && <AlertTriangle size={14} className="text-red-500 shrink-0" />}
+          <span>
+            {wordCount}{maxWords ? `/${maxWords}` : ''} words
+            {isOver ? ' (Vượt quá giới hạn)' : isUnder ? ` (tối thiểu ${minWords})` : ''}
+          </span>
         </span>
       </div>
     </div>
@@ -864,7 +911,7 @@ function ExamFIB({ question, value, onChange }: {
                 val ? 'border-brand-yellow bg-brand-yellow-light text-brand-black' : 'border-gray-400 bg-gray-50 text-gray-400'
               )}>
               {val || '\u00A0\u00A0\u00A0\u00A0\u00A0'}
-              {val && <span className="ml-1 text-gray-400 text-xs">✕</span>}
+              {val && <X size={12} className="ml-1 text-gray-400 inline shrink-0" />}
             </span>
           );
         })}

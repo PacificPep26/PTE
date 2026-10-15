@@ -7,6 +7,7 @@ import { LocalNotifications } from "@capacitor/local-notifications";
 import React from "react";
 import { refreshNotificationsIfNeeded } from "./services/notifications";
 import api from "./api/index";
+import { ArrowUpCircle } from "lucide-react";
 
 // Hooks
 import { useMediaQuery } from "./hooks/useMediaQuery";
@@ -162,8 +163,8 @@ function useForceUpdate() {
 function ForceUpdateOverlay({ info }: { info: any }) {
   return (
     <div className="fixed inset-0 z-[9999] bg-white flex flex-col items-center justify-center p-6 text-center motion-safe:animate-fade-in-up">
-      <div className="w-20 h-20 bg-brand-gold rounded-full flex items-center justify-center text-white text-3xl mb-6 shadow-xl shadow-brand-gold/30">
-        🚀
+      <div className="w-20 h-20 bg-brand-gold rounded-full flex items-center justify-center text-white mb-6 shadow-xl shadow-brand-gold/30">
+        <ArrowUpCircle className="w-10 h-10" />
       </div>
       <h2 className="text-2xl font-black font-display text-gray-900 mb-2">Bản Cập Nhật Mới</h2>
       <p className="text-[14px] text-gray-500 mb-8 max-w-xs mx-auto leading-relaxed">

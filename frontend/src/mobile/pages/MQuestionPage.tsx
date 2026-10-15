@@ -23,6 +23,7 @@ import {
 } from "../../components/practice/QuestionTypes";
 import { AudioPlayer, AnalysisTable } from "../../components/ui";
 import { clsx } from "clsx";
+import { Bookmark, Flame, Repeat, Lightbulb, Wrench } from "lucide-react";
 
 // ── Bookmark hook ──────────────────────────────────────────────────────────────
 function useBookmark(questionId: string) {
@@ -134,9 +135,11 @@ function QuestionBody({ question, attempts, onSubmit }: { question: Question; at
 
   return (
     <div className="p-8 text-center text-gray-400">
-      <p className="text-4xl mb-3">🚧</p>
-      <p className="font-semibold">Dạng bài đang phát triển</p>
-      <p className="text-sm mt-1">{type}</p>
+      <div className="w-12 h-12 mx-auto mb-3 rounded-2xl bg-gray-100 flex items-center justify-center text-gray-400">
+        <Wrench size={24} />
+      </div>
+      <p className="font-semibold text-gray-600">Dạng bài đang phát triển</p>
+      <p className="text-xs text-gray-400 mt-1">{type}</p>
     </div>
   );
 }
@@ -262,13 +265,14 @@ export default function MQuestionPage() {
             <button
               onClick={toggleBookmark}
               className={clsx(
-                "w-9 h-9 rounded-xl flex items-center justify-center text-base border transition-colors",
+                "w-9 h-9 rounded-xl flex items-center justify-center border transition-colors",
                 bookmarked
-                  ? "bg-brand-gold border-brand-gold"
-                  : "bg-gray-100 border-gray-200"
+                  ? "bg-brand-gold border-brand-gold text-white"
+                  : "bg-gray-100 border-gray-200 text-gray-400"
               )}
+              title={bookmarked ? "Bỏ bookmark" : "Thêm bookmark"}
             >
-              {bookmarked ? "🔖" : "☆"}
+              <Bookmark size={18} className={bookmarked ? "fill-white" : ""} />
             </button>
           </div>
         }
@@ -287,8 +291,20 @@ export default function MQuestionPage() {
             >
               {question.level}
             </MBadge>
-            {question.isTrending && <MBadge color="orange">🔥 Trending</MBadge>}
-            {question.isRepeated && <MBadge color="blue">🔁 Hay ra</MBadge>}
+            {question.isTrending && (
+              <MBadge color="orange">
+                <span className="inline-flex items-center gap-1">
+                  <Flame size={11} /> Trending
+                </span>
+              </MBadge>
+            )}
+            {question.isRepeated && (
+              <MBadge color="blue">
+                <span className="inline-flex items-center gap-1">
+                  <Repeat size={11} /> Hay ra
+                </span>
+              </MBadge>
+            )}
           </div>
           <QuestionBody question={question} attempts={attempts} onSubmit={handleSubmitFeedback} />
         </div>
@@ -307,8 +323,8 @@ export default function MQuestionPage() {
         {question.tips && (
           <div className="px-4 mt-4">
             <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4">
-              <p className="text-[10px] font-black uppercase tracking-wider text-amber-700 mb-1.5">
-                💡 Tips & Tricks
+              <p className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-amber-700 mb-1.5">
+                <Lightbulb size={13} className="text-amber-600" /> Tips & Tricks
               </p>
               <p className="text-sm text-amber-900 leading-relaxed">{question.tips}</p>
             </div>

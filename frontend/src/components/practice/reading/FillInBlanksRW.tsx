@@ -4,6 +4,7 @@ import { Question } from "../../../types";
 import { Button, ScorePanel } from "../../ui";
 import { attemptsApi } from "../../../api";
 import { PracticeContentFrame } from "../shared/PracticeContentFrame";
+import { CheckCircle2 } from "lucide-react";
 
 export function FillInBlanksRW({ question }: { question: Question }) {
   type RawSeg = { text: string; isBlank: boolean; options?: string[] };
@@ -139,8 +140,9 @@ export function FillInBlanksRW({ question }: { question: Question }) {
 
       {submitted && correctAnswers.length > 0 && (
         <div className="mt-4 bg-green-50 border border-green-100 rounded-xl px-4 py-3">
-          <p className="text-[10px] font-black uppercase tracking-widest text-green-600 mb-2">
-            ✅ Đáp án đúng (Correct Answers)
+          <p className="text-[10px] font-black uppercase tracking-widest text-green-600 mb-2 flex items-center gap-1.5">
+            <CheckCircle2 className="w-3.5 h-3.5" />
+            <span>Đáp án đúng (Correct Answers)</span>
           </p>
           <div className="flex flex-wrap gap-x-4 gap-y-2">
             {correctAnswers.map((ans, idx) => (

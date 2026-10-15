@@ -1,4 +1,5 @@
 import React from "react";
+import { Mic } from "lucide-react";
 
 interface AIConsentModalProps {
   isOpen: boolean;
@@ -12,8 +13,8 @@ export function AIConsentModal({ isOpen, onAccept, onDecline }: AIConsentModalPr
   return (
     <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
       <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md p-6 space-y-4 text-center motion-safe:animate-fade-in-up">
-        <div className="w-14 h-14 rounded-2xl bg-amber-50 flex items-center justify-center mx-auto text-3xl">
-          🎙️
+        <div className="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 border border-amber-200/80 flex items-center justify-center mx-auto">
+          <Mic size={26} />
         </div>
         <h3 className="font-display font-black text-lg text-gray-900">
           Quyền riêng tư & Chấm điểm AI

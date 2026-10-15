@@ -1,6 +1,7 @@
 import React from "react";
 import { clsx } from "clsx";
 import { normalizeScore } from "../../../constants/scoring";
+import { Bot, Sparkles, Search, Volume2, Lightbulb, FileText, ChevronDown, ChevronUp, AlertTriangle } from "lucide-react";
 
 interface WordError {
   word: string;
@@ -82,9 +83,7 @@ function HighlightedTranscript({
               title={err.tip}
             >
               {trimmed}
-              <span className="text-[9px] text-red-400" aria-hidden>
-                ⚠
-              </span>
+              <AlertTriangle className="w-2.5 h-2.5 text-red-500 inline-block ml-0.5" />
             </span>
           );
         }
@@ -132,9 +131,9 @@ export function AITutorPanel({
   const col = scoreColor(pct);
 
   const scoreLabel =
-    pct >= 0.8 ? "Xuất sắc! 🌟" :
-    pct >= 0.6 ? "Khá tốt! 👍" :
-    pct >= 0.4 ? "Cần cải thiện 📈" : "Cần luyện thêm 💪";
+    pct >= 0.8 ? "Xuất sắc" :
+    pct >= 0.6 ? "Khá tốt" :
+    pct >= 0.4 ? "Cần cải thiện" : "Cần luyện thêm";
 
   const breakdownEntries = breakdown
     ? Object.entries(breakdown).filter(([k]) => !k.endsWith("_max") && SCORE_LABELS[k])
@@ -192,8 +191,8 @@ export function AITutorPanel({
       {tutorTip && (
         <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4">
           <div className="flex items-start gap-3">
-            <div className="w-9 h-9 rounded-xl bg-amber-100 border border-amber-200 flex items-center justify-center flex-shrink-0 text-lg">
-              🤖
+            <div className="w-9 h-9 rounded-xl bg-amber-100 border border-amber-200 flex items-center justify-center flex-shrink-0 text-amber-700">
+              <Bot className="w-5 h-5" />
             </div>
             <div className="flex-1">
               <p className="font-bold text-xs text-amber-700 uppercase tracking-widest mb-1">AI Tutor</p>
@@ -207,7 +206,7 @@ export function AITutorPanel({
       {mode === "speaking" && wordErrors.length > 0 && (
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
           <div className="px-4 py-3 border-b border-gray-50 flex items-center gap-2">
-            <span className="text-base">🔍</span>
+            <Search className="w-4 h-4 text-gray-500" />
             <p className="font-bold text-sm text-gray-900">Lỗi phát âm cụ thể</p>
             <span className="ml-auto bg-red-100 text-red-600 text-[10px] font-black px-2 py-0.5 rounded-full">
               {wordErrors.length} lỗi
@@ -220,7 +219,7 @@ export function AITutorPanel({
                 onClick={() => setExpandedError(expandedError === i ? null : i)}
                 className="w-full px-4 py-3 text-left flex items-start gap-3 active:bg-gray-50 transition-colors"
               >
-                <span className="text-base flex-shrink-0">🔊</span>
+                <Volume2 className="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="font-bold text-red-600 text-sm bg-red-50 px-2 py-0.5 rounded-lg">
@@ -229,13 +228,14 @@ export function AITutorPanel({
                     <span className="text-xs text-gray-400">{err.issue}</span>
                   </div>
                   {expandedError === i && (
-                    <p className="text-xs text-gray-700 mt-2 leading-relaxed bg-amber-50 rounded-lg px-3 py-2 border border-amber-100">
-                      💡 {err.tip}
-                    </p>
+                    <div className="text-xs text-gray-700 mt-2 leading-relaxed bg-amber-50 rounded-lg px-3 py-2 border border-amber-100 flex items-start gap-1.5">
+                      <Lightbulb className="w-3.5 h-3.5 text-amber-600 shrink-0 mt-0.5" />
+                      <span>{err.tip}</span>
+                    </div>
                   )}
                 </div>
-                <span className="text-gray-300 text-xs flex-shrink-0 mt-0.5">
-                  {expandedError === i ? "▲" : "▼"}
+                <span className="text-gray-400 text-xs flex-shrink-0 mt-0.5">
+                  {expandedError === i ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                 </span>
               </button>
             ))}
@@ -247,7 +247,7 @@ export function AITutorPanel({
       {mode === "writing" && vocabSuggestions.length > 0 && (
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
           <div className="px-4 py-3 border-b border-gray-50 flex items-center gap-2">
-            <span className="text-base">✨</span>
+            <Sparkles className="w-4 h-4 text-blue-500" />
             <p className="font-bold text-sm text-gray-900">Nâng cấp từ vựng</p>
             <span className="ml-auto bg-blue-100 text-blue-600 text-[10px] font-black px-2 py-0.5 rounded-full">
               +điểm từ vựng
@@ -267,9 +267,10 @@ export function AITutorPanel({
               </div>
             ))}
           </div>
-          <div className="px-4 py-2.5 bg-blue-50 border-t border-blue-100">
-            <p className="text-[10px] text-blue-600 font-medium">
-              💡 Sử dụng từ học thuật cao hơn giúp tăng điểm Vocabulary và Linguistic
+          <div className="px-4 py-2.5 bg-blue-50 border-t border-blue-100 flex items-center gap-1.5">
+            <Lightbulb className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+            <p className="text-[10px] text-blue-700 font-medium">
+              Sử dụng từ học thuật cao hơn giúp tăng điểm Vocabulary và Linguistic
             </p>
           </div>
         </div>
@@ -283,7 +284,7 @@ export function AITutorPanel({
             className="w-full px-4 py-3 flex items-center justify-between active:bg-gray-50 transition-colors"
           >
             <div className="flex items-center gap-2">
-              <span className="text-base">📝</span>
+              <FileText className="w-4 h-4 text-gray-500" />
               <p className="font-bold text-sm text-gray-900">Bản ghi âm</p>
               {wordErrors.length > 0 && (
                 <span className="text-[10px] text-red-500 font-medium">
@@ -291,7 +292,19 @@ export function AITutorPanel({
                 </span>
               )}
             </div>
-            <span className="text-gray-300 text-xs">{showTranscript ? "▲ Thu gọn" : "▼ Xem"}</span>
+            <span className="text-gray-400 text-xs flex items-center gap-1">
+              {showTranscript ? (
+                <>
+                  <ChevronUp className="w-3.5 h-3.5" />
+                  <span>Thu gọn</span>
+                </>
+              ) : (
+                <>
+                  <ChevronDown className="w-3.5 h-3.5" />
+                  <span>Xem</span>
+                </>
+              )}
+            </span>
           </button>
           {showTranscript && (
             <div className="px-4 pb-4 border-t border-gray-50">

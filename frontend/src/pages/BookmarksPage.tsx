@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { clsx } from 'clsx';
-import { Mic, PenTool, BookOpen, Headphones, Bookmark } from 'lucide-react';
+import { Mic, PenTool, BookOpen, Headphones, Bookmark, X } from 'lucide-react';
 import { questionsApi } from '../api';
 import { MainLayout } from '../components/layout/Sidebar';
 import { Button, Badge } from '../components/ui';
@@ -45,7 +45,10 @@ export default function BookmarksPage() {
         {/* Header */}
         <div className="bg-white border-b border-gray-100 px-8 h-14 flex items-center justify-between sticky top-0 z-30">
           <div className="flex items-center gap-3">
-            <h1 className="font-display font-black text-lg">🔖 Câu hỏi đã bookmark</h1>
+            <div className="flex items-center gap-2">
+              <Bookmark size={20} className="text-brand-orange" />
+              <h1 className="font-display font-black text-lg">Câu hỏi đã bookmark</h1>
+            </div>
             <span className="text-xs font-bold text-gray-400 bg-gray-100 px-2 py-1 rounded-lg">
               {ids.length} câu
             </span>
@@ -56,9 +59,11 @@ export default function BookmarksPage() {
         <div className="px-6 sm:px-8 py-6 max-w-6xl mx-auto w-full">
           {ids.length === 0 ? (
             <div className="card p-16 text-center">
-              <p className="text-4xl mb-4">🔖</p>
+              <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-amber-50 text-brand-orange flex items-center justify-center">
+                <Bookmark size={28} />
+              </div>
               <h2 className="font-display font-black text-xl mb-2">Chưa có bookmark nào</h2>
-              <p className="text-sm text-gray-400 mb-6">Click nút 🔖 khi luyện tập để lưu câu hỏi vào đây</p>
+              <p className="text-sm text-gray-400 mb-6">Nhấn biểu tượng Bookmark khi luyện tập để lưu câu hỏi vào đây</p>
               <Button variant="yellow" onClick={() => navigate('/practice/speaking')}>
                 Bắt đầu luyện tập →
               </Button>
@@ -128,7 +133,7 @@ export default function BookmarksPage() {
                           className="w-8 h-8 rounded-lg border border-gray-200 flex items-center justify-center text-gray-400 hover:text-red-500 hover:border-red-300 transition-colors"
                           title="Xoá bookmark"
                         >
-                          ✕
+                          <X size={14} />
                         </button>
                       </div>
                     </div>

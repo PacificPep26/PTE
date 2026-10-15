@@ -1,17 +1,18 @@
 import React from "react";
 import { NavLink, useLocation, Outlet } from "react-router-dom";
 import { clsx } from "clsx";
+import { useTranslation } from "../../stores/languageStore";
 
 interface TabItem {
   path: string;
   icon: (active: boolean) => React.ReactNode;
-  label: string;
+  labelKey: string;
 }
 
 const TABS: TabItem[] = [
   {
     path: "/dashboard",
-    label: "Trang chủ",
+    labelKey: "nav.home",
     icon: (active) => (
       <svg className={clsx("w-5 h-5 transition-all", active ? "stroke-brand-gold" : "stroke-gray-400")}
         viewBox="0 0 24 24" fill={active ? "rgba(228,168,8,0.12)" : "none"} strokeWidth={active ? 2.5 : 2}>
@@ -22,7 +23,7 @@ const TABS: TabItem[] = [
   },
   {
     path: "/practice",
-    label: "Luyện tập",
+    labelKey: "nav.practice",
     icon: (active) => (
       <svg className={clsx("w-5 h-5 transition-all", active ? "stroke-brand-gold" : "stroke-gray-400")}
         viewBox="0 0 24 24" fill={active ? "rgba(228,168,8,0.12)" : "none"} strokeWidth={active ? 2.5 : 2}>
@@ -33,7 +34,7 @@ const TABS: TabItem[] = [
   },
   {
     path: "/mock-test",
-    label: "Thi thử",
+    labelKey: "nav.mockTest",
     icon: (active) => (
       <svg className={clsx("w-5 h-5 transition-all", active ? "stroke-brand-gold" : "stroke-gray-400")}
         viewBox="0 0 24 24" fill={active ? "rgba(228,168,8,0.12)" : "none"} strokeWidth={active ? 2.5 : 2}>
@@ -44,7 +45,7 @@ const TABS: TabItem[] = [
   },
   {
     path: "/analytics",
-    label: "Phân tích",
+    labelKey: "nav.analytics",
     icon: (active) => (
       <svg className={clsx("w-5 h-5 transition-all", active ? "stroke-brand-gold" : "stroke-gray-400")}
         viewBox="0 0 24 24" fill={active ? "rgba(228,168,8,0.12)" : "none"} strokeWidth={active ? 2.5 : 2}>
@@ -54,7 +55,7 @@ const TABS: TabItem[] = [
   },
   {
     path: "/profile",
-    label: "Cá nhân",
+    labelKey: "nav.personal",
     icon: (active) => (
       <svg className={clsx("w-5 h-5 transition-all", active ? "stroke-brand-gold" : "stroke-gray-400")}
         viewBox="0 0 24 24" fill={active ? "rgba(228,168,8,0.12)" : "none"} strokeWidth={active ? 2.5 : 2}>
@@ -67,6 +68,7 @@ const TABS: TabItem[] = [
 
 export function MobileShell({ children }: { children?: React.ReactNode }) {
   const { pathname } = useLocation();
+  const { t } = useTranslation();
   const isPracticeActive = pathname.startsWith("/practice") || pathname.startsWith("/question");
 
   return (
@@ -96,7 +98,7 @@ export function MobileShell({ children }: { children?: React.ReactNode }) {
                     isActive ? "text-brand-gold" : "text-gray-400"
                   )}
                 >
-                  {tab.label}
+                  {t(tab.labelKey)}
                 </span>
                 <span
                   className={clsx(

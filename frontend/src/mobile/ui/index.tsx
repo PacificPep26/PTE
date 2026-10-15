@@ -1,5 +1,6 @@
 import React from "react";
 import { clsx } from "clsx";
+import { X, CheckCircle2 } from "lucide-react";
 
 // ── MButton ───────────────────────────────────────────────────────────────────
 interface MButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -510,9 +511,9 @@ export function MSheet({
           )}
           <button
             onClick={onClose}
-            className="ml-auto w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-400"
+            className="ml-auto w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors"
           >
-            ✕
+            <X size={15} />
           </button>
         </div>
         <div className="px-5 pb-4">{children}</div>
@@ -636,8 +637,8 @@ export function MCompletionToast({
   const hasScore = score !== undefined && maxScore !== undefined;
   return (
     <div className="fixed top-20 left-1/2 -translate-x-1/2 z-[80] pointer-events-none">
-      <div className="completion-burst flex items-center gap-2 bg-brand-charcoal text-white px-4 py-2.5 rounded-2xl shadow-lg">
-        <span className="text-lg">✅</span>
+      <div className="completion-burst flex items-center gap-2.5 bg-brand-charcoal text-white px-4 py-2.5 rounded-2xl shadow-lg border border-white/10">
+        <CheckCircle2 size={22} className="text-emerald-400 shrink-0" />
         <div>
           <p className="text-xs font-black text-brand-gold-bright uppercase tracking-wide leading-none">Đã nộp bài</p>
           {hasScore && (

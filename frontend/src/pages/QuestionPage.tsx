@@ -7,6 +7,7 @@ import {
 } from '../components/practice/QuestionTypes';
 import { Question } from '../types';
 import { AudioPlayer } from '../components/ui';
+import { Wrench } from 'lucide-react';
 
 export default function QuestionPage() {
   const { id } = useParams<{ id: string }>();
@@ -102,9 +103,11 @@ function QuestionBody({ question, attempts }: { question: Question; attempts: an
 
   return (
     <div className="p-8 text-center text-gray-400">
-      <p className="text-4xl mb-3">🚧</p>
-      <p className="font-semibold">Question type under development</p>
-      <p className="text-sm mt-1">{type}</p>
+      <div className="w-12 h-12 mx-auto mb-3 rounded-2xl bg-gray-100 flex items-center justify-center text-gray-400">
+        <Wrench size={24} />
+      </div>
+      <p className="font-semibold text-gray-600">Dạng bài đang được hoàn thiện</p>
+      <p className="text-xs text-gray-400 mt-1">{type}</p>
     </div>
   );
 }

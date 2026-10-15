@@ -6,6 +6,19 @@ import { mockTestApi } from "../../api";
 import { MobileHeader } from "../layout/MobileShell";
 import { MBadge, MSkeleton, MEmptyState } from "../ui";
 import { saveTestOffline, deleteOfflineTest, isTestOffline } from "../../services/offlineStorage";
+import { 
+  ClipboardCheck, 
+  Clock, 
+  Mic, 
+  BatteryCharging, 
+  VolumeX, 
+  Check, 
+  AlertTriangle, 
+  ArrowRight, 
+  Target, 
+  ClipboardList, 
+  CheckCircle2 
+} from "lucide-react";
 
 // ── Pre-test Checklist Modal ──────────────────────────────────────────────────
 function PreTestModal({
@@ -27,11 +40,13 @@ function PreTestModal({
           className="px-6 pt-8 pb-6 text-center"
           style={{ background: "linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)" }}
         >
-          <p className="text-4xl mb-3">📋</p>
+          <div className="w-14 h-14 mx-auto mb-3 rounded-2xl bg-white/10 text-brand-gold-bright flex items-center justify-center">
+            <ClipboardCheck size={28} />
+          </div>
           <h2 className="font-display font-black text-xl text-white">Chuẩn bị thi</h2>
           <p className="text-sm text-white/60 mt-1">{test.title}</p>
           <div className="mt-3 inline-flex items-center gap-2 bg-white/10 rounded-xl px-4 py-2">
-            <span className="text-lg">⏱</span>
+            <Clock size={16} className="text-brand-gold-bright" />
             <span className="font-bold text-white">{test.durationMinutes} phút</span>
           </div>
         </div>
@@ -43,9 +58,9 @@ function PreTestModal({
           </p>
 
           {[
-            { key: "mic" as const, icon: "🎙️", label: "Microphone hoạt động tốt", sub: "Speaking cần mic ghi âm" },
-            { key: "charger" as const, icon: "🔌", label: "Đã cắm sạc điện thoại", sub: `Bài thi kéo dài ${test.durationMinutes} phút` },
-            { key: "quiet" as const, icon: "🔇", label: "Môi trường yên tĩnh", sub: "Không có tiếng ồn xung quanh" },
+            { key: "mic" as const, Icon: Mic, label: "Microphone hoạt động tốt", sub: "Speaking cần mic ghi âm" },
+            { key: "charger" as const, Icon: BatteryCharging, label: "Đã cắm sạc điện thoại", sub: `Bài thi kéo dài ${test.durationMinutes} phút` },
+            { key: "quiet" as const, Icon: VolumeX, label: "Môi trường yên tĩnh", sub: "Không có tiếng ồn xung quanh" },
           ].map((item) => (
             <button
               key={item.key}
@@ -58,10 +73,10 @@ function PreTestModal({
               )}
             >
               <div className={clsx(
-                "w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 text-xl border-2 transition-all",
-                checks[item.key] ? "bg-green-100 border-green-400" : "bg-white border-gray-200"
+                "w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 border-2 transition-all",
+                checks[item.key] ? "bg-green-100 border-green-400 text-green-700" : "bg-white border-gray-200 text-gray-500"
               )}>
-                {checks[item.key] ? "✅" : item.icon}
+                {checks[item.key] ? <Check size={18} strokeWidth={3} /> : <item.Icon size={18} />}
               </div>
               <div className="flex-1">
                 <p className="font-bold text-sm text-gray-900">{item.label}</p>
@@ -72,9 +87,10 @@ function PreTestModal({
         </div>
 
         {/* Warning */}
-        <div className="mx-6 mb-4 bg-amber-50 border border-amber-200 rounded-2xl px-4 py-3">
-          <p className="text-xs text-amber-700 font-medium">
-            ⚠️ Trong khi thi: <strong>không có nút Back</strong>, không thoát app. Timer sẽ chạy liên tục.
+        <div className="mx-6 mb-4 bg-amber-50 border border-amber-200 rounded-2xl px-4 py-3 flex items-start gap-2.5">
+          <AlertTriangle size={16} className="text-amber-700 shrink-0 mt-0.5" />
+          <p className="text-xs text-amber-700 font-medium leading-relaxed">
+            Trong khi thi: <strong>không có nút Back</strong>, không thoát app. Timer sẽ chạy liên tục.
           </p>
         </div>
 
@@ -84,13 +100,14 @@ function PreTestModal({
             onClick={onStart}
             disabled={!allChecked}
             className={clsx(
-              "w-full py-4 rounded-2xl font-bold text-base transition-all active:scale-[0.97]",
+              "w-full py-4 rounded-2xl font-bold text-base transition-all active:scale-[0.97] flex items-center justify-center gap-2",
               allChecked
                 ? "bg-brand-gold text-white shadow-gold-sm"
                 : "bg-gray-100 text-gray-400 cursor-not-allowed"
             )}
           >
-            {allChecked ? "🚀 Bắt đầu thi ngay" : "Tick đủ 3 mục để bắt đầu"}
+            <span>{allChecked ? "Bắt đầu thi ngay" : "Tick đủ 3 mục để bắt đầu"}</span>
+            {allChecked && <ArrowRight size={18} />}
           </button>
           <button onClick={onClose} className="w-full text-sm text-gray-400 active:opacity-70">
             Hủy, để sau
@@ -195,7 +212,7 @@ export default function MMockTestPage() {
                 tab === t ? "bg-white text-gray-900 shadow-sm" : "text-gray-400"
               )}
             >
-              {t === "library" ? "📚 Thư viện đề" : "📋 Lịch sử"}
+              {t === "library" ? "Thư viện đề" : "Lịch sử"}
             </button>
           ))}
         </div>
@@ -208,7 +225,9 @@ export default function MMockTestPage() {
               className="rounded-2xl px-4 py-3 flex items-center gap-3"
               style={{ background: "linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)" }}
             >
-              <span className="text-2xl">🎯</span>
+              <div className="w-10 h-10 rounded-xl bg-white/10 text-brand-gold-bright flex items-center justify-center shrink-0">
+                <Target size={20} />
+              </div>
               <div>
                 <p className="font-bold text-sm text-white">Mô phỏng thi thật</p>
                 <p className="text-xs text-white/50">Làm trong 1 lần • Không được back • Timer chạy liên tục</p>
@@ -220,7 +239,7 @@ export default function MMockTestPage() {
             ))}
 
             {!isLoading && (tests || []).length === 0 && (
-              <MEmptyState icon="📝" title="Chưa có mock test" description="Admin chưa thêm đề thi nào." />
+              <MEmptyState icon={<ClipboardList size={36} className="text-gray-300" />} title="Chưa có mock test" description="Hệ thống đang đồng bộ đề thi." />
             )}
 
             {(tests || []).map((mt: any) => {
@@ -241,12 +260,12 @@ export default function MMockTestPage() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="font-bold text-sm text-gray-900 truncate">{mt.title}</p>
-                    <p className="text-xs text-gray-400 mt-0.5">
-                      ⏱ {mt.durationMinutes} phút · {mt.updatedYear || "2024"}
+                    <p className="inline-flex items-center gap-1 text-xs text-gray-400 mt-0.5">
+                      <Clock size={11} /> {mt.durationMinutes} phút · {mt.updatedYear || "2024"}
                     </p>
                     <div className="flex items-center gap-2 mt-1.5">
                       <MBadge color={status === "done" ? "green" : status === "progress" ? "gold" : "gray"}>
-                        {status === "done" ? "✓ Hoàn thành" : status === "progress" ? "Tiếp tục" : "Chưa làm"}
+                        {status === "done" ? "Hoàn thành" : status === "progress" ? "Tiếp tục" : "Chưa làm"}
                       </MBadge>
                       {score !== null && <MBadge color="gold">{score}/90</MBadge>}
                     </div>
@@ -294,7 +313,7 @@ export default function MMockTestPage() {
         {tab === "history" && (
           <div className="space-y-2.5">
             {(!history || (history as any[]).length === 0) && (
-              <MEmptyState icon="📋" title="Chưa có lịch sử thi" description="Hoàn thành một mock test để xem kết quả." />
+              <MEmptyState icon={<ClipboardCheck size={36} className="text-gray-300" />} title="Chưa có lịch sử thi" description="Hoàn thành một mock test để xem kết quả." />
             )}
             {(history || []).map((h: any) => {
               const mt = (tests as any[])?.find((t: any) => t.id === h.mockTestId);
@@ -309,10 +328,10 @@ export default function MMockTestPage() {
                   className="w-full bg-white rounded-2xl p-4 flex items-center gap-3 active:scale-[0.98] transition-transform text-left shadow-sm border border-gray-100"
                 >
                   <div className={clsx(
-                    "w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 text-2xl",
-                    h.status === "COMPLETED" ? "bg-green-50" : "bg-amber-50"
+                    "w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0",
+                    h.status === "COMPLETED" ? "bg-green-50 text-green-600" : "bg-amber-50 text-amber-600"
                   )}>
-                    {h.status === "COMPLETED" ? "✅" : "⏳"}
+                    {h.status === "COMPLETED" ? <CheckCircle2 size={24} /> : <Clock size={24} />}
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="font-bold text-sm text-gray-900 truncate">{mt?.title || "Mock Test"}</p>

@@ -5,7 +5,7 @@ import { clsx } from "clsx";
 import {
   Users, ClipboardList, Search, Crown,
   CheckCircle2, Clock, AlertCircle, ChevronLeft, ChevronRight,
-  Shield, UserCheck, XCircle,
+  Shield, UserCheck, XCircle, X,
   BarChart3, TrendingUp, Activity, ChevronDown, ChevronUp,
   Play, Trash2, Edit3, Save, FileText, Check, UploadCloud,
   Download, BookOpen, Sparkles
@@ -119,7 +119,9 @@ function QuestionModal({ initial, onClose, onSave, saving }: {
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col my-8">
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
           <h2 className="font-display font-black text-lg">{form.id ? "Sửa câu hỏi" : "Thêm câu hỏi"}</h2>
-          <button onClick={onClose} className="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-400">✕</button>
+          <button onClick={onClose} className="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors">
+            <X size={16} />
+          </button>
         </div>
         <div className="flex-1 overflow-y-auto px-6 py-5 space-y-4">
           <div>
@@ -444,8 +446,8 @@ function QuestionsTab() {
         </select>
         {(skill || level || search) && (
           <button onClick={() => { setSkill(""); setLevel(""); setSearch(""); setPage(1); }}
-            className="text-xs font-bold text-red-500 hover:underline transition-all">
-            ✕ Xóa bộ lọc
+            className="inline-flex items-center gap-1 text-xs font-bold text-red-500 hover:underline transition-all">
+            <X size={12} /> Xóa bộ lọc
           </button>
         )}
       </div>
@@ -671,7 +673,9 @@ function MockTestModal({ mock, allQuestions, onClose, onSave, saving }: {
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col my-8">
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
           <h2 className="font-display font-black text-lg">{mock.id ? "Cập nhật Mock Test" : "Tạo Mock Test mới"}</h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600">✕</button>
+          <button onClick={onClose} className="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors">
+            <X size={16} />
+          </button>
         </div>
         <div className="flex-1 overflow-y-auto px-6 py-5 space-y-4 grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-1 space-y-4">
@@ -928,7 +932,9 @@ function AiScoringTab() {
                 <h3 className="font-display font-black text-base">{reviewAttempt.userFullName}</h3>
                 <p className="text-xs text-gray-400">{reviewAttempt.testCode} - {reviewAttempt.testTitle}</p>
               </div>
-              <button onClick={() => setReviewAttempt(null)} className="text-gray-400 hover:text-gray-600">✕</button>
+              <button onClick={() => setReviewAttempt(null)} className="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors">
+                <X size={16} />
+              </button>
             </div>
             <div className="flex-1 overflow-y-auto px-6 py-5 space-y-4">
               <h4 className="text-xs font-black uppercase text-gray-400 tracking-wider">Thay đổi điểm thủ công</h4>
@@ -1146,7 +1152,9 @@ function UserActivityPanel({ user, onClose }: { user: any; onClose: () => void }
       <div className="card p-5 bg-white">
         <div className="flex items-center justify-between mb-4">
           <h3 className="font-display font-black text-sm">Hoạt động của học viên</h3>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-xs">✕</button>
+          <button onClick={onClose} className="w-7 h-7 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors">
+            <X size={14} />
+          </button>
         </div>
         <div className="flex items-center gap-2.5 mb-4 pb-4 border-b border-gray-100">
           <div className="w-10 h-10 rounded-full flex items-center justify-center text-[12px] font-black text-white"

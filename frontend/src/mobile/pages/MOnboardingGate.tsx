@@ -1,7 +1,7 @@
 import React from "react";
 import { Capacitor } from "@capacitor/core";
 import { BrandLogo } from "../../components/common/BrandLogo";
-import { FileText } from "lucide-react";
+import { FileText, Bot, ClipboardCheck, Smartphone, Target, Calendar, ArrowRight } from "lucide-react";
 
 const KEY_ONBOARDING = "fly_onboarding_v2";
 const KEY_TERMS_ACCEPTED = "fly_terms_accepted_v1";
@@ -19,21 +19,21 @@ type Phase = "splash" | "slides" | "personalize" | "consent" | "done";
 
 const SLIDES = [
   {
-    emoji: "🤖",
+    icon: Bot,
     bg: "linear-gradient(135deg, #1a1a1a 0%, #292929 100%)",
     accent: "#f59e0b",
     title: "AI chấm điểm tức thì",
     desc: "Nhận phản hồi chi tiết về phát âm, ngữ pháp và từ vựng chỉ trong vài giây — giống như có gia sư riêng.",
   },
   {
-    emoji: "📋",
+    icon: ClipboardCheck,
     bg: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)",
     accent: "#3b82f6",
     title: "Bám sát đề thi thật",
     desc: "Ngân hàng câu hỏi cập nhật liên tục, bám sát cấu trúc và định dạng đề thi PTE chính thức.",
   },
   {
-    emoji: "📱",
+    icon: Smartphone,
     bg: "linear-gradient(135deg, #052e16 0%, #14532d 100%)",
     accent: "#22c55e",
     title: "Học mọi lúc mọi nơi",
@@ -145,10 +145,10 @@ function OnboardingSlides({ onDone }: { onDone: () => void }) {
         style={{ opacity: animDir === "in" ? 1 : 0, transform: animDir === "in" ? "translateY(0)" : "translateY(16px)" }}
       >
         <div
-          className="w-28 h-28 rounded-3xl flex items-center justify-center text-6xl mb-8 shadow-2xl"
+          className="w-28 h-28 rounded-3xl flex items-center justify-center mb-8 shadow-2xl"
           style={{ background: `${slide.accent}22`, border: `2px solid ${slide.accent}44` }}
         >
-          {slide.emoji}
+          <slide.icon className="w-14 h-14" style={{ color: slide.accent }} />
         </div>
         <h2 className="font-display font-black text-2xl text-white leading-tight mb-4">
           {slide.title}
@@ -178,10 +178,17 @@ function OnboardingSlides({ onDone }: { onDone: () => void }) {
 
         <button
           onClick={next}
-          className="w-full min-h-[54px] rounded-2xl font-bold text-base text-gray-900 active:scale-[0.97] transition-transform shadow-lg"
+          className="w-full min-h-[54px] rounded-2xl font-bold text-base text-gray-900 active:scale-[0.97] transition-transform shadow-lg flex items-center justify-center gap-2"
           style={{ background: slide.accent }}
         >
-          {current < SLIDES.length - 1 ? "Tiếp theo →" : "Bắt đầu ngay 🚀"}
+          {current < SLIDES.length - 1 ? (
+            <>
+              <span>Tiếp theo</span>
+              <ArrowRight className="w-5 h-5" />
+            </>
+          ) : (
+            <span>Bắt đầu ngay</span>
+          )}
         </button>
       </div>
     </div>
@@ -207,7 +214,13 @@ function PersonalizeScreen({ onDone }: { onDone: () => void }) {
     >
       {/* Header */}
       <div className="px-6 pt-16 pb-6 text-center">
-        <p className="text-3xl mb-3">{step === "score" ? "🎯" : "📅"}</p>
+        <div className="flex justify-center mb-3">
+          {step === "score" ? (
+            <Target className="w-10 h-10 text-amber-500" />
+          ) : (
+            <Calendar className="w-10 h-10 text-amber-500" />
+          )}
+        </div>
         <h2 className="font-display font-black text-2xl text-gray-900">
           {step === "score" ? "Mục tiêu của bạn?" : "Ngày thi dự kiến?"}
         </h2>

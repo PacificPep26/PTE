@@ -3,6 +3,7 @@ import { MicSection } from "../shared/MicSection";
 import { PracticeContentFrame, PracticeStepHint } from "../shared/PracticeContentFrame";
 import { SpeakingPromptAudio } from "../shared/SpeakingPromptAudio";
 import { getMaxScore } from "../../../constants/scoring";
+import { ImageOff, Lightbulb } from "lucide-react";
 
 export function DescribeImage({ question }: { question: Question }) {
   if (!question.imageUrl) {
@@ -10,7 +11,9 @@ export function DescribeImage({ question }: { question: Question }) {
       <PracticeContentFrame>
         <div className="practice-body-plain py-8 sm:py-12 text-center">
           <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5 sm:p-8 max-w-md mx-auto">
-            <p className="text-4xl sm:text-5xl mb-3 sm:mb-4">🖼️❓</p>
+            <div className="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center mx-auto mb-3 text-amber-700">
+              <ImageOff className="w-6 h-6" />
+            </div>
             <h3 className="text-base sm:text-lg font-bold text-amber-900">Thiếu hình</h3>
             <p className="text-sm text-amber-700 mt-2 leading-relaxed">
               Câu Describe Image này chưa có ảnh. Vui lòng chọn câu khác.
@@ -60,8 +63,9 @@ export function DescribeImage({ question }: { question: Question }) {
       {question.suggestedAnswer && (
         <div className="px-3 pb-3 sm:px-5 sm:pb-5">
           <div className="bg-blue-50 border border-blue-100 rounded-xl px-3 py-3 sm:px-4 sm:py-4 mt-2">
-            <h4 className="text-[10px] font-black uppercase tracking-widest text-blue-500 mb-2">
-              💡Gợi ý mẫu 
+            <h4 className="text-[10px] font-black uppercase tracking-widest text-blue-500 mb-2 flex items-center gap-1">
+              <Lightbulb className="w-3.5 h-3.5 text-blue-500" />
+              <span>Gợi ý mẫu</span>
             </h4>
             <p className="text-sm text-blue-900 leading-relaxed">
               {question.suggestedAnswer}
