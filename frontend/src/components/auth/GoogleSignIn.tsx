@@ -74,7 +74,6 @@ export function GoogleSignIn({
       const el = divRef.current;
       if (!el || !window.google?.accounts?.id) return;
       try {
-        el.innerHTML = '';
         window.google.accounts.id.initialize({ client_id: clientId, callback });
         window.google.accounts.id.renderButton(el, {
           type: 'standard',
@@ -120,13 +119,19 @@ export function GoogleSignIn({
 
   return (
     <div className="w-full">
-      <div ref={divRef} className="flex min-h-[44px] justify-center items-center w-full">
+      <div className="flex min-h-[44px] justify-center items-center w-full relative">
+        {/* Placeholder while GIS script downloads */}
         {!isReady && (
           <div className="w-full max-w-[380px] h-[44px] flex items-center justify-center gap-2.5 border border-gray-200 rounded-xl bg-white text-gray-700 font-semibold text-xs shadow-sm">
             <GoogleIcon />
             <span>Tiếp tục với Google</span>
           </div>
         )}
+        {/* Isolated DOM container exclusively for Google GIS. React NEVER puts children in this div */}
+        <div
+          ref={divRef}
+          className={!isReady ? 'hidden' : 'w-full flex justify-center'}
+        />
       </div>
       {initError && (
         <p className="mt-2 text-xs text-amber-700 text-center font-medium">
