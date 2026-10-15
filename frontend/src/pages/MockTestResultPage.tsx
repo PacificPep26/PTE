@@ -4,6 +4,7 @@ import { clsx } from 'clsx';
 import { Mic, PenTool, BookOpen, Headphones, RotateCcw, List, Home, AlertCircle, Clock } from 'lucide-react';
 import { mockTestApi } from '../api';
 import { Button } from '../components/ui';
+import { BrandLogo } from '../components/common/BrandLogo';
 
 const SECTION_CONFIG = [
   { key: 'speaking', label: 'Speaking', icon: Mic, iconColor: 'text-amber-600', bg: 'bg-amber-50', color: 'yellow' },
@@ -88,12 +89,7 @@ export default function MockTestResultPage() {
     <div className="min-h-screen bg-brand-cream">
       {/* Header */}
       <header className="bg-white border-b border-gray-100 px-8 h-14 flex items-center justify-between sticky top-0 z-30">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-brand-gold rounded-lg flex items-center justify-center font-black text-black text-xs">
-            FLY
-          </div>
-          <span className="font-display font-black">FLY PTE</span>
-        </div>
+        <BrandLogo theme="light" size="sm" />
         <h1 className="font-display font-black text-base">Kết quả thi</h1>
         <Button variant="ghost" size="sm" onClick={() => navigate('/mock-test')}>← Về danh sách</Button>
       </header>

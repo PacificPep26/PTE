@@ -10,6 +10,7 @@ import { useRecorder } from '../hooks/useRecorder';
 import { parseReadingFibDrag } from '../utils/readingFibDrag';
 import { parseListeningFibSegments } from '../utils/listeningFibSegments';
 import { AIConsentModal } from '../components/ui/AIConsentModal';
+import { BrandLogo } from '../components/common/BrandLogo';
 
 // ── Mock Test Library Page ─────────────────────────────────────────────────
 export function MockTestPage() {
@@ -228,10 +229,7 @@ export function MockTestExamPage() {
     <div className="min-h-screen bg-brand-cream flex flex-col">
       {/* Header */}
       <header className="bg-white border-b border-gray-100 px-6 sm:px-8 h-[3.25rem] sm:h-14 flex items-center justify-between sticky top-0 z-50 shadow-sm">
-        <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 sm:w-10 sm:h-10 bg-brand-yellow rounded-lg flex items-center justify-center text-base sm:text-lg">✈️</div>
-          <span className="font-display font-black text-base sm:text-lg">FlyEdu</span>
-        </div>
+        <BrandLogo theme="light" size="sm" />
         <div className="flex items-center gap-2 sm:gap-3">
           <span className="text-sm text-gray-500 hidden sm:inline">Time remaining</span>
           <span className={clsx('font-display font-black text-xl sm:text-2xl tabular-nums', timeLeft < 600 ? 'text-red-500' : 'text-brand-black')}>

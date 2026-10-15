@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { logoUrl } from "../../assets";
+import { BrandLogo } from "../../components/common/BrandLogo";
 
 export function MTermsPage() {
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ export function MTermsPage() {
           >
             ← Quay lại
           </button>
-          <img src={logoUrl} alt="FLY Academy" className="h-8 w-auto" />
+          <BrandLogo theme="light" size="sm" />
         </div>
 
         <div className="m-card-elevated rounded-3xl bg-white p-6 text-sm leading-relaxed text-gray-800 shadow-sm space-y-4">
@@ -26,7 +26,7 @@ export function MTermsPage() {
           </h1>
 
           <p>
-            Khi sử dụng ứng dụng <strong>FLY PTE Academy</strong>, bạn đồng ý
+            Khi sử dụng ứng dụng <strong>PTE Study</strong>, bạn đồng ý
             tuân thủ các điều khoản dưới đây để đảm bảo môi trường học tập an
             toàn, công bằng và hiệu quả.
           </p>
@@ -35,7 +35,7 @@ export function MTermsPage() {
           <p>
             Bạn chịu trách nhiệm bảo mật thông tin đăng nhập và mọi hoạt động
             phát sinh từ tài khoản của mình. Vui lòng không chia sẻ tài khoản
-            cho người khác khi chưa có sự đồng ý của FLY PTE Academy.
+            cho người khác khi chưa có sự đồng ý của PTE Study.
           </p>
 
           <h2 className="mt-4 text-lg font-bold text-gray-900">2. Nội dung luyện tập</h2>
@@ -55,14 +55,14 @@ export function MTermsPage() {
 
           <h2 className="mt-4 text-lg font-bold text-gray-900">4. Thay đổi điều khoản</h2>
           <p>
-            FLY PTE Academy có thể cập nhật điều khoản sử dụng để phù hợp với
+            PTE Study có thể cập nhật điều khoản sử dụng để phù hợp với
             sản phẩm và quy định hiện hành. Các thay đổi quan trọng sẽ được
             thông báo trong ứng dụng khi cần thiết.
           </p>
 
           <p className="mt-8 text-xs italic text-gray-500">
             Cập nhật lần cuối: Tháng 5 năm 2026. Nếu bạn có thắc mắc, vui lòng
-            liên hệ với bộ phận hỗ trợ của FLY PTE.
+            liên hệ với bộ phận hỗ trợ của PTE Study.
           </p>
         </div>
       </div>

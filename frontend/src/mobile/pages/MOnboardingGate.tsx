@@ -1,6 +1,7 @@
 import React from "react";
 import { Capacitor } from "@capacitor/core";
-import { logoUrl } from "../../assets";
+import { BrandLogo } from "../../components/common/BrandLogo";
+import { FileText } from "lucide-react";
 
 const KEY_ONBOARDING = "fly_onboarding_v2";
 const KEY_TERMS_ACCEPTED = "fly_terms_accepted_v1";
@@ -94,12 +95,7 @@ function SplashScreen({ onDone }: { onDone: () => void }) {
         style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(24px)" }}
       >
         <div className="relative">
-          <div className="absolute inset-0 rounded-3xl bg-brand-gold/20 blur-2xl scale-110" />
-          <img src={logoUrl} alt="FLY Academy" className="relative w-40 h-auto drop-shadow-xl" />
-        </div>
-        <div className="text-center">
-          <p className="text-base font-bold text-amber-900 tracking-wide">FLY Academic</p>
-          <p className="text-sm text-amber-700 mt-1">Luyện thi PTE · AI Chấm điểm</p>
+          <BrandLogo theme="light" size="lg" showSubtitle />
         </div>
         <div className="flex gap-1.5 mt-4">
           {[0, 1, 2].map((i) => (
@@ -291,7 +287,7 @@ function PersonalizeScreen({ onDone }: { onDone: () => void }) {
               onClick={saveAndNext}
               className="w-full min-h-[54px] rounded-2xl font-bold text-base bg-brand-gold text-white shadow-gold-sm active:scale-[0.97] transition-all"
             >
-              Bắt đầu học ngay 🚀
+              Bắt đầu học ngay
             </button>
             <button onClick={saveAndNext} className="w-full text-sm text-gray-400 active:opacity-70">
               Bỏ qua
@@ -299,7 +295,7 @@ function PersonalizeScreen({ onDone }: { onDone: () => void }) {
           </>
         )}
         <p className="text-center text-[11px] text-gray-300 pt-1">
-          Bằng cách tiếp tục, bạn đồng ý với Điều khoản sử dụng & Chính sách Bảo mật của FLY Academic
+          Bằng cách tiếp tục, bạn đồng ý với Điều khoản sử dụng & Chính sách Bảo mật của PTE Study
         </p>
       </div>
     </div>
@@ -324,7 +320,9 @@ function ConsentScreen({ onDone }: { onDone: () => void }) {
       style={{ background: "linear-gradient(175deg, #fffdf8 0%, #fef9e7 100%)" }}
     >
       <div className="px-6 pt-16 pb-4 text-center">
-        <p className="text-3xl mb-3">📄</p>
+        <div className="w-12 h-12 rounded-2xl bg-amber-100 flex items-center justify-center mx-auto mb-3 text-amber-700">
+          <FileText size={24} />
+        </div>
         <h2 className="font-display font-black text-2xl text-gray-900">
           Đồng ý điều khoản sử dụng
         </h2>
@@ -340,7 +338,7 @@ function ConsentScreen({ onDone }: { onDone: () => void }) {
             className="w-full text-left rounded-xl border border-gray-200 px-4 py-3 active:scale-[0.99] transition-all"
           >
             <p className="font-bold text-gray-900">Điều khoản sử dụng</p>
-            <p className="text-xs text-gray-500 mt-1">Xem chi tiết điều khoản của FLY Academic</p>
+            <p className="text-xs text-gray-500 mt-1">Xem chi tiết điều khoản của PTE Study</p>
           </button>
 
           <button

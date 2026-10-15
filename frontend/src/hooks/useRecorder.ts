@@ -81,7 +81,7 @@ export function useRecorder({ prepSeconds = 0, maxSeconds = 40, onStop }: UseRec
       } catch (err: any) {
         const name = err?.name || '';
         if (name === 'NotAllowedError' || name === 'PermissionDeniedError') {
-          setMicError('Quyền microphone bị từ chối. Vào Cài đặt → Ứng dụng → Fly PTE → Quyền → bật Microphone.');
+          setMicError('Quyền microphone bị từ chối. Vào Cài đặt → Ứng dụng → PTE Study → Quyền → bật Microphone.');
         } else if (name === 'NotFoundError') {
           setMicError('Không tìm thấy microphone trên thiết bị này.');
         } else {

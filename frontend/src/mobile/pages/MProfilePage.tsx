@@ -2,7 +2,7 @@ import React from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { usersApi } from "../../api";
-import { logoUrl } from "../../assets";
+import { BrandLogo } from "../../components/common/BrandLogo";
 import { useAuthStore } from "../../stores/authStore";
 import { MobileHeader } from "../layout/MobileShell";
 import { MButton, MInput, MBadge, MProgressBar } from "../ui";
@@ -89,7 +89,7 @@ export default function MProfilePage() {
       setBiometricsEnabled(false);
     } else {
       const confirm = window.confirm(
-        "Cho phép FLY Academy sử dụng Face ID / Touch ID để đăng nhập nhanh trong các lần sau?"
+        "Cho phép PTE Study sử dụng Face ID / Touch ID để đăng nhập nhanh trong các lần sau?"
       );
       if (confirm) {
         const token = localStorage.getItem("fly_edu_token");
@@ -368,9 +368,9 @@ export default function MProfilePage() {
           </button>
         </div>
 
-        <div className="flex flex-col items-center pb-2 gap-1">
-          <img src={logoUrl} alt="FLY Academy" className="h-8 w-auto opacity-60" />
-          <p className="text-xs text-gray-400">v2.0 · PTE Academic</p>
+        <div className="flex flex-col items-center pb-2 gap-1 opacity-70">
+          <BrandLogo theme="light" size="sm" />
+          <p className="text-xs text-gray-400 mt-1">v2.0 · PTE Academic</p>
         </div>
         <div className="h-4" />
       </div>

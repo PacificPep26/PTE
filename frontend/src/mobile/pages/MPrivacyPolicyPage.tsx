@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { logoUrl } from "../../assets";
+import { BrandLogo } from "../../components/common/BrandLogo";
 
 export function MPrivacyPolicyPage() {
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ export function MPrivacyPolicyPage() {
           >
             ← Quay lại
           </button>
-          <img src={logoUrl} alt="FLY Academy" className="h-8 w-auto" />
+          <BrandLogo theme="light" size="sm" />
         </div>
 
         <div className="m-card-elevated rounded-3xl p-6 bg-white space-y-4 text-gray-800 text-sm leading-relaxed shadow-sm">
@@ -27,7 +27,7 @@ export function MPrivacyPolicyPage() {
           </h1>
           
           <p>
-            Chào mừng bạn đến với ứng dụng <strong>FLY PTE Academy</strong>. Việc bảo vệ dữ liệu cá nhân của bạn là ưu tiên hàng đầu của chúng tôi. Chính sách này giải thích cách chúng tôi thu thập, sử dụng và bảo vệ thông tin của bạn.
+            Chào mừng bạn đến với ứng dụng <strong>PTE Study</strong>. Việc bảo vệ dữ liệu cá nhân của bạn là ưu tiên hàng đầu của chúng tôi. Chính sách này giải thích cách chúng tôi thu thập, sử dụng và bảo vệ thông tin của bạn.
           </p>
 
           <h2 className="font-bold text-lg text-gray-900 mt-4">1. Quyền truy cập Microphone (Ghi âm)</h2>
@@ -76,11 +76,11 @@ export function MPrivacyPolicyPage() {
 
           <h2 className="font-bold text-lg text-gray-900 mt-4">4. Cam kết bảo mật</h2>
           <p>
-            FLY PTE Academy cam kết tuân thủ các tiêu chuẩn bảo mật dữ liệu hiện hành. Mọi dữ liệu truyền tải giữa ứng dụng và máy chủ đều được mã hóa an toàn.
+            PTE Study cam kết tuân thủ các tiêu chuẩn bảo mật dữ liệu hiện hành. Mọi dữ liệu truyền tải giữa ứng dụng và máy chủ đều được mã hóa an toàn.
           </p>
 
           <p className="mt-8 text-xs text-gray-500 italic">
-            Cập nhật lần cuối: Tháng 5 năm 2026. Nếu bạn có thắc mắc, vui lòng liên hệ với bộ phận hỗ trợ của FLY PTE.
+            Cập nhật lần cuối: Tháng 5 năm 2026. Nếu bạn có thắc mắc, vui lòng liên hệ với bộ phận hỗ trợ của PTE Study.
           </p>
         </div>
       </div>

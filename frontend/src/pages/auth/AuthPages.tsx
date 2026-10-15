@@ -5,7 +5,7 @@ import { useAuthStore } from '../../stores/authStore';
 import { clsx } from 'clsx';
 import { formatAuthError } from '../../utils/authErrors';
 import { GoogleSignIn } from '../../components/auth/GoogleSignIn';
-import { logoUrl } from '../../assets';
+import { BrandLogo } from '../../components/common/BrandLogo';
 
 // ── Left Hero Panel (PTE Magic Style) ──────────────────────────────────────────
 function HeroLeftPanel() {
@@ -34,10 +34,10 @@ function HeroLeftPanel() {
       <div className="relative z-10">
         <div className="inline-flex items-center gap-2.5 bg-black/90 text-white px-4 py-2 rounded-2xl shadow-lg border border-white/10">
           <div className="w-6 h-6 rounded-lg bg-amber-400 flex items-center justify-center font-black text-black text-xs">
-            FLY
+            PTE
           </div>
           <div className="leading-tight">
-            <span className="font-display font-black text-xs tracking-wider uppercase">FLY PTE</span>
+            <span className="font-display font-black text-xs tracking-wider uppercase">PTE Study</span>
             <span className="text-[10px] text-amber-300 block font-medium">AI Practice Platform</span>
           </div>
         </div>
@@ -48,10 +48,10 @@ function HeroLeftPanel() {
         <h1 className="font-display font-black text-3xl xl:text-4xl text-gray-950 leading-[1.2] mb-3 tracking-tight">
           Better Practice. Better Results.
           <br />
-          <span className="text-gray-900">With FLY PTE Platform.</span>
+          <span className="text-gray-900">With PTE Study Platform.</span>
         </h1>
         <p className="text-gray-800/90 text-sm leading-relaxed mb-8 font-medium">
-          Join 100,000+ students who trust FLY PTE to achieve their dream Pearson Test of English scores for migration, study, or work abroad.
+          Join 100,000+ students who trust PTE Study to achieve their dream Pearson Test of English scores for migration, study, or work abroad.
         </p>
 
         {/* Floating Cards (Student Result + Skills Breakdown) */}
@@ -111,7 +111,7 @@ function HeroLeftPanel() {
       {/* Bottom Footer info */}
       <div className="relative z-10 flex items-center justify-between text-xs text-gray-900/70 font-semibold pt-4">
         <span>Official PTE Academic Standard</span>
-        <span>© FLY Education Technology</span>
+        <span>© PTE Study Platform</span>
       </div>
     </div>
   );
@@ -175,7 +175,7 @@ export function LoginPage() {
               Back to homepage
             </Link>
 
-            <img src={logoUrl} alt="FLY PTE" className="h-8 w-auto object-contain" />
+            <BrandLogo theme="light" size="sm" />
           </div>
 
           {/* Heading */}
@@ -293,7 +293,7 @@ export function LoginPage() {
 
           {/* Footer Terms */}
           <p className="text-center text-[11px] text-gray-400 mt-8 leading-relaxed">
-            By logging in, you agree to FLY PTE's{' '}
+            By logging in, you agree to PTE Study's{' '}
             <Link to="/terms" className="underline hover:text-gray-600">Terms of Service</Link>{' '}
             and{' '}
             <Link to="/privacy" className="underline hover:text-gray-600">Privacy Policy</Link>.
@@ -363,7 +363,7 @@ export function RegisterPage() {
               Back to homepage
             </Link>
 
-            <img src={logoUrl} alt="FLY PTE" className="h-8 w-auto object-contain" />
+            <BrandLogo theme="light" size="sm" />
           </div>
 
           <div className="mb-6">
@@ -454,7 +454,7 @@ export function RegisterPage() {
                 className="w-4 h-4 rounded text-amber-500 accent-amber-400 mt-0.5"
               />
               <span>
-                I agree to FLY PTE's{' '}
+                I agree to PTE Study's{' '}
                 <Link to="/terms" className="underline font-bold text-gray-900">Terms of Service</Link>{' '}
                 and{' '}
                 <Link to="/privacy" className="underline font-bold text-gray-900">Privacy Policy</Link>.

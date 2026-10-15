@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuthStore } from "../../stores/authStore";
 import { MButton, MInput } from "../ui";
-import { logoUrl } from "../../assets";
+import { BrandLogo } from "../../components/common/BrandLogo";
 import { formatAuthError } from "../../utils/authErrors";
 
 export function MLoginPage() {
@@ -102,12 +102,7 @@ export function MLoginPage() {
 
       {/* Logo area */}
       <div className="flex-1 flex flex-col items-center justify-center px-6 pt-16 pb-6">
-        <img
-          src={logoUrl}
-          alt="FLY Academy"
-          className="w-44 h-auto mb-2"
-        />
-        <p className="text-sm text-gray-500 text-center">Luyện thi PTE Academic · AI Chấm điểm</p>
+        <BrandLogo theme="light" size="lg" showSubtitle />
       </div>
 
       {/* Form */}
@@ -212,7 +207,7 @@ export function MLoginPage() {
         </div>
 
         <p className="text-center text-xs text-gray-400 mt-4">
-          FLY PTE Academy • Đồng hành cùng bạn đến 79+
+          PTE Study • Đồng hành cùng bạn đến 79+
         </p>
       </div>
     </div>
@@ -249,7 +244,7 @@ export function MRegisterPage() {
       style={{ background: "linear-gradient(175deg, #fffdf8 0%, #fef9e7 60%, #fdf6d9 100%)" }}
     >
       <div className="flex flex-col items-center px-6 pt-16 pb-6">
-        <img src={logoUrl} alt="FLY Academy" className="w-36 h-auto mb-3" />
+        <BrandLogo theme="light" size="lg" showSubtitle className="mb-3" />
         <h1 className="font-display font-black text-2xl text-gray-900 mb-1">Tạo tài khoản</h1>
         <p className="text-sm text-gray-500">Bắt đầu hành trình PTE của bạn</p>
       </div>
@@ -309,7 +304,7 @@ export function MRegisterPage() {
                 <Link to="/privacy" className="font-semibold text-brand-gold underline">
                   Chính sách bảo mật
                 </Link>{" "}
-                của FLY Academy.
+                của PTE Study.
               </label>
             </div>
 

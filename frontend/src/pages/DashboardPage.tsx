@@ -90,7 +90,7 @@ export default function DashboardPage() {
           <div className="flex items-center gap-2 sm:gap-3">
             <h1 className="font-display font-black text-base sm:text-lg text-brand-black">Question Bank</h1>
             <span className="text-xs font-bold px-2 sm:px-2.5 py-1 rounded-lg bg-brand-gold-light text-brand-gold hidden sm:inline">
-              FLY ACADEMY
+              PTE STUDY
             </span>
           </div>
           <div className="flex items-center gap-1.5 sm:gap-2">
@@ -128,7 +128,7 @@ export default function DashboardPage() {
                 </p>
                 <h2 className="font-display font-black text-2xl sm:text-3xl text-white mb-4 leading-tight tracking-tight">
                   Hôm nay ôn luyện{' '}
-                  <span className="text-gold-gradient-animate">FLY Academic</span>
+                  <span className="text-gold-gradient-animate">PTE Academic</span>
                   <br className="hidden sm:block" />
                   <span className="text-stone-100/90 text-xl sm:text-2xl font-extrabold"> — sẵn sàng chưa?</span>
                 </h2>

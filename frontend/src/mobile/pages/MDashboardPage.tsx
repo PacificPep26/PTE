@@ -2,7 +2,7 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { usersApi, mockTestApi } from "../../api";
-import { logoUrl } from "../../assets";
+import { BrandLogo } from "../../components/common/BrandLogo";
 import { useAuthStore } from "../../stores/authStore";
 import { QuestionSkill, SKILL_TYPES } from "../../types";
 import { MobileHeader } from "../layout/MobileShell";
@@ -114,7 +114,7 @@ export default function MDashboardPage() {
     <>
       {/* ── Header ── */}
       <MobileHeader
-        title={<img src={logoUrl} alt="FLY Academy" className="h-7 w-auto" />}
+        title={<BrandLogo theme="dark" size="sm" />}
       />
 
       <div className="px-4 space-y-4 pb-6">
