@@ -496,14 +496,47 @@ totalScore = content+form+grammar+vocabulary (max 7).
 
 IMPORTANT: feedback, tutor_tip, and strings inside vocab_suggestions must be single-line (no raw line breaks inside JSON strings).`;
 
-    const raw = await this.callGemini(prompt, ['content', 'form', 'grammar', 'vocabulary'], {
-      responseSchema: geminiSwtScoreSchema(),
-    });
-    const { scoreBreakdown, totalScore } = this.normalizeBreakdown(
-      raw.scoreBreakdown || {},
-      { content: 2, form: 1, grammar: 2, vocabulary: 2 },
-    );
-    return { ...raw, scoreBreakdown, totalScore };
+    try {
+      const raw = await this.callGemini(prompt, ['content', 'form', 'grammar', 'vocabulary'], {
+        responseSchema: geminiSwtScoreSchema(),
+      });
+      const { scoreBreakdown, totalScore } = this.normalizeBreakdown(
+        raw.scoreBreakdown || {},
+        { content: 2, form: 1, grammar: 2, vocabulary: 2 },
+      );
+      return { ...raw, scoreBreakdown, totalScore };
+    } catch (err) {
+      this.logger.warn(`Gemini SWT failed, falling back to offline keyword scoring: ${err}`);
+      const ca = question.correctAnswer as any;
+      let keywords: string[] = [];
+      if (ca && typeof ca === 'object' && Array.isArray(ca.keywords)) {
+        keywords = ca.keywords;
+      } else if (question.tips && question.tips.includes('Từ khóa gợi ý:')) {
+        keywords = question.tips.split('Từ khóa gợi ý:')[1].split('.')[0].split(',').map(s => s.trim()).filter(Boolean);
+      } else {
+        keywords = this.extractKeywordsFromText(question.suggestedAnswer || question.content || '');
+      }
+
+      const { matched, missing } = this.matchKeywordsOffline(textAnswer, keywords);
+      const content = !formOk ? 0 : (matched.length >= 3 || (keywords.length > 0 && matched.length / keywords.length >= 0.5) ? 2 : (matched.length >= 1 ? 1 : 0));
+      const form = formOk ? 1 : 0;
+      const grammar = (textAnswer || '').trim().length > 10 && /^[A-Z]/.test((textAnswer || '').trim()) ? 2 : 1;
+      const vocabulary = matched.length >= 2 ? 2 : 1;
+      const totalScore = content + form + grammar + vocabulary;
+      const feedback = [
+        matched.length > 0 ? `✅ Ý chính đã nắm bắt (${matched.length}/${keywords.length}): ${matched.join(', ')}` : '',
+        missing.length > 0 ? `⚠️ Ý chính cần bổ sung: ${missing.join(', ')}` : '',
+        `📏 Hình thức: ${wordCount} từ (chuẩn 5–75 từ), ${formOk ? '1 câu duy nhất.' : 'lỗi hình thức.'}`,
+      ].filter(Boolean).join('\n');
+
+      return {
+        totalScore,
+        scoreBreakdown: { content, form, grammar, vocabulary, content_max: 2, form_max: 1, grammar_max: 2, vocabulary_max: 2 },
+        feedback,
+        tutorTip: 'Tập trung lồng ghép các từ khóa then chốt và đảm bảo viết đúng 1 câu duy nhất.',
+        vocabSuggestions: [],
+      };
+    }
   }
 
   // ── Writing: Essay ────────────────────────────────────────────────────────
@@ -779,14 +812,72 @@ totalScore = sum of all four (max 7).
 
 IMPORTANT: feedback must be one single line (no raw line breaks inside the JSON string).`;
 
-    const raw = await this.callGemini(prompt, ['content', 'grammar', 'vocabulary', 'form'], {
-      responseSchema: geminiSstScoreSchema(),
-    });
-    const { scoreBreakdown, totalScore } = this.normalizeBreakdown(
-      raw.scoreBreakdown || {},
-      { content: 2, form: 1, grammar: 2, vocabulary: 2 },
-    );
-    return { ...raw, scoreBreakdown, totalScore };
+    try {
+      const raw = await this.callGemini(prompt, ['content', 'grammar', 'vocabulary', 'form'], {
+        responseSchema: geminiSstScoreSchema(),
+      });
+      const { scoreBreakdown, totalScore } = this.normalizeBreakdown(
+        raw.scoreBreakdown || {},
+        { content: 2, form: 1, grammar: 2, vocabulary: 2 },
+      );
+      return { ...raw, scoreBreakdown, totalScore };
+    } catch (err) {
+      this.logger.warn(`Gemini SST failed, falling back to offline keyword scoring: ${err}`);
+      const ca = question.correctAnswer as any;
+      let keywords: string[] = [];
+      if (ca && typeof ca === 'object' && Array.isArray(ca.keywords)) {
+        keywords = ca.keywords;
+      } else if (question.tips && question.tips.includes('Từ khóa gợi ý:')) {
+        keywords = question.tips.split('Từ khóa gợi ý:')[1].split('.')[0].split(',').map(s => s.trim()).filter(Boolean);
+      } else {
+        keywords = this.extractKeywordsFromText(question.suggestedAnswer || (ca && ca.transcript) || '');
+      }
+
+      const { matched, missing } = this.matchKeywordsOffline(textAnswer, keywords);
+      const content = matched.length >= 3 || (keywords.length > 0 && matched.length / keywords.length >= 0.5) ? 2 : (matched.length >= 1 ? 1 : 0);
+      const form = formOk ? 1 : 0;
+      const grammar = (textAnswer || '').trim().length > 10 && /^[A-Z]/.test((textAnswer || '').trim()) ? 2 : 1;
+      const vocabulary = matched.length >= 2 ? 2 : 1;
+      const totalScore = content + form + grammar + vocabulary;
+      const feedback = [
+        matched.length > 0 ? `✅ Ý chính đã nắm bắt (${matched.length}/${keywords.length}): ${matched.join(', ')}` : '',
+        missing.length > 0 ? `⚠️ Ý chính cần bổ sung: ${missing.join(', ')}` : '',
+        `📏 Hình thức: ${wordCount} từ (chuẩn 50–70 từ), ${formOk ? 'độ dài chuẩn.' : 'chưa đạt độ dài chuẩn.'}`,
+      ].filter(Boolean).join('\n');
+
+      return {
+        totalScore,
+        scoreBreakdown: { content, form, grammar, vocabulary, content_max: 2, form_max: 1, grammar_max: 2, vocabulary_max: 2 },
+        feedback,
+        tutorTip: 'Kiểm soát số từ từ 50–70 từ và bao quát các ý cốt lõi của bài giảng.',
+        vocabSuggestions: [],
+      };
+    }
+  }
+
+  private extractKeywordsFromText(text: string): string[] {
+    if (!text) return [];
+    const stopWords = new Set(['a', 'an', 'the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 'is', 'are', 'was', 'were', 'it', 'this', 'that', 'from', 'as', 'he', 'she', 'they']);
+    const words = text.toLowerCase().replace(/[^\w\s]/g, '').split(/\s+/).filter(w => w.length > 3 && !stopWords.has(w));
+    const counts = new Map<string, number>();
+    words.forEach(w => counts.set(w, (counts.get(w) || 0) + 1));
+    return [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 7).map(e => e[0]);
+  }
+
+  private matchKeywordsOffline(studentText: string, keywords: string[]): { matched: string[]; missing: string[] } {
+    const student = (studentText || '').toLowerCase();
+    const matched: string[] = [];
+    const missing: string[] = [];
+    for (const kw of keywords) {
+      const cleanKw = kw.toLowerCase().trim();
+      if (!cleanKw) continue;
+      if (student.includes(cleanKw) || cleanKw.split(' ').every(part => student.includes(part))) {
+        matched.push(kw);
+      } else {
+        missing.push(kw);
+      }
+    }
+    return { matched, missing };
   }
 
   // ── Score normalizer ─────────────────────────────────────────────────────
