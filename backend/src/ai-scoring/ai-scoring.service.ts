@@ -60,6 +60,7 @@ export class AiScoringService {
           options: question.options,
           response_time: question.responseTime,
           prep_time: question.prepTime,
+          tips: question.tips,
         },
         text_answer: params.textAnswer ?? null,
         selected_answers: params.selectedAnswers ?? null,

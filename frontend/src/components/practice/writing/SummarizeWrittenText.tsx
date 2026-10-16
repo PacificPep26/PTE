@@ -128,6 +128,22 @@ export function SummarizeWrittenText({ question }: { question: Question }) {
         </div>
       </div>
 
+      {/* Tips / Gợi ý từ khóa */}
+      {question.tips && (
+        <details className="group bg-amber-50/70 border border-amber-200/80 rounded-xl overflow-hidden transition-all">
+          <summary className="px-4 py-2.5 flex items-center justify-between cursor-pointer list-none select-none hover:bg-amber-100/50">
+            <div className="flex items-center gap-2 text-xs font-bold text-amber-800">
+              <Lightbulb className="w-4 h-4 text-amber-600" />
+              <span>Gợi ý từ khóa & Hướng dẫn</span>
+            </div>
+            <span className="text-[10px] text-amber-600 font-semibold group-open:rotate-180 transition-transform">▼</span>
+          </summary>
+          <div className="px-4 pb-3 pt-1 text-xs text-amber-900 leading-relaxed border-t border-amber-200/40">
+            {question.tips}
+          </div>
+        </details>
+      )}
+
       {submitted && question.suggestedAnswer && (
         <div className="bg-green-50 border border-green-100 rounded-xl px-4 py-3">
           <p className="text-[10px] font-black uppercase tracking-widest text-green-600 mb-1.5 flex items-center gap-1">

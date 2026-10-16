@@ -164,6 +164,22 @@ export function AudioTextAnswer({
         </div>
       </div>
 
+      {/* Tips / Gợi ý từ khóa cho SST */}
+      {isSst && question.tips && (
+        <details className="group mt-3 bg-amber-50/70 border border-amber-200/80 rounded-xl overflow-hidden transition-all">
+          <summary className="px-4 py-2.5 flex items-center justify-between cursor-pointer list-none select-none hover:bg-amber-100/50">
+            <div className="flex items-center gap-2 text-xs font-bold text-amber-800">
+              <Lightbulb className="w-4 h-4 text-amber-600" />
+              <span>Gợi ý từ khóa & Hướng dẫn</span>
+            </div>
+            <span className="text-[10px] text-amber-600 font-semibold group-open:rotate-180 transition-transform">▼</span>
+          </summary>
+          <div className="px-4 pb-3 pt-1 text-xs text-amber-900 leading-relaxed border-t border-amber-200/40">
+            {question.tips}
+          </div>
+        </details>
+      )}
+
       {submitted && (
         <div className="mt-4 space-y-3">
           {question.correctAnswer?.transcript && (

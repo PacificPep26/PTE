@@ -41,6 +41,7 @@ class QuestionData(BaseModel):
     options: Optional[Any] = None          # list[{label, text}] | list[{text, isBlank}]
     response_time: Optional[int] = None
     prep_time: Optional[int] = None
+    tips: Optional[str] = None
 
 
 class ScoreRequest(BaseModel):
