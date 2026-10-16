@@ -117,11 +117,11 @@ export default function ProfilePage() {
                     <p className="text-sm text-gray-400 mt-0.5">{profile?.email || user?.email}</p>
                     <div className="flex items-center gap-3 mt-3">
                       <span className="inline-flex items-center gap-1.5 text-[10px] font-bold text-amber-800 bg-amber-50 border border-amber-200/80 px-2.5 py-1 rounded-md">
-                        <Flame size={13} className="text-amber-500" /> {profile?.streakDays || 0} {language === 'vi' ? 'ngày streak' : 'days streak'}
+                        <Flame size={13} className="text-amber-500" /> {profile?.streakDays || 0} {t('common.daysStreak')}
                       </span>
                       {myRank !== undefined && myRank >= 0 && (
                         <span className="inline-flex items-center gap-1.5 text-[10px] font-bold text-brand-orange-deep bg-orange-50 border border-orange-200/80 px-2.5 py-1 rounded-md">
-                          <Trophy size={13} className="text-brand-orange" /> {language === 'vi' ? `Top #${myRank + 1} bảng xếp hạng` : `Top #${myRank + 1} leaderboard`}
+                          <Trophy size={13} className="text-brand-orange" /> {language === 'vi' ? `Top #${myRank + 1} bảng xếp hạng` : `Top #${myRank + 1} Leaderboard`}
                         </span>
                       )}
                     </div>
@@ -137,7 +137,7 @@ export default function ProfilePage() {
                     <p className="font-display font-black text-4xl text-brand-yellow leading-none">
                       {Math.round(stats?.avgScore || 0)}
                     </p>
-                    <p className="text-[10px] text-gray-500 mt-1">/ 90 {language === 'vi' ? 'điểm' : 'pts'}</p>
+                    <p className="text-[10px] text-gray-500 mt-1">/ 90 {t('common.pts')}</p>
                   </div>
                 </div>
               )}
@@ -154,14 +154,17 @@ export default function ProfilePage() {
           {/* Admin Info Section */}
           {isAdminOrTeacher && (
             <div className="card p-6">
-              <h3 className="font-display font-black text-base mb-4">Thông tin Quản trị viên</h3>
+              <h3 className="font-display font-black text-base mb-4">{t('profile.adminInfo')}</h3>
               <div className="space-y-4">
                 <p className="text-sm text-gray-600">
-                  Tài khoản của bạn được cấp quyền <strong>{user?.role === 'admin' ? 'Quản trị viên tối cao (Admin)' : 'Giáo viên (Teacher)'}</strong>. 
-                  Bạn có quyền truy cập vào Trang quản trị để quản lý câu hỏi, người dùng và các kỳ thi thử.
+                  {language === 'vi' ? (
+                    <>Tài khoản của bạn được cấp quyền <strong>{user?.role === 'admin' ? 'Quản trị viên tối cao (Admin)' : 'Giáo viên (Teacher)'}</strong>. Bạn có quyền truy cập vào Trang quản trị để quản lý câu hỏi, người dùng và các kỳ thi thử.</>
+                  ) : (
+                    <>Your account has <strong>{user?.role === 'admin' ? 'Super Administrator (Admin)' : 'Teacher'}</strong> privileges. You can access the Admin Center to manage question banks, mock exams, and user accounts.</>
+                  )}
                 </p>
                 <Button variant="yellow" onClick={() => window.location.href = '/admin'}>
-                  Truy cập Trang Quản Trị
+                  {t('profile.accessAdmin')}
                 </Button>
               </div>
             </div>
@@ -172,8 +175,8 @@ export default function ProfilePage() {
             <>
               <div className="grid grid-cols-2 gap-4">
                 {[
-                  { label: 'Tổng câu đã làm', value: stats?.totalAttempts || 0, icon: FileText, color: 'text-purple-600', bg: 'bg-purple-50' },
-                  { label: 'Streak hiện tại', value: `${profile?.streakDays || 0} ngày`, icon: Flame, color: 'text-amber-500', bg: 'bg-amber-50' },
+                  { label: t('profile.totalPracticed'), value: stats?.totalAttempts || 0, icon: FileText, color: 'text-purple-600', bg: 'bg-purple-50' },
+                  { label: t('profile.currentStreak'), value: `${profile?.streakDays || 0} ${t('common.days')}`, icon: Flame, color: 'text-amber-500', bg: 'bg-amber-50' },
                 ].map((s) => (
                   <div key={s.label} className="card p-5 flex items-center gap-4">
                     <div className={clsx("w-12 h-12 rounded-xl flex items-center justify-center text-2xl", s.bg)}>
@@ -190,7 +193,7 @@ export default function ProfilePage() {
               {/* Per-Skill Stats */}
               {stats?.skillStats && (
                 <div className="card p-6">
-                  <h3 className="font-display font-black text-base mb-4">Thống kê theo kỹ năng</h3>
+                  <h3 className="font-display font-black text-base mb-4">{t('profile.skillStats')}</h3>
                   <div className="space-y-4">
                     {Object.entries(stats.skillStats).map(([skill, data]: [string, any]) => {
                       const avg = Math.round(data.avgScore || 0);
@@ -200,7 +203,7 @@ export default function ProfilePage() {
                           <div className="flex justify-between items-center mb-1.5">
                             <span className="text-sm font-bold text-gray-700">{skillLabels[skill] || skill}</span>
                             <div className="flex items-center gap-2">
-                              <span className="text-xs text-gray-400">{data.count} câu</span>
+                              <span className="text-xs text-gray-400">{data.count} {t('common.questions')}</span>
                               <span className="text-sm font-black text-brand-orange">{avg}/90</span>
                             </div>
                           </div>
@@ -221,7 +224,7 @@ export default function ProfilePage() {
               {stats?.recentAttempts && stats.recentAttempts.length > 0 && (
                 <div className="card overflow-hidden">
                   <div className="px-5 py-3.5 border-b border-gray-100">
-                    <h3 className="font-display font-black text-sm">Lịch sử gần đây</h3>
+                    <h3 className="font-display font-black text-sm">{t('profile.recentHistory')}</h3>
                   </div>
                   {stats.recentAttempts.map((a: any) => {
                     const SkillIcon = a.skill === 'SPEAKING' ? Mic : a.skill === 'WRITING' ? PenTool : a.skill === 'READING' ? BookOpen : Headphones;
@@ -236,7 +239,7 @@ export default function ProfilePage() {
                         </div>
                         <div className="text-right flex-shrink-0">
                           <p className="text-sm font-black text-brand-orange">{a.score || '-'}</p>
-                          <p className="text-[10px] text-gray-400">{new Date(a.createdAt).toLocaleDateString('vi-VN')}</p>
+                          <p className="text-[10px] text-gray-400">{new Date(a.createdAt).toLocaleDateString(language === 'vi' ? 'vi-VN' : 'en-US')}</p>
                         </div>
                       </div>
                     );
@@ -249,9 +252,9 @@ export default function ProfilePage() {
                 <div className="card overflow-hidden">
                   <div className="px-5 py-3.5 border-b border-gray-100 flex items-center justify-between">
                     <h3 className="font-display font-black text-sm flex items-center gap-1.5">
-                      <Trophy size={16} className="text-brand-gold" /> Bảng xếp hạng
+                      <Trophy size={16} className="text-brand-gold" /> {t('profile.leaderboard')}
                     </h3>
-                    <span className="text-[10px] text-gray-400">Top {leaderboard.length} người dùng</span>
+                    <span className="text-[10px] text-gray-400">{t('common.topLearners')} ({leaderboard.length})</span>
                   </div>
                   {leaderboard.slice(0, 10).map((u: any, idx: number) => {
                     const isMe = u.id === (profile?.id || user?.id);
@@ -273,9 +276,9 @@ export default function ProfilePage() {
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className={clsx('text-sm font-bold truncate', isMe ? 'text-brand-orange' : 'text-gray-800')}>
-                            {u.fullName} {isMe && '(bạn)'}
+                            {u.fullName} {isMe && `(${t('common.you')})`}
                           </p>
-                          <p className="text-[10px] text-gray-400">{u.totalAttempts} câu · {u.streakDays} ngày streak</p>
+                          <p className="text-[10px] text-gray-400">{u.totalAttempts} {t('common.questions')} · {u.streakDays} {t('common.daysStreak')}</p>
                         </div>
                         <span className="font-display font-black text-brand-orange">{Math.round(u.averageScore || 0)}/90</span>
                       </div>

@@ -17,7 +17,7 @@ import { Mic, PenTool, BookOpen, Headphones, Bookmark, Settings, AlertTriangle, 
 export default function MProfilePage() {
   const navigate = useNavigate();
   const { user, setUser, logout } = useAuthStore();
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
   const qc = useQueryClient();
   const [editing, setEditing] = React.useState(false);
 
@@ -189,15 +189,15 @@ export default function MProfilePage() {
         {/* Stats */}
         <div className="grid grid-cols-3 gap-2">
           {[
-            { label: "Đã làm", value: stats?.totalAttempts || 0 },
-            { label: "Điểm TB", value: `${Math.round(stats?.avgScore || 0)}/90` },
+            { label: language === 'vi' ? "Đã làm" : "Practiced", value: stats?.totalAttempts || 0 },
+            { label: language === 'vi' ? "Điểm TB" : "Avg Score", value: `${Math.round(stats?.avgScore || 0)}/90` },
             { 
               label: (
                 <span className="inline-flex items-center gap-0.5">
                   Streak <Flame size={10} className="text-orange-500" />
                 </span>
               ), 
-              value: `${stats?.streakDays || 0} ngày` 
+              value: `${stats?.streakDays || 0} ${t('common.days')}` 
             },
           ].map((s, idx) => (
             <div key={idx} className="m-card rounded-2xl p-3 text-center">
@@ -210,7 +210,7 @@ export default function MProfilePage() {
         {/* Skill breakdown */}
         {stats?.skillStats && (
           <div className="m-card-elevated rounded-2xl p-4 space-y-3">
-            <p className="m-section-label mb-0">Tiến độ kỹ năng</p>
+            <p className="m-section-label mb-0">{t('profile.skillStats')}</p>
             {Object.entries(stats.skillStats).map(([skill, data]: [string, any]) => {
               const SkillIcon = SKILL_ICONS[skill] || BookOpen;
               return (
@@ -238,7 +238,7 @@ export default function MProfilePage() {
             className="w-full flex items-center gap-3 px-4 py-3.5 active:bg-gray-50 transition-colors text-left"
           >
             <Bookmark size={18} className="text-brand-gold" />
-            <span className="font-semibold text-sm text-gray-800 flex-1">Câu đã đánh dấu</span>
+            <span className="font-semibold text-sm text-gray-800 flex-1">{t('profile.bookmarkedQuestions')}</span>
             <svg className="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
               <path d="M9 18l6-6-6-6" strokeLinecap="round" />
             </svg>
@@ -249,7 +249,7 @@ export default function MProfilePage() {
               className="w-full flex items-center gap-3 px-4 py-3.5 active:bg-gray-50 transition-colors text-left"
             >
               <Settings size={18} className="text-gray-500" />
-              <span className="font-semibold text-sm text-gray-800 flex-1">Quản trị</span>
+              <span className="font-semibold text-sm text-gray-800 flex-1">{t('nav.admin')}</span>
               <svg className="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                 <path d="M9 18l6-6-6-6" strokeLinecap="round" />
               </svg>
@@ -261,12 +261,12 @@ export default function MProfilePage() {
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="px-4 py-3 border-b border-gray-50">
             <p className="inline-flex items-center gap-1.5 font-bold text-sm text-gray-900">
-              <Target size={15} className="text-brand-gold" /> Mục tiêu luyện tập
+              <Target size={15} className="text-brand-gold" /> {t('profile.studyGoals')}
             </p>
           </div>
           <div className="px-4 py-4 space-y-3">
             <div>
-              <label className="text-xs font-bold text-gray-500 block mb-1.5">Điểm mục tiêu</label>
+              <label className="text-xs font-bold text-gray-500 block mb-1.5">{t('profile.targetScoreLabel')}</label>
               <div className="flex gap-2">
                 {["30", "50", "65", "79"].map((v) => (
                   <button
@@ -283,7 +283,7 @@ export default function MProfilePage() {
               </div>
             </div>
             <div>
-              <label className="text-xs font-bold text-gray-500 block mb-1.5">Ngày thi dự kiến</label>
+              <label className="text-xs font-bold text-gray-500 block mb-1.5">{t('profile.examDateLabel')}</label>
               <input
                 type="date"
                 value={localExamDate}
@@ -296,7 +296,7 @@ export default function MProfilePage() {
               onClick={saveGoals}
               className="w-full py-2.5 rounded-xl bg-brand-gold text-white font-bold text-sm active:scale-[0.97] transition-all"
             >
-              Lưu mục tiêu
+              {t('profile.saveGoals')}
             </button>
           </div>
         </div>

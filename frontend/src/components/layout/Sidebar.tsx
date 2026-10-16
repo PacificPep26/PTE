@@ -169,28 +169,28 @@ export function Sidebar({
 
         {/* ── Navigation ───────────────────────────────────────────── */}
         <div className="flex-1 overflow-y-auto px-2.5 py-4 space-y-0.5">
-          <SectionLabel>{language === 'vi' ? "Trang chính" : "Main"}</SectionLabel>
+          <SectionLabel>{t("nav.mainSection")}</SectionLabel>
           {nav.map((n) => (
             <NavItem key={n.to} {...n} onNavClick={onClose} />
           ))}
 
           <div className="my-3" />
 
-          <SectionLabel>{language === 'vi' ? "Ngân hàng câu hỏi" : "Question Bank"}</SectionLabel>
+          <SectionLabel>{t("nav.questionBankSection")}</SectionLabel>
           {skillNav.map((n) => (
             <NavItem key={n.to} {...n} onNavClick={onClose} />
           ))}
 
           <div className="my-3" />
 
-          <SectionLabel>{language === 'vi' ? "Đã lưu" : "Saved"}</SectionLabel>
+          <SectionLabel>{t("nav.savedSection")}</SectionLabel>
           {savedNav.map((n) => (
             <NavItem key={n.to} {...n} onNavClick={onClose} />
           ))}
 
           <div className="my-3" />
 
-          <SectionLabel>{language === 'vi' ? "Thi & Nâng cao" : "Tests & Admin"}</SectionLabel>
+          <SectionLabel>{t("nav.testsAdminSection")}</SectionLabel>
           {bottomNav.map((n) => {
             if (n.to === "/admin" && user?.role !== "admin" && user?.role !== "teacher") return null;
             return <NavItem key={n.to} {...n} onNavClick={onClose} />;
@@ -204,7 +204,7 @@ export function Sidebar({
         >
           <div className="px-2 flex items-center justify-between">
             <span className="text-[11px] font-bold text-gray-400">{t("common.language")}</span>
-            <LanguageSwitcher variant="pill" />
+            <LanguageSwitcher variant="pill" theme="dark" />
           </div>
 
           <div
@@ -304,12 +304,12 @@ function TopHeader({ onMenuOpen }: { onMenuOpen: () => void }) {
         </button>
 
         <span className="text-xs font-medium text-gray-400 hidden lg:inline-flex items-center gap-1.5 tracking-wide">
-          PTE Academic Practice
+          {t("nav.pteAcademicPractice")}
         </span>
       </div>
 
       <div className="flex items-center gap-1 sm:gap-2">
-        <LanguageSwitcher variant="pill" className="mr-1 hidden sm:inline-flex" />
+        <LanguageSwitcher variant="pill" theme="light" className="mr-1 hidden sm:inline-flex" />
 
         <button
           onClick={() => navigate("/profile")}

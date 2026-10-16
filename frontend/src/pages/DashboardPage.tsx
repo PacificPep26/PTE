@@ -168,11 +168,11 @@ export default function DashboardPage() {
                          flex flex-col justify-center text-center ring-1 ring-amber-200/60
                          bg-white/95 backdrop-blur-md shadow-lg motion-safe:animate-fade-in-up motion-safe:delay-75"
             >
-              <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Điểm TB AI</p>
+              <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">{t('dashboard.aiAvgScore')}</p>
               <p className="font-display font-black text-4xl sm:text-5xl text-brand-gold leading-none tabular-nums">
                 {Math.round(stats?.avgScore || 0)}
               </p>
-              <p className="text-xs text-gray-500 mt-2 font-semibold">/ 90 · Mục tiêu 79+</p>
+              <p className="text-xs text-gray-500 mt-2 font-semibold">/ 90 · {t('dashboard.targetGoal')}</p>
             </div>
 
             <div
@@ -191,7 +191,7 @@ export default function DashboardPage() {
                 <p className="font-display font-black text-3xl leading-none tabular-nums">
                   {stats?.streakDays || 0}
                 </p>
-                <p className="text-xs font-bold text-white/90 mt-0.5">{language === 'vi' ? 'ngày liên tiếp' : 'days streak'}</p>
+                <p className="text-xs font-bold text-white/90 mt-0.5">{t('dashboard.consecutiveDays')}</p>
               </div>
             </div>
           </div>
@@ -285,7 +285,7 @@ export default function DashboardPage() {
                           <div className={clsx('w-9 h-9 rounded-xl flex items-center justify-center', iconBgColors[c])}>
                             <skill.icon size={16} strokeWidth={2} />
                           </div>
-                          <span className="tag-ai">AI CHẤM</span>
+                          <span className="tag-ai">{t('dashboard.aiScored')}</span>
                         </div>
                         <p className="font-display font-black text-sm text-gray-900 mb-2 leading-snug">
                           {QUESTION_TYPE_LABELS[type as QuestionType]}
@@ -293,10 +293,10 @@ export default function DashboardPage() {
                         <ProgressBar value={avgScore} max={90} color={c === 'gold' ? 'yellow' : c} />
                         <div className="flex justify-between mt-2 items-center">
                           <span className="text-[10px] text-gray-400">
-                            {attempted > 0 ? `${attempted} câu đã làm` : 'Chưa luyện'}
+                            {attempted > 0 ? `${attempted} ${t('common.practiced')}` : t('common.notStarted')}
                           </span>
                           <span className="text-[11px] font-black text-brand-gold flex items-center gap-0.5">
-                            {attempted > 0 ? 'Tiếp tục' : 'Bắt đầu'}
+                            {attempted > 0 ? t('common.continue') : t('common.start')}
                             <ChevronRight size={11} />
                           </span>
                         </div>
@@ -313,10 +313,10 @@ export default function DashboardPage() {
             <div className="flex items-center justify-between mb-3">
               <h2 className="font-display font-black text-base flex items-center gap-2 text-brand-black">
                 <ClipboardList size={16} className="text-brand-gold" strokeWidth={2.5} />
-                Mock Test Library
+                {t('mockTest.library')}
               </h2>
               <Button variant="yellow" size="sm" onClick={() => navigate('/mock-test')}>
-                Xem tất cả
+                {t('common.viewAll')}
               </Button>
             </div>
 
@@ -344,8 +344,8 @@ export default function DashboardPage() {
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-bold text-gray-900 truncate">{mt.title}</p>
                       <p className="text-xs text-gray-400 flex items-center gap-2 mt-0.5">
-                        <span className="flex items-center gap-1"><Clock size={10} /> {mt.durationMinutes} phút</span>
-                        <span className="hidden sm:inline">Cập nhật {mt.updatedYear}</span>
+                        <span className="flex items-center gap-1"><Clock size={10} /> {mt.durationMinutes} {t('mockTest.minutes')}</span>
+                        <span className="hidden sm:inline">{t('mockTest.updated')} {mt.updatedYear}</span>
                       </p>
                     </div>
 
@@ -355,13 +355,13 @@ export default function DashboardPage() {
                       status === 'progress' ? 'bg-amber-100 text-amber-700' :
                                               'bg-gray-100 text-gray-500'
                     )}>
-                      {status === 'done'     ? <><CheckCircle2 size={10} /> Hoàn thành</> :
-                       status === 'progress' ? <><Clock size={10} /> Đang làm</> :
-                                              'Chưa làm'}
+                      {status === 'done'     ? <><CheckCircle2 size={10} /> {t('common.completed')}</> :
+                       status === 'progress' ? <><Clock size={10} /> {t('common.inProgress')}</> :
+                                              t('common.notStarted')}
                     </span>
 
                     <Button variant="dark" size="sm" className="shrink-0 text-xs sm:text-sm px-2.5 sm:px-4">
-                      {status === 'done' ? 'Xem lại' : status === 'progress' ? 'Tiếp tục' : 'Luyện'}
+                      {status === 'done' ? t('common.review') : status === 'progress' ? t('common.continue') : t('common.start')}
                     </Button>
                   </div>
                 );
@@ -370,7 +370,7 @@ export default function DashboardPage() {
               {(!mockTests || mockTests.length === 0) && (
                 <div className="py-12 text-center text-gray-400">
                   <ClipboardList size={28} className="mx-auto mb-2 text-gray-300" />
-                  <p className="text-sm">Chưa có mock test nào</p>
+                  <p className="text-sm">{t('mockTest.noTests')}</p>
                 </div>
               )}
             </div>

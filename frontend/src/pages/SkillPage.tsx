@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { questionsApi } from '../api';
 import { QuestionSkill, QuestionType, QUESTION_TYPE_LABELS, SKILL_TYPES } from '../types';
+import { useTranslation } from '../stores/languageStore';
 import { MainLayout } from '../components/layout/Sidebar';
 import { Button, Badge, ProgressBar } from '../components/ui';
 
@@ -54,6 +55,7 @@ const HAS_AI: QuestionType[] = [
 export default function SkillPage() {
   const { skill } = useParams<{ skill: string }>();
   const navigate = useNavigate();
+  const { t, language } = useTranslation();
   const skillKey = (skill || '').toUpperCase() as QuestionSkill;
   const meta = SKILL_META[skillKey];
   const types = SKILL_TYPES[skillKey] || [];
@@ -105,11 +107,13 @@ export default function SkillPage() {
               <meta.icon size={18} className={meta.iconColor} />
             </div>
             <h1 className="font-display font-black text-base sm:text-lg text-gray-900">{meta.label}</h1>
-            <span className="text-xs font-bold text-gray-400 bg-gray-100 px-2 py-1 rounded-lg hidden sm:inline">{types.length} dạng bài</span>
+            <span className="text-xs font-bold text-gray-400 bg-gray-100 px-2 py-1 rounded-lg hidden sm:inline">
+              {types.length} {language === 'vi' ? 'dạng bài' : 'question types'}
+            </span>
           </div>
           <div className="flex items-center gap-1.5 sm:gap-2">
             <Button variant="yellow" size="sm" onClick={() => navigate('/mock-test')}>
-              Thi thử ngay
+              {t('mockTest.startExam')}
             </Button>
           </div>
         </div>
@@ -121,13 +125,13 @@ export default function SkillPage() {
                          shadow-sm"
               role="status"
             >
-              <p className="font-bold text-amber-950">Ngân hàng câu đang trống (0/0 mọi dạng)</p>
+              <p className="font-bold text-amber-950">
+                {language === 'vi' ? 'Ngân hàng câu đang trống (0/0 mọi dạng)' : 'Question bank is currently empty (0/0 in all types)'}
+              </p>
               <p className="mt-1 text-[13px] leading-relaxed text-amber-900/95">
-                Tiến độ lưu theo <strong>tài khoản + database</strong> backend đang trỏ tới. Nếu hôm trước bạn luyện trên{' '}
-                <strong>web/Railway</strong> mà giờ chạy <strong>localhost</strong>, thường là do{' '}
-                <code className="rounded bg-white/80 px-1 font-mono text-[11px]">DATABASE_URL</code> / DB khác — bảng{' '}
-                <code className="rounded bg-white/80 px-1 font-mono text-[11px]">questions</code> chưa có dữ liệu. Chạy
-                seed/crawl vào đúng DB đó, hoặc trỏ frontend về cùng API production.
+                {language === 'vi'
+                  ? 'Tiến độ lưu theo tài khoản + database backend đang trỏ tới.'
+                  : 'Progress is tracked per account and current database configuration.'}
               </p>
             </div>
           )}
@@ -158,9 +162,9 @@ export default function SkillPage() {
                       <IconComp size={18} />
                     </div>
                     <div className="flex flex-col items-end gap-1">
-                      {hasAI && <span className="tag-ai">AI CHẤM</span>}
+                      {hasAI && <span className="tag-ai">{t('dashboard.aiScored')}</span>}
                       {(type.includes('READING') || type.includes('LISTENING')) && !hasAI && (
-                        <span className="tag-expl">Giải thích</span>
+                        <span className="tag-expl">{t('dashboard.explanation')}</span>
                       )}
                     </div>
                   </div>
@@ -169,11 +173,11 @@ export default function SkillPage() {
                     {QUESTION_TYPE_LABELS[type]}
                   </h3>
                   <p className="text-[11px] text-gray-400 mb-3">
-                    {prog.done}/{prog.total} câu đã làm
+                    {prog.done}/{prog.total} {t('common.practiced')}
                   </p>
 
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-[11px] text-gray-400 font-semibold">Tiến độ</span>
+                    <span className="text-[11px] text-gray-400 font-semibold">{t('practice.progress')}</span>
                     <span className="text-[11px] font-black text-gray-700">{prog.done}/{prog.total}</span>
                   </div>
                   <ProgressBar value={prog.done} max={prog.total || 1} color="yellow" />
@@ -185,7 +189,7 @@ export default function SkillPage() {
                     <span
                       className="text-[12px] font-black px-3 py-1.5 rounded-lg text-white shadow-gold-sm transition-colors hover:brightness-110 bg-gradient-to-r from-brand-gold to-brand-gold-bright"
                     >
-                      {prog.done > 0 ? 'Tiếp tục →' : 'Bắt đầu →'}
+                      {prog.done > 0 ? `${t('common.continue')} →` : `${t('common.start')} →`}
                     </span>
                   </div>
                 </div>

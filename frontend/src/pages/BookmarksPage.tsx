@@ -5,7 +5,8 @@ import { Mic, PenTool, BookOpen, Headphones, Bookmark, X } from 'lucide-react';
 import { questionsApi } from '../api';
 import { MainLayout } from '../components/layout/Sidebar';
 import { Button, Badge } from '../components/ui';
-import { QUESTION_TYPE_LABELS, QuestionType } from '../types';
+import { QuestionSkill, QuestionType, QUESTION_TYPE_LABELS } from '../types';
+import { useTranslation } from '../stores/languageStore';
 
 function getBookmarkedIds(): string[] {
   try { return JSON.parse(localStorage.getItem('fly_edu_bookmarks') || '[]'); } catch { return []; }
@@ -26,6 +27,7 @@ const SKILL_ICON: Record<string, React.ElementType> = {
 
 export default function BookmarksPage() {
   const navigate = useNavigate();
+  const { t, language } = useTranslation();
   const ids = getBookmarkedIds();
 
   const { data: questions = [], isLoading, refetch } = useQuery({
@@ -47,10 +49,12 @@ export default function BookmarksPage() {
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2">
               <Bookmark size={20} className="text-brand-orange" />
-              <h1 className="font-display font-black text-lg">Câu hỏi đã bookmark</h1>
+              <h1 className="font-display font-black text-lg">
+                {language === 'vi' ? 'Câu hỏi đã bookmark' : 'Bookmarked Questions'}
+              </h1>
             </div>
             <span className="text-xs font-bold text-gray-400 bg-gray-100 px-2 py-1 rounded-lg">
-              {ids.length} câu
+              {ids.length} {t('common.questions')}
             </span>
           </div>
           <Button variant="ghost" size="sm" onClick={() => navigate('/dashboard')}>← Dashboard</Button>
@@ -62,10 +66,16 @@ export default function BookmarksPage() {
               <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-amber-50 text-brand-orange flex items-center justify-center">
                 <Bookmark size={28} />
               </div>
-              <h2 className="font-display font-black text-xl mb-2">Chưa có bookmark nào</h2>
-              <p className="text-sm text-gray-400 mb-6">Nhấn biểu tượng Bookmark khi luyện tập để lưu câu hỏi vào đây</p>
+              <h2 className="font-display font-black text-xl mb-2">
+                {language === 'vi' ? 'Chưa có bookmark nào' : 'No bookmarks yet'}
+              </h2>
+              <p className="text-sm text-gray-400 mb-6">
+                {language === 'vi'
+                  ? 'Nhấn biểu tượng Bookmark khi luyện tập để lưu câu hỏi vào đây'
+                  : 'Click the Bookmark icon while practicing to save questions here'}
+              </p>
               <Button variant="yellow" onClick={() => navigate('/practice/speaking')}>
-                Bắt đầu luyện tập →
+                {language === 'vi' ? 'Bắt đầu luyện tập →' : 'Start Practicing →'}
               </Button>
             </div>
           ) : isLoading ? (

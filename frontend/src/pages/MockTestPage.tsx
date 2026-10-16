@@ -6,6 +6,7 @@ import { mockTestApi, attemptsApi } from '../api';
 import { MainLayout } from '../components/layout/Sidebar';
 import { Button, AudioPlayer, Waveform, ConfirmModal } from '../components/ui';
 import { Question, QUESTION_TYPE_LABELS } from '../types';
+import { useTranslation } from '../stores/languageStore';
 import { useRecorder } from '../hooks/useRecorder';
 import { parseReadingFibDrag } from '../utils/readingFibDrag';
 import { parseListeningFibSegments } from '../utils/listeningFibSegments';
@@ -32,6 +33,7 @@ import {
 // ── Mock Test Library Page ─────────────────────────────────────────────────
 export function MockTestPage() {
   const navigate = useNavigate();
+  const { t, language } = useTranslation();
   const [tab, setTab] = React.useState<'library' | 'history'>('library');
 
   const { data: tests } = useQuery({ queryKey: ['mockTests'], queryFn: mockTestApi.list });
@@ -54,18 +56,18 @@ export function MockTestPage() {
     <MainLayout>
       <div className="min-h-screen bg-brand-cream">
         <div className="bg-white border-b border-gray-100 px-8 h-14 flex items-center justify-between sticky top-0 z-30">
-          <h1 className="font-display font-black text-lg">Welcome to mock test</h1>
+          <h1 className="font-display font-black text-lg">{t('mockTest.title')}</h1>
         </div>
 
         <div className="px-6 sm:px-8 py-6 max-w-7xl mx-auto w-full">
           {/* Tabs */}
           <div className="flex items-center gap-1 border-b border-gray-200 mb-6">
-            {(['library', 'history'] as const).map((t) => (
-              <button key={t} onClick={() => setTab(t)}
+            {(['library', 'history'] as const).map((tKey) => (
+              <button key={tKey} onClick={() => setTab(tKey)}
                 className={clsx('px-4 py-2.5 text-sm font-bold transition-colors border-b-2 -mb-px',
-                  tab === t ? 'border-brand-black text-brand-black' : 'border-transparent text-gray-400 hover:text-gray-700'
+                  tab === tKey ? 'border-brand-black text-brand-black' : 'border-transparent text-gray-400 hover:text-gray-700'
                 )}>
-                {t === 'library' ? 'Mock Test Library' : 'History'}
+                {tKey === 'library' ? t('mockTest.library') : t('mockTest.history')}
               </button>
             ))}
           </div>
@@ -73,7 +75,7 @@ export function MockTestPage() {
           {tab === 'library' && (
             <div className="card overflow-hidden">
               <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-100">
-                <h2 className="font-display font-bold text-sm">Mock Test Library</h2>
+                <h2 className="font-display font-bold text-sm">{t('mockTest.library')}</h2>
               </div>
               {(tests || []).map((mt: any) => {
                 const status = getStatus(mt.id);
@@ -91,7 +93,7 @@ export function MockTestPage() {
                       <p className="text-xs text-gray-400 mb-1.5">{mt.description}</p>
                       <div className="flex items-center gap-1.5">
                         <span className="inline-flex items-center gap-1 text-[10px] bg-brand-yellow-light text-brand-yellow-deep font-bold px-2 py-0.5 rounded">
-                          <Calendar size={11} /> Updated: {mt.updatedYear}
+                          <Calendar size={11} /> {t('mockTest.updated')}: {mt.updatedYear}
                         </span>
                       </div>
                     </div>
@@ -101,10 +103,12 @@ export function MockTestPage() {
                         status === 'done' ? 'bg-green-100 text-green-700' :
                         status === 'progress' ? 'bg-orange-100 text-brand-orange-deep' : 'bg-gray-100 text-gray-400'
                       )}>
-                        {status === 'done' ? <><Check size={11} /> Done</> : status === 'progress' ? <><Clock size={11} /> In progress</> : 'Not yet taken'}
+                        {status === 'done' ? <><Check size={11} /> {t('common.completed')}</> :
+                         status === 'progress' ? <><Clock size={11} /> {t('common.inProgress')}</> :
+                         t('common.notStarted')}
                       </span>
                       <button className="text-sm font-bold text-brand-orange hover:underline whitespace-nowrap">
-                        {status === 'done' ? 'Xem lại →' : status === 'progress' ? 'Tiếp tục →' : 'Practice now →'}
+                        {status === 'done' ? `${t('common.review')} →` : status === 'progress' ? `${t('common.continue')} →` : `${t('common.start')} →`}
                       </button>
                     </div>
                   </div>
